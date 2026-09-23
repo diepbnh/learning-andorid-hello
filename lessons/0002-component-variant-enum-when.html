@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 2 · Component Variant với enum + when</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 2 / Mission: Jetpack Compose UI cho Designer</div>
+  <h1>Component Variant — hoàn thiện <code>AppButtonColors.kt</code></h1>
+
+  <div class="callout">
+  <p><strong>Trước khi vào bài mới</strong> — bạn đã làm được nhiều hơn bài 1 yêu cầu: đổi màu hex cứng thành
+  <code>colors.primary</code>, dùng lại <code>AppButton</code> thay vì viết Button mới, tự thêm Row 2 nút Light/Dark Mode
+  với <code>Modifier.weight(1f)</code>, và sửa <code>Theme.kt</code> để nền toàn app cũng đi qua theme. Đó đúng là cách
+  một component-based UI nên được xây — bài này sẽ giúp bạn làm điều đó <em>có hệ thống</em> hơn.</p>
+  </div>
+
+  <h2>1. Vấn đề: mỗi lần gọi AppButton phải tự nhớ đúng màu</h2>
+  <p>
+  Hiện tại <code>AppButton</code> nhận trực tiếp một <code>Color</code>:
+  </p>
+  <pre><code>AppButton(text = "Login", backgroundColor = colors.primary)
+AppButton(text = "Save",  backgroundColor = colors.danger)</code></pre>
+  <p>
+  Không có gì ngăn ai đó gõ nhầm <code>colors.secondary</code> ở một nút Login khác, hoặc còn tệ hơn là
+  hardcode lại <code>Color(0xFF1a75cf)</code> — đúng cái bạn vừa sửa ở bài 1. Bạn đã cảm nhận đúng vấn đề này:
+  file <code>AppButtonColors.kt</code> đang có một <code>enum class</code> bị comment, bỏ dở. Bài này sẽ hoàn thiện nó.
+  </p>
+
+  <h2>2. Khái niệm mới: <code>enum class</code> và <code>when</code></h2>
+  <p>
+  <strong>enum class</strong> là cách khai báo một danh sách <em>cố định, đóng</em> các lựa chọn hợp lệ — giống property
+  "Variant" trong Figma (Primary/Secondary/Danger...), khác với việc truyền tự do bất kỳ giá trị màu nào.
+  </p>
+  <div class="compare">
+    <div>
+      <span class="label">Thiết kế (Figma variant)</span>
+      <pre><code>Button
+  variant: Primary | Secondary | Danger</code></pre>
+    </div>
+    <div>
+      <span class="label">Kotlin</span>
+      <pre><code>enum class AppButtonColor {
+    Primary,
+    Secondary,
+    Danger,
+}</code></pre>
+    </div>
+  </div>
+  <p>
+  <strong>when</strong> là cách "rẽ nhánh theo từng case" — giống <code>if / else if</code> nhiều lần, nhưng rõ ràng hơn
+  và Kotlin sẽ <strong>báo lỗi lúc build</strong> nếu bạn quên xử lý một case trong enum. Bạn đã vô tình thấy đúng pattern
+  này rồi — mở lại <code>AppTextField.kt</code> mà bạn từng đọc, có sẵn hàm này:
+  </p>
+  <pre><code>fun appTextFieldBorderColor(
+    isError: Boolean,
+    isFocused: Boolean,
+    colors: AppColors,
+): Color = when {
+    isError -&gt; colors.danger
+    isFocused -&gt; colors.primary
+    else -&gt; colors.light
+}</code></pre>
+  <p>Bài này bạn sẽ viết một hàm tương tự — nhưng rẽ theo <code>enum</code> thay vì theo <code>Boolean</code>.</p>
+
+  <h2>3. Thực hành: hoàn thiện <code>AppButtonColors.kt</code></h2>
+  <ol>
+    <li>Mở <code>ui/components/button/AppButtonColors.kt</code>, xóa phần comment cũ.</li>
+    <li>Viết enum với 4 case, đặt tên khớp các token màu đã có trong <code>AppColors</code> (xem lại
+      <code>Color.kt</code> nếu quên tên):
+      <pre><code>enum class AppButtonColor {
+    Primary,
+    Secondary,
+    Danger,
+    Light,
+}</code></pre>
+    </li>
+    <li>Ngay dưới enum, viết một hàm <code>@Composable</code> map từng case sang theme token, dùng đúng pattern
+      <code>when</code> vừa học:
+      <pre><code>@Composable
+fun AppButtonColor.toColor(): Color = when (this) {
+    AppButtonColor.Primary   -&gt; colors.primary
+    AppButtonColor.Secondary -&gt; colors.secondary
+    AppButtonColor.Danger    -&gt; colors.danger
+    AppButtonColor.Light     -&gt; colors.light
+}</code></pre>
+      <div class="sidenote">
+      Đây gọi là "extension function" — <code>fun AppButtonColor.toColor()</code> nghĩa là gắn thêm hàm
+      <code>toColor()</code> vào enum, gọi được như <code>AppButtonColor.Primary.toColor()</code>. Chưa cần hiểu sâu,
+      chỉ cần chép đúng cú pháp này.
+      </div>
+    </li>
+    <li>Sửa <code>AppButton.kt</code>: đổi tham số
+      <pre><code>backgroundColor: Color = colors.danger,</code></pre>
+      thành
+      <pre><code>variant: AppButtonColor = AppButtonColor.Primary,</code></pre>
+      và bên trong <code>ButtonDefaults.buttonColors(...)</code>, đổi <code>containerColor = backgroundColor</code>
+      thành <code>containerColor = variant.toColor()</code>.
+    </li>
+    <li>Sửa lại từng chỗ gọi <code>AppButton</code> trong <code>LoginPage.kt</code> và <code>ResetPasswordPage.kt</code>:
+      đổi <code>backgroundColor = colors.primary</code> → <code>variant = AppButtonColor.Primary</code>, và
+      <code>backgroundColor = colors.danger</code> → <code>variant = AppButtonColor.Danger</code>.
+    </li>
+    <li>Chạy lại app. Đây là <strong>refactor</strong>, không phải thêm tính năng — UI phải trông <em>giống hệt trước</em>.
+      Nếu màu nào đổi khác đi, đó là dấu hiệu bạn map nhầm case trong bước 3.</li>
+  </ol>
+  <div class="callout ask">
+  <p>Nếu Android Studio báo lỗi <code>"when" expression must be exhaustive</code> — đó chính là Kotlin đang bảo bạn
+  còn thiếu một case trong <code>when</code>. Đọc thông báo lỗi, thêm case còn thiếu. Nếu vẫn không hiểu lỗi, hỏi agent
+  ngay, dán nguyên thông báo lỗi.</p>
+  </div>
+
+  <div class="callout">
+  <p><strong>"Vậy tôi phải nhớ thêm một API mới?"</strong> — Không phải nhớ thêm, mà là <em>đổi thứ phải nhớ</em>:
+  trước đây bạn phải tự nhớ đúng tên token (<code>colors.primary</code>, <code>colors.danger</code>...) mà không ai
+  nhắc nếu gõ sai; giờ chỉ cần gõ <code>AppButtonColor.</code> trong Android Studio, IDE tự gợi ý đúng 4 lựa chọn hợp
+  lệ, và gõ sai tên sẽ báo lỗi ngay khi gõ thay vì để sai màu lọt tới lúc chạy app. Đây là đánh đổi tiêu chuẩn của mọi
+  design system: giới hạn lựa chọn để đổi lấy autocomplete + kiểm tra lúc build.</p>
+  </div>
+
+  <h2>4. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. enum class trong Kotlin dùng để làm gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — lưu một chuỗi bất kỳ là việc của String, không cần enum.">Lưu một chuỗi bất kỳ</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng — enum khai báo một danh sách lựa chọn cố định, hợp lệ, giống Variant trong Figma.">Khai báo danh sách lựa chọn cố định</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — vẽ UI là việc của Composable, không phải enum.">Vẽ một phần UI ra màn hình</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — gọi API mạng không liên quan tới enum.">Gọi một API từ mạng</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Lợi ích chính của when so với nhiều if/else if là gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — when không tự làm code chạy nhanh hơn.">Chạy nhanh hơn if/else</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng — với enum, Kotlin báo lỗi lúc build nếu when thiếu case, if/else if không có kiểm tra này.">Kotlin báo lỗi nếu thiếu case</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — when không tự thêm màu cho UI.">Tự thêm màu cho UI</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — when không liên quan tới việc lưu trạng thái.">Tự lưu trạng thái vào bộ nhớ</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. Sau khi refactor xong, khi chạy lại app thì UI nên trông thế nào?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — refactor không phải để đổi giao diện, nếu đổi màu là bạn map nhầm case.">Màu các nút đổi khác đi</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — refactor màu không liên quan tới layout dọc/ngang.">Layout đổi từ dọc sang ngang</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng — refactor chỉ đổi cách viết code bên trong, giao diện hiển thị phải giữ nguyên như trước.">Giống hệt như trước khi sửa</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — không có yêu cầu nào về việc mất nút trong bài này.">Nút Reset Password biến mất</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://kotlinlang.org/docs/enum-classes.html">Enum classes — Kotlin Documentation</a> —
+  có thêm ví dụ enum mang theo dữ liệu riêng (ví dụ mỗi variant tự mang theo mã hex), nếu bạn muốn đi xa hơn bài này.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0001-doc-hieu-composable-dau-tien.html">← Bài 1</a>
+    <a href="0003-tu-dung-man-hinh-moi.html">Bài 3 →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Cheat sheet: HTML/CSS ⇄ Jetpack Compose</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+<style>
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0 2rem; font-size: 0.92rem; }
+  th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); }
+  td code { white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Reference · Tra cứu nhanh</div>
+  <h1>HTML/CSS ⇄ Jetpack Compose</h1>
+  <p>Bảng đối chiếu để tra cứu nhanh khi đọc code Compose. Không cần học thuộc — quay lại đây mỗi khi quên. Sinh ra từ
+  <a href="../lessons/0001-doc-hieu-composable-dau-tien.html">Bài 1 · Đọc hiểu Composable đầu tiên</a>.</p>
+
+  <h2>Cấu trúc & Component</h2>
+  <table>
+    <tr><th>HTML/CSS</th><th>Compose/Kotlin</th><th>Ghi chú</th></tr>
+    <tr>
+      <td><code>&lt;div class="card"&gt;...&lt;/div&gt;</code><br>hoặc một React/Vue component</td>
+      <td><code>@Composable fun Card(...) { ... }</code></td>
+      <td>Một hàm được đánh dấu <code>@Composable</code> = một "custom element" tái sử dụng được, giống component web.</td>
+    </tr>
+    <tr>
+      <td>Gọi component: <code>&lt;Card /&gt;</code></td>
+      <td>Gọi composable: <code>Card()</code></td>
+      <td>Gọi một composable = viết tên hàm như một câu lệnh, không cần <code>return</code>.</td>
+    </tr>
+    <tr>
+      <td>props <code>&lt;Button color="blue" /&gt;</code></td>
+      <td>tham số hàm: <code>fun AppButton(text: String, backgroundColor: Color)</code></td>
+      <td>Tham số composable = props. Có thể có giá trị mặc định, giống <code>defaultProps</code>.</td>
+    </tr>
+  </table>
+
+  <h2>Style & Modifier</h2>
+  <table>
+    <tr><th>HTML/CSS</th><th>Compose/Kotlin</th><th>Ghi chú</th></tr>
+    <tr>
+      <td><code>class="p-4 w-full"</code> (chuỗi class CSS)</td>
+      <td><code>Modifier.padding(16.dp).fillMaxWidth()</code></td>
+      <td><strong>Modifier là một chuỗi (chain)</strong>, giống việc gộp nhiều class CSS lại — mỗi hàm nối thêm một "hiệu ứng" style/layout.</td>
+    </tr>
+    <tr>
+      <td><code>width: 100%</code></td>
+      <td><code>Modifier.fillMaxWidth()</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><code>height: 100vh</code> / <code>flex: 1</code></td>
+      <td><code>Modifier.fillMaxSize()</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><code>margin</code> quanh 1 phần tử</td>
+      <td><code>Modifier.padding(...)</code></td>
+      <td>Compose không phân biệt margin/padding — chỉ có <code>padding</code> trên Modifier của chính phần tử, hoặc dùng <code>Spacer</code> giữa hai phần tử.</td>
+    </tr>
+    <tr>
+      <td><code>border-radius</code> + <code>overflow: hidden</code></td>
+      <td><code>Modifier.clip(RoundedCornerShape(8.dp))</code></td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><code>box-shadow</code></td>
+      <td><code>Modifier.shadow(4.dp)</code></td>
+      <td>—</td>
+    </tr>
+  </table>
+
+  <h2>Layout</h2>
+  <table>
+    <tr><th>HTML/CSS</th><th>Compose/Kotlin</th><th>Ghi chú</th></tr>
+    <tr>
+      <td><code>display: flex; flex-direction: column</code></td>
+      <td><code>Column { ... }</code></td>
+      <td>Xếp các phần tử con theo chiều dọc.</td>
+    </tr>
+    <tr>
+      <td><code>display: flex; flex-direction: row</code></td>
+      <td><code>Row { ... }</code></td>
+      <td>Xếp các phần tử con theo chiều ngang.</td>
+    </tr>
+    <tr>
+      <td><code>position: relative</code> + con <code>position: absolute</code></td>
+      <td><code>Box { ... }</code></td>
+      <td>Cho phép chồng các phần tử con lên nhau.</td>
+    </tr>
+    <tr>
+      <td><code>justify-content</code></td>
+      <td><code>verticalArrangement</code> (Column) / <code>horizontalArrangement</code> (Row)</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td><code>align-items</code></td>
+      <td><code>horizontalAlignment</code> (Column) / <code>verticalAlignment</code> (Row)</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>khoảng cách giữa 2 phần tử (<code>gap</code>, hoặc margin rời)</td>
+      <td><code>Spacer(modifier = Modifier.height(16.dp))</code></td>
+      <td>Compose không có <code>gap</code> — chèn một <code>Spacer</code> vô hình giữa các phần tử.</td>
+    </tr>
+  </table>
+
+  <h2>Trạng thái & tương tác</h2>
+  <table>
+    <tr><th>HTML/CSS/JS</th><th>Compose/Kotlin</th><th>Ghi chú</th></tr>
+    <tr>
+      <td>biến JS lưu giá trị input, tự cập nhật DOM</td>
+      <td><code>val text = remember { mutableStateOf("") }</code></td>
+      <td><code>remember</code> giữ giá trị qua các lần vẽ lại; <code>mutableStateOf</code> khiến UI tự vẽ lại khi giá trị đổi.</td>
+    </tr>
+    <tr>
+      <td><code>onclick="..."</code></td>
+      <td><code>onClick = { ... }</code></td>
+      <td>Một lambda (hàm không tên) truyền vào làm tham số.</td>
+    </tr>
+    <tr>
+      <td><code>:hover</code>, <code>:focus</code></td>
+      <td>tham số như <code>focusedBorderColor</code>, hoặc <code>interactionSource</code></td>
+      <td>Không có pseudo-class — mỗi trạng thái tương tác có tham số màu riêng do component định nghĩa.</td>
+    </tr>
+  </table>
+
+  <h2>Cú pháp Kotlin tối thiểu cần biết</h2>
+  <table>
+    <tr><th>Kotlin</th><th>Ý nghĩa</th></tr>
+    <tr><td><code>val name = "..."</code></td><td>Khai báo giá trị <strong>không đổi</strong> (giống <code>const</code>).</td></tr>
+    <tr><td><code>var name = "..."</code></td><td>Khai báo giá trị <strong>có thể đổi</strong> (giống <code>let</code>).</td></tr>
+    <tr><td><code>fun ten(a: Int): String { ... }</code></td><td>Khai báo hàm: tên, tham số có kiểu, kiểu trả về.</td></tr>
+    <tr><td><code>{ ... }</code> ở cuối lời gọi hàm</td><td>Trailing lambda — một hàm "con" truyền vào, ví dụ nội dung bên trong <code>Column { }</code>.</td></tr>
+  </table>
+
+  <h2>Variant (nhiều lựa chọn style cố định)</h2>
+  <table>
+    <tr><th>Thiết kế / CSS</th><th>Kotlin/Compose</th><th>Ghi chú</th></tr>
+    <tr>
+      <td>Property "Variant" trong Figma (Primary/Danger/...), hoặc class <code>btn-primary</code>, <code>btn-danger</code></td>
+      <td><code>enum class AppButtonColor { Primary, Danger, Light }</code></td>
+      <td>Một danh sách <strong>cố định, đóng</strong> các lựa chọn hợp lệ — không thể truyền giá trị ngoài danh sách này, khác với truyền tự do một <code>Color</code>.</td>
+    </tr>
+    <tr>
+      <td>Chọn style theo class/variant (nhiều <code>if/else if</code>, hoặc map trong design tool)</td>
+      <td><code>when (variant) { Primary -&gt; ...; Danger -&gt; ... }</code></td>
+      <td><code>when</code> giống <code>if/else if</code> nhưng rõ ràng hơn khi có nhiều nhánh — và Kotlin sẽ báo lỗi nếu bạn quên xử lý một case.</td>
+    </tr>
+  </table>
+
+  <p><em>Xem ví dụ áp dụng ở <a href="../lessons/0002-component-variant-enum-when.html">Bài 2 · Component Variant</a>.</em></p>
+
+  <div class="callout">
+  <p><strong>Không nhầm với bảng màu theme.</strong> <code>AppColors</code> (trong <code>Color.kt</code>) là
+  <em>dữ liệu</em> — màu thật sự đằng sau mỗi token, đổi theo light/dark. <code>AppButtonColor</code> (enum) là
+  <em>ràng buộc API</em> — danh sách những gì <em>riêng AppButton</em> được phép nhận, không phải mọi token trong
+  theme đều hợp lý làm màu nền nút (ví dụ <code>colors.text</code> thì không). Hai lớp khác nhau, không thay thế nhau —
+  giống panel "Color styles" so với property "Variant" của component trong Figma.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="../lessons/0002-component-variant-enum-when.html">← Bài 2</a>
+    <a href="../lessons/0003-tu-dung-man-hinh-moi.html">Bài 3 →</a>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 3 · Tự dựng một màn hình mới từ đầu</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 3 / Mission: Jetpack Compose UI cho Designer</div>
+  <h1>Tự dựng một màn hình mới — Sign Up Page</h1>
+
+  <div class="callout">
+  <p><strong>Đã build thành công.</strong> Bạn tự sửa đúng lỗi <code>AppButtonSize.medium</code> → <code>Medium</code>
+  sau khi được chỉ hướng đọc lỗi build — đúng vòng lặp code/debug từ bài 1. Ba bài qua bạn đã có đủ các khối để lắp UI:
+  <code>AppTextField</code>, <code>AppButton</code> (có <code>size</code>), theme token (<code>colors.xxx</code>),
+  layout (<code>Column</code>/<code>Row</code>/<code>Spacer</code>), và state (<code>remember { mutableStateOf(...) }</code>).
+  Bài này không dạy khái niệm mới về Composable — thử thách là <strong>tự quyết định cách lắp chúng lại</strong>
+  thành một màn hình hoàn toàn mới, không sửa file có sẵn.</p>
+  </div>
+
+  <h2>1. Nhiệm vụ</h2>
+  <p>Tạo một màn hình <strong>Sign Up</strong> mới, độc lập với <code>LoginPage</code>/<code>ResetPasswordPage</code>,
+  gồm:</p>
+  <ul>
+    <li>Tiêu đề "Sign Up" (dùng lại <code>style = titleXLarge</code>, <code>color = colors.primary</code> — giống các trang khác)</li>
+    <li>3 <code>AppTextField</code>: Username, Password, Confirm Password</li>
+    <li>1 <code>AppButton</code> "Sign Up" (chọn variant/size tùy bạn)</li>
+    <li>1 dòng text "Back to Login", bấm vào thì quay lại trang Login (giống cách <code>LoginPage</code> điều hướng sang Reset Password)</li>
+  </ul>
+  <p>File mới: <code>app/src/main/java/com/example/hello/SignUpPage.kt</code>, cùng package <code>com.example.hello</code>,
+  cùng chữ ký hàm với các trang khác:</p>
+  <pre><code>@Composable
+fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
+    // ... phần còn lại tự viết, dựa theo cấu trúc LoginPage.kt
+}</code></pre>
+
+  <h2>2. Khái niệm mới (nhỏ): thêm một route vào NavHost</h2>
+  <p>
+  Màn hình mới cần một "địa chỉ" để <code>navController.navigate(...)</code> đi tới được. Mở <code>MainActivity.kt</code>,
+  bạn sẽ thấy <code>NavHost</code> hiện chỉ có 2 route:
+  </p>
+  <pre><code>NavHost(navController = navController, startDestination = "login") {
+    composable("login") { LoginPage(...) }
+    composable("reset_password") { ResetPasswordPage(...) }
+}</code></pre>
+  <p>Thêm route thứ 3, cùng khuôn:</p>
+  <pre><code>composable("sign_up") {
+    SignUpPage(modifier = Modifier.fillMaxSize(), navController = navController)
+}</code></pre>
+  <div class="compare">
+    <div>
+      <span class="label">Tư duy web</span>
+      <pre><code>&lt;Route path="/sign-up"
+  element={&lt;SignUpPage /&gt;} /&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>composable("sign_up") {
+    SignUpPage(...)
+}</code></pre>
+    </div>
+  </div>
+  <p>Sau đó, ở <code>LoginPage.kt</code>, thêm 1 dòng Text điều hướng sang route mới — copy đúng cấu trúc của
+  Text "Reset Password" đã có sẵn (<code>Modifier.clickable { navController.navigate("...") }</code>), chỉ đổi route
+  thành <code>"sign_up"</code>.</p>
+
+  <h2>3. Việc bạn tự quyết định — không có đáp án duy nhất</h2>
+  <p>Không có hướng dẫn từng dòng cho phần này, vì đúng ý nghĩa của bài. Vài câu hỏi để tự trả lời khi viết:</p>
+  <ul>
+    <li>3 <code>AppTextField</code> nên đặt tên biến state là gì? (gợi ý: cùng cách bạn đã thấy trong
+    <code>ResetPasswordPage.kt</code> — có cả 2 cách viết state, <code>val x = remember { mutableStateOf("") }</code>
+    và <code>var x by remember { mutableStateOf("") }</code>, dùng cách nào cũng được, miễn nhất quán)</li>
+    <li>Password và Confirm Password nên hiển thị dạng ẩn ký tự (giống ô nhập mật khẩu thật) không? Nếu muốn, đó là
+    một câu hỏi hay để hỏi agent — chưa được dạy trong bài nào, đúng lúc mở rộng khi bạn cần.</li>
+    <li>Nút "Sign Up" nên dùng <code>variant</code>/<code>size</code> nào? Tự quyết theo mắt thẩm mỹ của bạn.</li>
+  </ul>
+
+  <div class="callout ask">
+  <p>Nếu cần một thành phần chưa học (ẩn ký tự mật khẩu, validate email...) — hỏi ngay lúc cần, đừng tự đoán rồi chép
+  đại một đoạn code không hiểu. Agent luôn ở đây để giải thích thêm.</p>
+  </div>
+
+  <h2>4. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Muốn navigate tới một Composable mới, trước tiên phải làm gì trong NavHost?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — sửa theme không liên quan tới việc thêm màn hình mới vào nav graph.">Sửa lại HelloTheme</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng — mỗi màn hình cần một composable(route) { ... } trong NavHost trước khi navigate tới được.">Thêm một composable route</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — Column chỉ là layout bên trong một màn hình, không liên quan điều hướng.">Đổi Column thành Row</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — Spacer chỉ tạo khoảng cách, không liên quan tới route.">Thêm một Spacer mới</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. SignUpPage.kt nên dùng OutlinedTextField gốc hay AppTextField?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — dùng lại component riêng của project giữ giao diện nhất quán và style tự động theo theme.">Dùng OutlinedTextField gốc</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng — AppTextField là component riêng của project, dùng lại để mọi ô nhập trong app đồng nhất và tự đổi theo theme.">Dùng AppTextField của project</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — TextField gốc không tự động style theo theme của project.">Dùng TextField gốc</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — không có lý do gì để tự viết lại từ đầu khi component đã có sẵn.">Viết composable ô nhập mới</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/navigation">Navigation with Compose</a> —
+  giải thích NavController/NavHost/route đầy đủ hơn, và
+  <a href="https://developer.android.com/codelabs/basic-android-kotlin-compose-navigation">Codelab điều hướng</a>
+  nếu muốn thực hành thêm việc truyền tham số giữa các màn hình.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0002-component-variant-enum-when.html">← Bài 2</a>
+    <a href="../reference/html-css-to-compose-cheatsheet.html">Cheat sheet →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

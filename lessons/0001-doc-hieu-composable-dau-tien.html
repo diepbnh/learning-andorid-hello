@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 1 · Đọc hiểu Composable đầu tiên</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 1 / Mission: Jetpack Compose UI cho Designer</div>
+  <h1>Đọc hiểu Composable đầu tiên — rồi tự tay sửa nó</h1>
+  <p>
+  Mục tiêu của bài này không phải "hiểu hết Compose" — mà là làm được đúng một việc:
+  <strong>chạy app thật trên máy/emulator, tìm đúng dòng code, sửa một chỗ, và thấy nó thay đổi.</strong>
+  Đó chính là vòng lặp "code &amp; debug UI" mà bạn sẽ dùng mỗi ngày sau khóa học này.
+  </p>
+
+  <h2>1. Composable = một "component" web, không phải một trang</h2>
+  <p>
+  Trong project <code>hello</code> của bạn, đây là component nút bấm đã có sẵn ở
+  <code>app/src/main/java/com/example/hello/ui/components/button/AppButton.kt</code>:
+  </p>
+  <div class="compare">
+    <div>
+      <span class="label">Tư duy web (giả định)</span>
+      <pre><code>function AppButton({ text, onClick, bg }) {
+  return (
+    &lt;button
+      style={{ background: bg }}
+      onClick={onClick}
+    &gt;
+      {text}
+    &lt;/button&gt;
+  );
+}</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose thực tế (AppButton.kt)</span>
+      <pre><code>@Composable
+fun AppButton(
+    text: String,
+    onClick: () -&gt; Unit,
+    backgroundColor: Color = colors.danger,
+) {
+    Button(
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = backgroundColor
+        )
+    ) {
+        Text(text = text)
+    }
+}</code></pre>
+    </div>
+  </div>
+  <p>
+  Giống nhau ở điểm mấu chốt: <strong>một hàm nhận tham số (props), và "vẽ ra" UI bên trong nó.</strong>
+  Khác biệt: hàm Compose có <code>@Composable</code> phía trên — đó là dấu hiệu báo cho Compose biết
+  "hàm này vẽ UI, hãy theo dõi nó để tự vẽ lại khi dữ liệu đổi".
+  </p>
+  <div class="sidenote">
+  Text/Button/Column... cũng là composable — do Google viết sẵn. <code>AppButton</code> là composable
+  do project của bạn viết, gọi lại các composable có sẵn đó bên trong.
+  </div>
+
+  <h2>2. Modifier = chuỗi CSS, không phải một thuộc tính</h2>
+  <p>Trong <code>AppButton.kt</code>, dòng này:</p>
+  <pre><code>modifier.height(60.dp).widthIn(min = 200.dp)</code></pre>
+  <p>
+  đọc giống hệt việc viết <code>class="h-60 min-w-200"</code> — mỗi lời gọi hàm nối thêm một mảnh style,
+  và thứ tự nối <em>có ảnh hưởng</em> (giống thứ tự class trong CSS cascade).
+  Xem thêm bảng đối chiếu đầy đủ ở <a href="../reference/html-css-to-compose-cheatsheet.html">reference cheat sheet</a>.
+  </p>
+
+  <h2>3. Bây giờ: chạy app và tự tay sửa một chỗ</h2>
+  <p>Mở project <code>hello</code> trong Android Studio, rồi làm theo các bước sau:</p>
+  <ol>
+    <li>Bấm nút <strong>Run ▶</strong> (hoặc <code>Shift+F10</code>) để build và chạy app lên emulator/thiết bị thật. Bạn sẽ thấy <em>Login Page</em> hiện ra.</li>
+    <li>Mở file <code>LoginPage.kt</code> (cùng thư mục <code>com.example.hello</code>).</li>
+    <li>Tìm dòng <code>text = "Login Page"</code>. Đổi thành một câu bất kỳ, ví dụ <code>"Chào bạn"</code>.</li>
+    <li>Tìm dòng <code>color = Color(0xFF1a75cf)</code> ngay bên dưới — đổi mã màu hex thành một màu khác, ví dụ <code>0xFFE91E63</code>.</li>
+    <li>Chạy lại (hoặc dùng <strong>Apply Changes</strong> ⚡ nếu app đang chạy) và quan sát: chữ và màu đổi ngay trên màn hình app.</li>
+  </ol>
+  <p>
+  Nếu app không build được: đọc kỹ dòng đỏ trong tab <strong>Build</strong> ở dưới Android Studio — nó luôn chỉ đúng
+  số dòng và lý do lỗi (thường là thiếu dấu ngoặc hoặc dấu phẩy). Đây chính là kỹ năng "debug UI" — đọc lỗi, sửa, chạy lại.
+  </p>
+  <div class="callout ask">
+  <p><strong>Nếu bị kẹt ở bước nào</strong> — app không chạy, không tìm thấy dòng code, hoặc lỗi lạ hiện ra —
+  hỏi ngay agent (Claude) đang dạy bạn khóa này. Dán nguyên thông báo lỗi vào, đừng tự đoán.</p>
+  </div>
+
+  <h2>4. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. @Composable function trong Compose tương ứng với gì trong tư duy web?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — một thẻ đơn lẻ không nhận props và không tái sử dụng logic như composable.">Một tag HTML</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — class CSS chỉ mang style, không mang cấu trúc hay logic.">Một class CSS</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng — composable là một component tái sử dụng, nhận tham số (props) và vẽ ra UI, giống component web.">Một component web</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — file ảnh không có logic hay tham số.">Một file ảnh</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Modifier trong Compose đóng vai trò giống với gì bên CSS?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — thẻ body không mô tả style của riêng một phần tử.">Giống tag body</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng — Modifier là một chuỗi nối tiếp các hàm, giống việc gộp nhiều class/style vào một phần tử.">Giống chuỗi style</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — một file HTML là cả một trang, không phải style của một phần tử.">Giống file HTML</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — thẻ meta nằm trong head, không style phần tử hiển thị.">Giống thẻ meta</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. Row { } trong Compose gần giống với khai báo CSS nào?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — đó là Column, xếp phần tử theo chiều dọc.">display: flex column</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng — Row xếp các phần tử con theo chiều ngang, giống flex-direction: row.">display: flex row</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — đó gần với Box, cho phép chồng phần tử lên nhau.">position: absolute fixed</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng — thuộc tính này không liên quan tới cách xếp các phần tử con.">overflow: hidden scroll</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc/xem thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/mental-model">Thinking in Compose</a> —
+  giải thích vì sao Compose "vẽ lại toàn bộ" thay vì cập nhật từng phần như DOM, và
+  <a href="https://developer.android.com/codelabs/jetpack-compose-basics">Jetpack Compose basics codelab</a>
+  nếu muốn thực hành thêm ngoài bài này.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="../reference/html-css-to-compose-cheatsheet.html">Xem cheat sheet đầy đủ →</a>
+    <a href="0002-component-variant-enum-when.html">Bài 2 →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
