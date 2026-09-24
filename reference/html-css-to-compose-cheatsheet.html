@@ -129,6 +129,26 @@
     </tr>
   </table>
 
+  <h2>Điều hướng</h2>
+  <table>
+    <tr><th>Web</th><th>Compose</th><th>Ghi chú</th></tr>
+    <tr>
+      <td><code>&lt;Route path="/sign-up" ... /&gt;</code></td>
+      <td><code>composable("sign_up") { SignUpPage(...) }</code></td>
+      <td>Khai báo route trong <code>NavHost</code> (<code>MainActivity.kt</code>) trước khi điều hướng tới.</td>
+    </tr>
+    <tr>
+      <td><code>history.pushState</code> / bấm link</td>
+      <td><code>navController.navigate("sign_up")</code></td>
+      <td>Đẩy thêm một màn mới lên back stack.</td>
+    </tr>
+    <tr>
+      <td><code>history.back()</code></td>
+      <td><code>navController.popBackStack()</code></td>
+      <td>Quay lại màn trước. Đừng dùng <code>navigate("login")</code> để "quay lại", vì như vậy chỉ chồng thêm màn.</td>
+    </tr>
+  </table>
+
   <h2>Cú pháp Kotlin tối thiểu cần biết</h2>
   <table>
     <tr><th>Kotlin</th><th>Ý nghĩa</th></tr>
@@ -136,6 +156,8 @@
     <tr><td><code>var name = "..."</code></td><td>Khai báo giá trị <strong>có thể đổi</strong> (giống <code>let</code>).</td></tr>
     <tr><td><code>fun ten(a: Int): String { ... }</code></td><td>Khai báo hàm: tên, tham số có kiểu, kiểu trả về.</td></tr>
     <tr><td><code>{ ... }</code> ở cuối lời gọi hàm</td><td>Trailing lambda — một hàm "con" truyền vào, ví dụ nội dung bên trong <code>Column { }</code>.</td></tr>
+    <tr><td><code>x = if (a) B else C</code></td><td><code>if</code> cho ra một giá trị, giống Boolean property trong Figma chọn giữa 2 kết quả. Bắt buộc có <code>else</code>.</td></tr>
+    <tr><td><code>fun F(label: String, isPassword: Boolean = false)</code></td><td>Tham số có <code>= ...</code> là tùy chọn. Tham số không có mặc định là bắt buộc (ví dụ <code>value</code>).</td></tr>
   </table>
 
   <h2>Variant (nhiều lựa chọn style cố định)</h2>
@@ -165,7 +187,8 @@
 
   <div class="lesson-nav">
     <a href="../lessons/0002-component-variant-enum-when.html">← Bài 2</a>
-    <a href="../lessons/0003-tu-dung-man-hinh-moi.html">Bài 3 →</a>
+    <a href="../lessons/0003-tu-dung-man-hinh-moi.html">Bài 3</a>
+    <a href="../lessons/0004-tach-component-app-form-field.html">Bài 4 →</a>
   </div>
 </div>
 </body>

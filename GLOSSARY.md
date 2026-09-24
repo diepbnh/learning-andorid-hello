@@ -24,6 +24,10 @@ _Avoid_: component riêng, widget custom
 Một `enum class` khai báo constructor, để mỗi case mang sẵn dữ liệu riêng (ví dụ `Small(height = 30.dp, fontSize = 12.sp)`) — dùng khi mỗi lựa chọn cần nhiều giá trị liên quan cùng lúc. Cách này gọn hơn `when` khi việc map không phụ thuộc gì bên ngoài enum. Xem [[0003-parameterized-enum-transfer-from-primary-source]].
 _Avoid_: enum có data, enum nâng cao
 
+**Route**:
+Một "địa chỉ" dạng chuỗi (ví dụ `"sign_up"`) khai báo bằng `composable("...") { ... }` trong `NavHost`, để `navController` điều hướng tới một màn hình. Tương đương một path URL trên web.
+_Avoid_: đường dẫn màn hình, link trang
+
 ## Ghi chú
 
 - Chỉ thêm thuật ngữ vào đây **sau khi** người học đã áp dụng đúng nó trong code thật (xem [[0002-applies-theme-tokens-and-reuses-components]]), không thêm chỉ vì mới được giới thiệu trong lesson.

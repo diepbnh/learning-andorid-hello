@@ -1,6 +1,8 @@
 package com.example.hello
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -48,6 +50,22 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                 style = titleXLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                text = "Back",
+                style = titleMedium,
+                modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                    .background(colors.primary)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null // bỏ hiệu ứng ripple khi nhấn
+                    ) {
+                        navController.popBackStack()//hàm back trở về màn hình trước đó
+                    }
+                    .padding(25.dp, 10.dp)
+            )
+
             Spacer(
                 modifier = Modifier.height(25.dp)
             )

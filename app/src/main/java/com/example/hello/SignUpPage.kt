@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import  androidx.compose.foundation.clickable
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 
 @Composable
 fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
@@ -47,48 +48,30 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
             )
 
             Spacer(modifier = Modifier.height(25.dp))
-            Text(
-                text = "User Name:",
-                fontWeight = FontWeight.Medium,
-                modifier=Modifier.padding(bottom = 10.dp)
-
-            )
-            AppTextField(
+            //sử dụng AppFormField để hiển thị textfield
+            AppFormField(
+                label = "User Name:",
                 value = username.value,
                 onValueChange = { username.value = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = "Enter username"
-            )
-            Spacer(modifier = Modifier.height(25.dp))
-            Text(
-                text = "Password:",
-                fontWeight = FontWeight.Medium,
-                modifier=Modifier.padding(bottom = 10.dp)
+                placeholder = "Enter Username.....",
 
             )
-            AppTextField(
+            AppFormField(
+                label = "Password:",
                 value = password.value,
                 onValueChange = { password.value = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = "Enter password",
-                visualTransformation = PasswordVisualTransformation()
-
+                placeholder = "Enter password.....",
+                isPassword = true,
             )
-            Spacer(modifier = Modifier.height(25.dp))
-            Text(
-                text = "Confirm Password:",
-                fontWeight = FontWeight.Medium,
-                modifier=Modifier.padding(bottom = 10.dp)
 
-            )
-            AppTextField(
+            AppFormField(
+                label = "Confirm Password:",
                 value = confirmPassword.value,
                 onValueChange = { confirmPassword.value = it },
-                modifier = Modifier.fillMaxWidth(),
-                placeholder = "Enter Confirm Password",
-                visualTransformation = PasswordVisualTransformation()
+                placeholder = "Enter password.....",
+                isPassword = true,
             )
-            Spacer(modifier = Modifier.height(25.dp))
+
             AppButton(
                 text = "Sign up",
                 onClick = {},
@@ -96,14 +79,14 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
             )
             Spacer(modifier= Modifier.height(10.dp))
             Text(
-                text = "Login",
+                text = "Back",
                 fontWeight = FontWeight.Medium,
                 color=colors.primary,
+                textDecoration = TextDecoration.Underline,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(bottom = 10.dp)
                     .clickable {
-                        navController.navigate("login")
+                        navController.popBackStack()//hàm back trở về màn hình trước đó
                     }
                 ,
             )

@@ -37,7 +37,7 @@ fun appTextFieldBorderColor(
 @Composable
 fun AppTextField(
     modifier: Modifier=Modifier,
-    value:String = "",
+    value:String,
     onValueChange:(String)->Unit,
     placeholder: String ="",
     isError:Boolean=false,

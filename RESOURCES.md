@@ -23,6 +23,13 @@
 - [Navigate between screens with Compose — Codelab](https://developer.android.com/codelabs/basic-android-kotlin-compose-navigation)
   Thực hành thêm route mới, truyền tham số giữa các màn hình. Dùng cho: Lesson 3, nếu muốn thực hành thêm ngoài bài học.
 
+- [Compose component API guidelines — AndroidX](https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/docs/compose-component-api-guidelines.md)
+  Hướng dẫn chính thức của team Compose về thiết kế API component: thứ tự tham số, `modifier`, giá trị mặc định. Dùng cho: Lesson 4 (tách `AppFormField`) và các bài đóng gói thư viện component.
+- [Back stack — Android Developers](https://developer.android.com/guide/navigation/backstack)
+  Giải thích `navigate` đẩy màn lên stack và `popBackStack` quay lại. Dùng cho: Lesson 4 (sửa link "Login").
+- [Control flow: if expression — kotlinlang.org](https://kotlinlang.org/docs/control-flow.html#if-expression)
+  `if` dùng như biểu thức trả về giá trị. Dùng cho: Lesson 4 (`isPassword`).
+
 ## Wisdom (Communities)
 
 - [r/androiddev](https://reddit.com/r/androiddev)

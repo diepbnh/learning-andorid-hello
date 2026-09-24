@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 4 · Tách code lặp thành component — AppFormField</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 4 / Mission: Jetpack Compose UI cho Designer</div>
+  <h1>Tách code lặp thành component của riêng bạn — AppFormField</h1>
+
+  <div class="callout">
+  <p><strong>Bài 3: xong, build thành công.</strong> Không chỉ dựng được <code>SignUpPage</code>, bạn còn tự
+  <strong>thêm tham số mới</strong> <code>visualTransformation</code> cho <code>AppTextField</code> để ẩn mật khẩu,
+  có giá trị mặc định nên các chỗ gọi cũ không bị hỏng. Đây là bước từ <em>dùng</em> component sang
+  <em>thiết kế</em> component. Bạn còn tự làm <code>TemplatePage</code>, một trang trưng bày component
+  (giống một trang component trong Figma). Bài này sẽ dùng tiếp trang đó.</p>
+  </div>
+
+  <h2>0. Sửa nhanh hai điểm từ bài 3</h2>
+  <p><strong>a) Quay lại Login.</strong> <code>navController.navigate("login")</code> <em>đẩy thêm</em> một màn Login mới
+  lên trên cùng, nên bấm nút Back của máy sẽ quay lại Sign Up. Muốn "quay lại" thật sự thì <em>lấy màn hiện tại ra</em>:
+  </p>
+  <div class="compare">
+    <div>
+      <span class="label">Tư duy web</span>
+      <pre><code>history.pushState(...) // đi tới
+history.back()         // quay lại</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>navController.navigate("sign_up")
+navController.popBackStack()</code></pre>
+    </div>
+  </div>
+  <p>Đổi dòng <code>navigate("login")</code> trong <code>SignUpPage.kt</code> (và cả trong <code>ResetPasswordPage.kt</code>)
+  thành <code>navController.popBackStack()</code>
+  (<a href="https://developer.android.com/guide/navigation/backstack">Back stack — Android Developers</a>).</p>
+
+  <p><strong>b) <code>value</code> không nên có giá trị mặc định.</strong> Trong <code>AppTextField</code> bạn viết
+  <code>value: String = ""</code>. Nếu sau này quên truyền <code>value</code>, app vẫn build được nhưng gõ vào
+  không hiện chữ, một lỗi rất khó tìm. Bỏ <code>= ""</code> đi thì Kotlin sẽ <em>bắt buộc</em> nơi gọi phải truyền
+  <code>value</code>, và báo lỗi ngay khi build nếu quên.</p>
+
+  <h2>1. Vấn đề: một khối code lặp 3 lần</h2>
+  <p>Trong <code>SignUpPage.kt</code>, khối này xuất hiện 3 lần, chỉ khác chữ:</p>
+  <pre><code>Text(text = "Password:", fontWeight = FontWeight.Medium,
+     modifier = Modifier.padding(bottom = 10.dp))
+AppTextField(value = ..., onValueChange = ..., placeholder = "...",
+             visualTransformation = PasswordVisualTransformation())</code></pre>
+  <p>Với Designer, đây là lúc bạn sẽ <strong>tạo component trong Figma</strong>: gom label và ô nhập thành một
+  "Form field", những chỗ khác nhau (chữ label, có ẩn ký tự không) trở thành <em>property</em>.
+  Trong Compose thì property chính là <strong>tham số</strong> của một <strong>Custom Composable Component</strong>.</p>
+
+  <h2>2. Khái niệm mới: <code>if … else</code> cho ra một giá trị</h2>
+  <p>Bạn muốn một property kiểu bật/tắt (giống Boolean property trong Figma): <code>isPassword</code>.
+  Nhưng <code>AppTextField</code> không nhận <code>true/false</code>, nó cần một <code>VisualTransformation</code>.
+  Trong Kotlin, <code>if … else</code> có thể <em>trả về một giá trị</em> để gán thẳng vào tham số:</p>
+  <pre><code>visualTransformation = if (isPassword) PasswordVisualTransformation()
+                       else VisualTransformation.None</code></pre>
+  <p>Đọc là: "nếu <code>isPassword</code> đúng thì dùng kiểu ẩn ký tự, còn không thì để nguyên". Khi dùng
+  <code>if</code> như một giá trị thì <strong>bắt buộc phải có <code>else</code></strong>, vì trường hợp nào cũng phải
+  ra một kết quả
+  (<a href="https://kotlinlang.org/docs/control-flow.html#if-expression">If expression — kotlinlang.org</a>).</p>
+
+  <h2>3. Nhiệm vụ</h2>
+  <p><strong>Bước 1.</strong> Tạo file <code>ui/components/textfield/AppFormField.kt</code>. Phần khung đã có sẵn,
+  bạn chỉ cần viết phần thân:</p>
+  <pre><code>@Composable
+fun AppFormField(
+    label: String,
+    value: String,
+    onValueChange: (String) -&gt; Unit,
+    modifier: Modifier = Modifier,
+    placeholder: String = "",
+    isPassword: Boolean = false,
+) {
+    Column(modifier = modifier) {
+        // 1. Text hiển thị label (copy style từ SignUpPage)
+        // 2. AppTextField: truyền value, onValueChange, placeholder,
+        //    visualTransformation = if (isPassword) ... else ...
+    }
+}</code></pre>
+  <p>Vì sao có tham số <code>modifier</code>? Để nơi gọi tự quyết định kích thước và khoảng cách của component,
+  giống việc đặt constraint cho một instance trong Figma. Đây là quy ước chính thức cho mọi component Compose
+  (<a href="https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/docs/compose-component-api-guidelines.md">Compose component API guidelines</a>).
+  Nhớ truyền <code>modifier</code> vào <code>Column</code>. Đừng dùng <code>Modifier</code> mới ở đó, nếu không thì
+  những gì nơi gọi truyền vào sẽ bị bỏ qua.</p>
+
+  <p><strong>Bước 2.</strong> Trong <code>SignUpPage.kt</code>, thay 3 khối lặp bằng 3 lời gọi, ví dụ:</p>
+  <pre><code>AppFormField(
+    label = "Password:",
+    value = password.value,
+    onValueChange = { password.value = it },
+    placeholder = "Enter password",
+    isPassword = true,
+)</code></pre>
+
+  <p><strong>Bước 3.</strong> Thêm một <code>AppFormField</code> vào <code>TemplatePage</code>. Từ giờ, mỗi component mới
+  đều "có mặt" trong trang trưng bày của bạn.</p>
+
+  <p><strong>Bước 4.</strong> Chạy <code>./gradlew compileDebugKotlin</code> rồi mở app xem thử. Giao diện Sign Up phải
+  <em>trông y như cũ</em>, chỉ có code là gọn hơn. Đó là dấu hiệu tách component đúng.</p>
+
+  <div class="callout ask">
+  <p>Kẹt ở đâu, ví dụ không biết <code>import</code> gì, hay build báo lỗi đỏ, thì cứ dán lỗi và hỏi agent.
+  Khi xong, báo "xong bài 4" để được review code.</p>
+  </div>
+
+  <h2>4. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Bấm "Login" ở SignUpPage để quay lại, nên gọi gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: navigate() đẩy thêm một Login mới lên back stack, bấm Back sẽ lại về Sign Up.">navController.navigate("login")</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: popBackStack() lấy màn hiện tại ra, giống history.back() trên web.">navController.popBackStack()</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: lệnh này đi tới chính màn Sign Up, không quay lại được.">navController.navigate("sign_up")</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: gọi LoginPage() chỉ vẽ nó ngay trong SignUpPage, không phải điều hướng.">LoginPage(navController = nav)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Với <code>if (isPassword) PasswordVisualTransformation() else VisualTransformation.None</code>, khi <code>isPassword = false</code> thì ô nhập trông thế nào?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: dấu chấm chỉ xuất hiện ở nhánh isPassword = true.">Hiện dấu chấm thay mọi chữ</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: đã có else nên build được bình thường.">Báo lỗi build không chạy được</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: nhánh else trả về VisualTransformation.None, tức là giữ nguyên chữ.">Hiện chữ bình thường khi gõ</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: VisualTransformation chỉ đổi cách hiển thị chữ, không ẩn cả ô nhập.">Ô nhập bị ẩn khỏi trang</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. (Ôn bài 2) Vì sao <code>AppButtonSize</code> khai báo <code>height</code> và <code>fontSize</code> ngay trong constructor thay vì dùng <code>when</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: enum không bắt buộc có constructor, AppButtonColor đâu có.">Kotlin luôn bắt buộc enum phải có constructor</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: mỗi case mang sẵn nhiều giá trị liên quan, nên không cần when để tra.">Mỗi cỡ nút mang sẵn nhiều giá trị</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: đổi theo theme cần đọc dữ liệu bên ngoài, đó là lúc dùng when.">Constructor giúp đổi màu theo theme sáng tối</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: when không làm app chậm, đây là chuyện code gọn và dễ đọc.">Dùng when sẽ làm app chạy rất chậm</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://android.googlesource.com/platform/frameworks/support/+/androidx-main/compose/docs/compose-component-api-guidelines.md">Compose component API guidelines</a>
+  là hướng dẫn của chính team Compose về cách thiết kế tham số cho component: thứ tự tham số, <code>modifier</code>,
+  giá trị mặc định. Bạn chỉ cần đọc phần <em>"Parameters"</em> và <em>"Modifier parameter"</em>. Đây là nền tảng khi
+  đóng gói thư viện component cho team.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0003-tu-dung-man-hinh-moi.html">← Bài 3</a>
+    <a href="../reference/html-css-to-compose-cheatsheet.html">Cheat sheet →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
