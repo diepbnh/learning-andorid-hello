@@ -1,5 +1,6 @@
 package com.example.hello
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import com.example.hello.ui.theme.*
 import androidx.compose.foundation.layout.fillMaxWidth
 import com.example.hello.ui.components.textfield.AppTextField
@@ -20,6 +20,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextDecoration
 import com.example.hello.ui.components.button.AppButton
 
 
@@ -28,11 +32,11 @@ fun ResetPasswordPage(modifier: Modifier = Modifier, navController: NavControlle
     var oldPassword by remember { mutableStateOf("") }
     var newPassword by remember { mutableStateOf("") }
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(32.dp),
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+       // horizontalAlignment = Alignment.Start
     )
     {
         Spacer(modifier = Modifier.height(65.dp))
@@ -40,27 +44,57 @@ fun ResetPasswordPage(modifier: Modifier = Modifier, navController: NavControlle
             text = "Reset Password",
             color = colors.primary,
             style = titleXLarge,
+            modifier = Modifier.align(Alignment.CenterHorizontally),
         )
         Spacer(modifier = Modifier.height(25.dp))
-        TextField(
-            value = "",
-            onValueChange = {},
-            label = { Text("Enter old password") },
+        Text(
+            text = "Old Password:",
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier
+                .padding(bottom = 10.dp),
+        )
+
+        AppTextField(
+            value = oldPassword,
+            onValueChange = { oldPassword = it },
             modifier = Modifier.fillMaxWidth(),
+            placeholder = "Old Password",
+            visualTransformation = PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.height(25.dp))
+        Text(
+            text = "New Password:",
+            fontWeight = FontWeight.Medium,
+            modifier = Modifier
+                .padding(bottom = 10.dp),
+
+        )
         AppTextField(
             value = newPassword,
             onValueChange = { newPassword = it },
             modifier = Modifier.fillMaxWidth(),
+            placeholder = "New Password",
+            visualTransformation = PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.height(25.dp))
+
         AppButton(
             text="Save",
             onClick = {},
-            backgroundColor=colors.danger
+            modifier = Modifier.align(Alignment.CenterHorizontally),
         )
-
+        Spacer(modifier = Modifier.height(15.dp))
+        Text(
+            text="Login",
+            color = colors.primary,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable {
+                    navController.navigate("login")
+                },
+            textDecoration = TextDecoration.Underline,
+        )
 
     }
 

@@ -106,6 +106,25 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
             )
             //khoản cach
             Spacer(
+                modifier = Modifier.height(15.dp)
+            )
+            Text(
+                text = "Sign Up",
+                textDecoration =TextDecoration.Underline,
+                fontWeight = FontWeight.Bold,
+                modifier= Modifier.clickable{navController.navigate(route = "sign_up")}
+            )
+            Spacer(
+                modifier = Modifier.height(15.dp)
+            )
+            Text(
+                text = "Template Page",
+                textDecoration =TextDecoration.Underline,
+                fontWeight = FontWeight.Bold,
+                modifier= Modifier.clickable{navController.navigate(route = "template")}
+            )
+
+            Spacer(
                 modifier = Modifier.height(25.dp)
             )
             // Light/Dark mode toggle buttons
@@ -127,15 +146,7 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
 
                 )
             }
-            Spacer(
-                modifier = Modifier.height(25.dp)
-            )
-            AppButton(
-                text = "Dark Mode",
-                onClick = {},
-                backgroundColor = colors.primary,
-                size = AppButtonSize.Large
-            )
+
         }
     }
 }
