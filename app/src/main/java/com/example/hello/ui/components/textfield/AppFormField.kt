@@ -1,4 +1,4 @@
-package com.example.hello
+package com.example.hello.ui.components.textfield
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,7 +10,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import com.example.hello.ui.components.textfield.AppTextField
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 

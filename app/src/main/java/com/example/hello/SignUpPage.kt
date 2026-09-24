@@ -11,8 +11,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import com.example.hello.ui.components.button.AppButton
-import com.example.hello.ui.components.textfield.AppTextField
-
 import com.example.hello.ui.theme.colors
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -23,8 +21,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import  androidx.compose.foundation.clickable
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
+import com.example.hello.ui.components.textfield.AppFormField
 
 @Composable
 fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
@@ -55,7 +53,7 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
                 onValueChange = { username.value = it },
                 placeholder = "Enter Username.....",
 
-            )
+                )
             AppFormField(
                 label = "Password:",
                 value = password.value,
@@ -90,7 +88,6 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
                     }
                 ,
             )
-
         }
     }
 
