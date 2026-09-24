@@ -30,6 +30,11 @@
 - [Control flow: if expression — kotlinlang.org](https://kotlinlang.org/docs/control-flow.html#if-expression)
   `if` dùng như biểu thức trả về giá trị. Dùng cho: Lesson 4 (`isPassword`).
 
+- [Booleans — kotlinlang.org](https://kotlinlang.org/docs/booleans.html)
+  Toán tử `&&`, `||`, `!` và giá trị `true`/`false`. Dùng cho: Lesson 5 (điều kiện Confirm Password không khớp).
+- [State and Jetpack Compose — Android Developers](https://developer.android.com/develop/ui/compose/state)
+  Vì sao UI tự vẽ lại khi State đổi (Recomposition), giá trị suy ra từ State. Dùng cho: Lesson 5, primary source.
+
 ## Wisdom (Communities)
 
 - [r/androiddev](https://reddit.com/r/androiddev)

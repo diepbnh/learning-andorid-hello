@@ -91,6 +91,9 @@ fun ResetPasswordPage(modifier: Modifier = Modifier, navController: NavControlle
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .clickable {
+                    // Cách 1: navigate("login") đẩy thêm một màn Login .
+                    // Bấm Back sẽ quay lại màn Reset Password này.
+                    // cách 2: sử dụng popBackStack() ể quay lại màn hình trước đó
                     navController.navigate("login")
                 },
             textDecoration = TextDecoration.Underline,

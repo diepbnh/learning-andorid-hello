@@ -52,8 +52,8 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
                 value = username.value,
                 onValueChange = { username.value = it },
                 placeholder = "Enter Username.....",
-
                 )
+            Spacer(modifier = Modifier.height(20.dp))
             AppFormField(
                 label = "Password:",
                 value = password.value,
@@ -61,7 +61,7 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
                 placeholder = "Enter password.....",
                 isPassword = true,
             )
-
+            Spacer(modifier = Modifier.height(20.dp))
             AppFormField(
                 label = "Confirm Password:",
                 value = confirmPassword.value,
@@ -69,7 +69,7 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
                 placeholder = "Enter password.....",
                 isPassword = true,
             )
-
+            Spacer(modifier = Modifier.height(20.dp))
             AppButton(
                 text = "Sign up",
                 onClick = {},

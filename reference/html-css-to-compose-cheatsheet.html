@@ -158,6 +158,10 @@
     <tr><td><code>{ ... }</code> ở cuối lời gọi hàm</td><td>Trailing lambda — một hàm "con" truyền vào, ví dụ nội dung bên trong <code>Column { }</code>.</td></tr>
     <tr><td><code>x = if (a) B else C</code></td><td><code>if</code> cho ra một giá trị, giống Boolean property trong Figma chọn giữa 2 kết quả. Bắt buộc có <code>else</code>.</td></tr>
     <tr><td><code>fun F(label: String, isPassword: Boolean = false)</code></td><td>Tham số có <code>= ...</code> là tùy chọn. Tham số không có mặc định là bắt buộc (ví dụ <code>value</code>).</td></tr>
+    <tr><td><code>a == b</code> / <code>a != b</code></td><td>So sánh bằng / khác, cho ra <code>true</code> hoặc <code>false</code>.</td></tr>
+    <tr><td><code>x &amp;&amp; y</code> / <code>x || y</code></td><td>"và" (cả hai đúng) / "hoặc" (một trong hai đúng).</td></tr>
+    <tr><td><code>if (isError) { Text(...) }</code></td><td><code>if</code> dạng câu lệnh: "nếu đúng thì vẽ". Không cần <code>else</code>. Khác với <code>if</code> dạng giá trị ở trên.</td></tr>
+    <tr><td><code>val isMismatch = a != b</code> (từ State)</td><td>Giá trị suy ra từ State tự tính lại mỗi lần Recomposition, không cần gọi hàm kiểm tra. Giống <code>:invalid</code> trong CSS nhưng điều kiện do bạn tự viết.</td></tr>
   </table>
 
   <h2>Variant (nhiều lựa chọn style cố định)</h2>
@@ -188,7 +192,8 @@
   <div class="lesson-nav">
     <a href="../lessons/0002-component-variant-enum-when.html">← Bài 2</a>
     <a href="../lessons/0003-tu-dung-man-hinh-moi.html">Bài 3</a>
-    <a href="../lessons/0004-tach-component-app-form-field.html">Bài 4 →</a>
+    <a href="../lessons/0004-tach-component-app-form-field.html">Bài 4</a>
+    <a href="../lessons/0005-bao-loi-confirm-password.html">Bài 5 →</a>
   </div>
 </div>
 </body>

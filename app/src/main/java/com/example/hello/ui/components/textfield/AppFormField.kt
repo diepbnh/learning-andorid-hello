@@ -38,6 +38,6 @@ fun AppFormField(
             placeholder = placeholder,
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None
         )
-         Spacer(modifier = Modifier.height(20.dp))
+
     }
 }

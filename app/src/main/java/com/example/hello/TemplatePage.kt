@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import com.example.hello.ui.components.button.AppButton
 import com.example.hello.ui.components.button.AppButtonSize
+import com.example.hello.ui.components.textfield.AppFormField
 
 @Composable
 fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
@@ -66,6 +67,16 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                     .padding(25.dp, 10.dp)
             )
 
+            Spacer(
+                modifier = Modifier.height(25.dp)
+            )
+            AppFormField(
+                label = "Label input",
+                value = "",
+                onValueChange = {  },
+                placeholder = "Enter input.....",
+                isPassword = false,
+            )
             Spacer(
                 modifier = Modifier.height(25.dp)
             )
