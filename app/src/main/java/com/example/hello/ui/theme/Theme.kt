@@ -22,7 +22,8 @@ import androidx.compose.ui.Modifier
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = colors.backgroundBody//màu nền body
+                    color = colors.backgroundBody,//màu nền body
+                    contentColor=colors.text// màu chữ mặc đinh app
                 ) {
                     content()
                 }

@@ -149,6 +149,18 @@
     </tr>
   </table>
 
+  <h2>Table</h2>
+  <table>
+    <tr><th>HTML/CSS</th><th>Compose</th><th>Ghi chú</th></tr>
+    <tr><td><code>&lt;table&gt;</code> / <code>&lt;tr&gt;</code> / <code>&lt;td&gt;</code></td><td><code>Column { Row { Text() } }</code></td><td>Không có thẻ table. Một Column chứa các Row, mỗi Row là một hàng.</td></tr>
+    <tr><td><code>grid-template-columns: 2fr 1fr 1fr</code></td><td><code>Modifier.weight(2f)</code>, <code>weight(1f)</code>, <code>weight(1f)</code></td><td>Mọi hàng phải dùng <strong>cùng bộ weight</strong> thì cột mới thẳng hàng.</td></tr>
+    <tr><td><code>border-radius</code> + <code>overflow: hidden</code> cho bảng</td><td><code>.clip(RoundedCornerShape(8.dp)).border(1.dp, colors.light, RoundedCornerShape(8.dp))</code></td><td><code>clip</code> đứng trước để nền header không tràn góc.</td></tr>
+    <tr><td><code>td { border: 1px solid }</code></td><td><code>.fillMaxHeight().border(0.5.dp, colors.light).padding(12.dp)</code></td><td>Viền 0.5dp mỗi ô, cộng lại thành 1dp. <code>border</code> đặt trước <code>padding</code>.</td></tr>
+    <tr><td><code>align-items: stretch</code> (ô cao bằng nhau)</td><td><code>Row(Modifier.height(IntrinsicSize.Min))</code> + <code>fillMaxHeight()</code> mỗi ô</td><td>Row của Compose không tự kéo giãn ô; thiếu dòng này viền dọc sẽ đứt khi có ô xuống dòng.</td></tr>
+    <tr><td><code>tr { border-bottom }</code> (chỉ kẻ ngang)</td><td><code>HorizontalDivider(color = colors.light)</code></td><td>Đặt giữa hai Row, khi không cần viền dọc.</td></tr>
+    <tr><td><code>text-align: right</code></td><td><code>textAlign = TextAlign.End</code></td><td>Dùng cho cột số, cột giá.</td></tr>
+  </table>
+
   <h2>Cú pháp Kotlin tối thiểu cần biết</h2>
   <table>
     <tr><th>Kotlin</th><th>Ý nghĩa</th></tr>
@@ -193,7 +205,8 @@
     <a href="../lessons/0002-component-variant-enum-when.html">← Bài 2</a>
     <a href="../lessons/0003-tu-dung-man-hinh-moi.html">Bài 3</a>
     <a href="../lessons/0004-tach-component-app-form-field.html">Bài 4</a>
-    <a href="../lessons/0005-bao-loi-confirm-password.html">Bài 5 →</a>
+    <a href="../lessons/0005-bao-loi-confirm-password.html">Bài 5</a>
+    <a href="../lessons/0006-ve-table-ui.html">Bài 6 →</a>
   </div>
 </div>
 </body>

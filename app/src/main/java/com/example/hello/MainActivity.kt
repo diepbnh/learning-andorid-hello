@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             HelloTheme {
                 val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "login") {
+                NavHost(navController = navController, startDestination = "table") {
                     //dieu hương route
                     composable("login") {
                         LoginPage(modifier = Modifier.fillMaxSize(), navController = navController)
@@ -40,6 +40,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(route = "template") {
                         TemplatePage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
+                    composable(route = "table") {
+                        TablePage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
                 }
             }

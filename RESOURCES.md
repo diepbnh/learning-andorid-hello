@@ -35,6 +35,14 @@
 - [State and Jetpack Compose — Android Developers](https://developer.android.com/develop/ui/compose/state)
   Vì sao UI tự vẽ lại khi State đổi (Recomposition), giá trị suy ra từ State. Dùng cho: Lesson 5, primary source.
 
+- [Compose modifiers — Android Developers](https://developer.android.com/develop/ui/compose/modifiers)
+  Mục "Order of modifiers matters" và `weight` trong Row/Column. Dùng cho: Lesson 6 (vẽ table), primary source.
+- [Compose layout basics — Android Developers](https://developer.android.com/develop/ui/compose/layouts/basics)
+  Row/Column/Box cơ bản. Dùng cho: Lesson 6, ôn lại cấu trúc hàng/cột.
+
+- [Intrinsic measurements — Android Developers](https://developer.android.com/develop/ui/compose/layouts/intrinsic-measurements)
+  `IntrinsicSize.Min` để các con trong Row cao bằng nhau (ví dụ chính thức dùng đúng cho Divider dọc). Dùng cho: Lesson 6 (viền ô table).
+
 ## Wisdom (Communities)
 
 - [r/androiddev](https://reddit.com/r/androiddev)

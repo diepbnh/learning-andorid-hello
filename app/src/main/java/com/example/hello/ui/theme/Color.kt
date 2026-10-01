@@ -5,6 +5,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.runtime.Composable
 
 
+
 // ============================================================
 // 1. COLOR SCHEME
 // ============================================================
@@ -17,6 +18,7 @@ private object LightMode{
     val text= Color(0xFF2f3134)//màu text
     val backgroundBody= Color(0xFFeff5ff) // màu nền body
     val white= Color(0xFFFFFFFF)
+   val backgroundTextField= Color(0xFFFFFFFF)//// màu nền TextField
 
 }
 
@@ -29,6 +31,7 @@ private object DarkMode{
     val text= Color(0xFFffffff)//màu text
     val backgroundBody= Color(0xFF12141A) // màu nền body
     val white= Color(0xFFFFFFFF)
+    val backgroundTextField= Color(0xFF000000)
 
 }
 // ============================================================
@@ -42,6 +45,7 @@ data class AppColors(
     val text: Color,
     val backgroundBody: Color,
     val white: Color,
+    val backgroundTextField: Color,
 )
 // ============================================================
 // 3. LIGHT AND DARK APP COLORs
@@ -54,6 +58,7 @@ val LightAppColors=AppColors(
     text = LightMode.text,
     backgroundBody = LightMode.backgroundBody,
     white= LightMode.white,
+    backgroundTextField = LightMode.backgroundTextField,
 )
 val DarkAppColors=AppColors(
     primary = DarkMode.primary,
@@ -63,6 +68,7 @@ val DarkAppColors=AppColors(
     text = DarkMode.text,
     backgroundBody = DarkMode.backgroundBody,
     white= DarkMode.white,
+    backgroundTextField = DarkMode.backgroundTextField
 )
 
 // ============================================================

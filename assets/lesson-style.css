@@ -192,3 +192,45 @@ pre code { background: none; padding: 0; }
   .quiz button.opt { cursor: default; }
   a { text-decoration: none; color: var(--ink); }
 }
+
+/* ---------- Mockup: hình minh họa "kết quả mong đợi" của bài tập ----------
+   Khung điện thoại vẽ bằng HTML/CSS, dùng màu theme của app (Color.kt).
+   Cách dùng:
+     <div class="mockup-row">
+       <figure class="mockup">            (thêm class "dark" cho Dark Mode)
+         <div class="phone"> ...UI... </div>
+         <figcaption>Light Mode</figcaption>
+       </figure>
+     </div>
+   Các khối UI dựng sẵn: .m-title, .m-link, .m-table (.m-tr, .m-td, .num, .zebra; --cols) */
+.mockup-row { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; margin: 1.5rem 0; }
+.mockup { margin: 0; text-align: center; }
+.mockup figcaption { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 0.75rem; color: var(--ink-soft); margin-top: 0.5rem; }
+.mockup {
+  --app-primary: #1a75cf; --app-light: #dfe4e8; --app-text: #2f3134;
+  --app-bg: #eff5ff; --app-white: #ffffff; --app-danger: #ec5b5b;
+}
+.mockup.dark {
+  --app-primary: #6b74f5; --app-light: #22262c; --app-text: #ffffff;
+  --app-bg: #12141A; --app-white: #ffffff; --app-danger: #f28b8b;
+}
+.mockup .phone {
+  width: 280px; min-height: 420px; padding: 28px 18px 18px;
+  background: var(--app-bg); color: var(--app-text);
+  border: 8px solid #1a1a1a; border-radius: 28px;
+  font-family: Roboto, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 12px; line-height: 1.3; text-align: left;
+  print-color-adjust: exact; -webkit-print-color-adjust: exact;
+}
+.m-title { color: var(--app-primary); font-size: 18px; font-weight: 500; text-align: center; margin: 12px 0 16px; }
+.m-link { color: var(--app-primary); font-weight: 600; text-decoration: underline; text-align: center; margin-top: 14px; }
+.m-table { border: 1px solid var(--app-light); border-radius: 8px; overflow: hidden; }
+/* Mỗi hàng là một grid với cùng bộ cột (giống cùng bộ weight trong Compose), nên cột luôn thẳng hàng.
+   Đổi tỉ lệ cột bằng style="--cols: 1fr 1fr" trên .m-table. */
+.m-tr { display: grid; grid-template-columns: var(--cols, 2fr 1fr 1fr); }
+.m-tr:first-child { background: var(--app-primary); color: var(--app-white); font-weight: 700; }
+.m-tr.zebra { background: color-mix(in srgb, var(--app-light) 40%, transparent); }
+.m-td { padding: 8px; min-width: 0; overflow-wrap: anywhere; border: 0.5px solid var(--app-light); }
+.m-td.num { text-align: right; }
+.mockup-note { font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; font-size: 0.8rem; color: var(--ink-soft); }

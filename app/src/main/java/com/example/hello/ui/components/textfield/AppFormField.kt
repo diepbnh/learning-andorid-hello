@@ -10,8 +10,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.ui.unit.sp
+import com.example.hello.ui.theme.colors
+
 
 @Composable
 fun AppFormField(
@@ -21,6 +22,8 @@ fun AppFormField(
     modifier: Modifier = Modifier,
     placeholder: String = "",
     isPassword: Boolean = false,
+    isError: Boolean = false,
+    errorMessage:String="",
 ) {
     Column(modifier = modifier){
         // 1. Text hiển thị label (copy style từ SignUpPage)
@@ -36,8 +39,23 @@ fun AppFormField(
             onValueChange = onValueChange,
             modifier = Modifier.fillMaxWidth(),
             placeholder = placeholder,
-            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None
+            isError = isError,
+            visualTransformation =
+                if (isPassword)
+                    PasswordVisualTransformation() //hiển thị biểu tượng password
+                else
+                    VisualTransformation.None
         )
+        if(isError && errorMessage.isNotEmpty())
+        {
+            Text(
+                text=errorMessage,
+                color=colors.danger,
+                fontSize = 12.sp,
+                modifier=Modifier.padding(start = 4.dp, top = 4.dp)
+            )
+
+        }
 
     }
 }

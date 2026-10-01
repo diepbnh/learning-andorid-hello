@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 6 · Vẽ Table bằng Row và Column</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 6 / Mission: Jetpack Compose UI cho Designer</div>
+  <h1>Vẽ Table: chỉ làm UI, dữ liệu viết sẵn</h1>
+
+  <div class="callout">
+  <p><strong>Phạm vi bài này:</strong> chỉ dựng <em>giao diện</em> của một bảng, với nội dung gõ thẳng vào code.
+  Việc lấy dữ liệu từ danh sách để tự sinh ra các hàng sẽ học ở bài sau. Những gì bạn đã có sẵn:
+  <code>Row</code>/<code>Column</code>, theme token, một component nhận <code>modifier</code> (bài 4), và
+  <code>if … else</code> cho ra giá trị (bài 4).</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Bảng 3 cột × 4 hàng (1 hàng tiêu đề + 3 hàng dữ liệu). Nội dung chữ là dữ liệu mẫu, bạn có thể đổi tùy ý.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone">
+        <div class="m-title">Table Page</div>
+        <div class="m-table">
+          <div class="m-tr"><div class="m-td">Sản phẩm</div><div class="m-td num">SL</div><div class="m-td num">Giá</div></div>
+          <div class="m-tr"><div class="m-td">Áo thun</div><div class="m-td num">2</div><div class="m-td num">150k</div></div>
+          <div class="m-tr zebra"><div class="m-td">Quần jean</div><div class="m-td num">1</div><div class="m-td num">420k</div></div>
+          <div class="m-tr"><div class="m-td">Mũ lưỡi trai</div><div class="m-td num">3</div><div class="m-td num">90k</div></div>
+        </div>
+        <div class="m-link">Back</div>
+      </div>
+      <figcaption>Light Mode</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone">
+        <div class="m-title">Table Page</div>
+        <div class="m-table">
+          <div class="m-tr"><div class="m-td">Sản phẩm</div><div class="m-td num">SL</div><div class="m-td num">Giá</div></div>
+          <div class="m-tr"><div class="m-td">Áo thun</div><div class="m-td num">2</div><div class="m-td num">150k</div></div>
+          <div class="m-tr zebra"><div class="m-td">Quần jean</div><div class="m-td num">1</div><div class="m-td num">420k</div></div>
+          <div class="m-tr"><div class="m-td">Mũ lưỡi trai</div><div class="m-td num">3</div><div class="m-td num">90k</div></div>
+        </div>
+        <div class="m-link">Back</div>
+      </div>
+      <figcaption>Dark Mode</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh với app của bạn: cột "Sản phẩm" rộng gấp đôi hai cột còn lại (weight 2f / 1f / 1f).
+  Hai cột số căn phải. Hàng tiêu đề nền <code>colors.primary</code> chữ trắng. Hàng thứ 2 nền nhạt (zebra).
+  <strong>Mỗi ô có viền</strong>, nên các đường kẻ dọc và ngang tạo thành lưới liền mạch. Các ô trong một hàng cao bằng
+  nhau. Bảng có viền ngoài và bo góc 8dp. Hình vẽ bằng HTML/CSS nên có thể lệch vài pixel so với
+  Android, nhưng bố cục phải giống.</p>
+
+  <h2>1. Compose không có thẻ <code>&lt;table&gt;</code></h2>
+  <p>Trong Compose, bảng chỉ là <strong>một <code>Column</code> chứa nhiều <code>Row</code></strong>. Mỗi
+  <code>Row</code> là một hàng, mỗi <code>Text</code> trong hàng là một ô.</p>
+  <div class="compare">
+    <div>
+      <span class="label">HTML</span>
+      <pre><code>&lt;table&gt;
+  &lt;tr&gt;&lt;th&gt;Sản phẩm&lt;/th&gt;&lt;th&gt;SL&lt;/th&gt;&lt;/tr&gt;
+  &lt;tr&gt;&lt;td&gt;Áo thun&lt;/td&gt;&lt;td&gt;2&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Column {
+  Row { Text("Sản phẩm"); Text("SL") }
+  Row { Text("Áo thun");  Text("2")  }
+}</code></pre>
+    </div>
+  </div>
+  <p>Có một khác biệt quan trọng. <code>&lt;table&gt;</code> của trình duyệt <em>tự</em> canh các cột thẳng hàng với
+  nhau. Các <code>Row</code> trong Compose thì không biết gì về nhau, nên bạn phải tự làm cho cột thẳng hàng.</p>
+
+  <h2>2. Khái niệm mới: <code>Modifier.weight()</code>, giống đơn vị <code>fr</code> trong CSS Grid</h2>
+  <div class="compare">
+    <div>
+      <span class="label">CSS Grid</span>
+      <pre><code>grid-template-columns:
+  2fr 1fr 1fr;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Text(..., Modifier.weight(2f))
+Text(..., Modifier.weight(1f))
+Text(..., Modifier.weight(1f))</code></pre>
+    </div>
+  </div>
+  <p><code>weight</code> chia phần chiều ngang của <code>Row</code> theo tỉ lệ. Tổng là 2 + 1 + 1 = 4 phần, nên cột đầu
+  được 2/4, tức một nửa. Bạn đã dùng <code>weight(1f)</code> để chia đều 2 nút Light/Dark ở bài 1
+  (<a href="https://developer.android.com/develop/ui/compose/modifiers">Compose modifiers — Android Developers</a>).</p>
+  <p><strong>Bí quyết để cột thẳng hàng:</strong> <em>mọi</em> hàng đều dùng <em>cùng một bộ weight</em>
+  (ví dụ 2f / 1f / 1f). Chỉ cần một hàng dùng khác là cột sẽ lệch. Đây là "grid" mà bạn tự giữ kỷ luật, giống việc dùng
+  chung một layout grid cho mọi frame trong Figma.</p>
+
+  <h2>3. Style bảng: viền, nền header, đường kẻ</h2>
+  <table>
+    <tr><th>CSS</th><th>Compose</th></tr>
+    <tr><td><code>border: 1px solid; border-radius: 8px</code></td><td><code>Modifier.clip(RoundedCornerShape(8.dp)).border(1.dp, colors.light, RoundedCornerShape(8.dp))</code></td></tr>
+    <tr><td><code>thead { background: ... }</code></td><td><code>Row(Modifier.background(colors.primary))</code></td></tr>
+    <tr><td><code>td { padding: 12px }</code></td><td><code>Text(..., Modifier.weight(1f).padding(12.dp))</code></td></tr>
+    <tr><td><code>td { border: 1px solid }</code> (lưới cho mỗi ô)</td><td><code>Text(..., Modifier.weight(1f).fillMaxHeight().border(0.5.dp, colors.light).padding(12.dp))</code></td></tr>
+    <tr><td>các ô trong hàng tự cao bằng nhau (<code>align-items: stretch</code>)</td><td><code>Row(Modifier.height(IntrinsicSize.Min))</code> + <code>fillMaxHeight()</code> ở mỗi ô</td></tr>
+    <tr><td><code>text-align: right</code> (cột số)</td><td><code>Text(..., textAlign = TextAlign.End)</code></td></tr>
+    <tr><td><code>tr:nth-child(even) { background }</code></td><td><code>Row(Modifier.background(colors.light.copy(alpha = 0.4f)))</code> cho hàng chẵn, viết tay</td></tr>
+  </table>
+  <p><code>clip</code> cắt góc bo tròn để nền header không tràn ra ngoài góc, giống <code>overflow: hidden</code>.
+  Thứ tự trong chuỗi Modifier có ảnh hưởng: <code>clip</code> phải đứng trước.</p>
+  <p><strong>Viền cho mỗi ô.</strong> Mỗi ô vẽ viền 0.5dp của riêng nó. Hai ô cạnh nhau cộng lại thành một đường 1dp.
+  Trong chuỗi <code>.border(...).padding(12.dp)</code>, <code>border</code> đứng <em>trước</em> <code>padding</code> nên
+  viền nằm ở mép ngoài ô, còn padding là khoảng đệm bên trong viền, giống box model CSS. Đảo thứ tự thì viền sẽ bó sát
+  vào chữ.</p>
+  <p><strong>Vì sao cần <code>IntrinsicSize.Min</code>?</strong> Trong CSS flex, các ô trong một hàng tự kéo dài cho cao
+  bằng nhau (<code>align-items: stretch</code>). Trong <code>Row</code> của Compose thì <em>không</em>. Nếu một ô xuống
+  2 dòng, ô bên cạnh vẫn thấp và viền dọc sẽ bị đứt. <code>Row(Modifier.height(IntrinsicSize.Min))</code> nghĩa là
+  "hàng cao bằng ô cao nhất", còn <code>fillMaxHeight()</code> ở mỗi ô nghĩa là "kéo ô cho cao bằng hàng". Hai dòng này
+  luôn đi cùng nhau
+  (<a href="https://developer.android.com/develop/ui/compose/layouts/intrinsic-measurements">Intrinsic measurements — Android Developers</a>). Dùng <code>colors.light.copy(alpha = 0.4f)</code>
+  (màu light làm nhạt đi) thay vì <code>colors.white</code> để hàng chẵn vẫn đẹp khi bật Dark Mode.</p>
+
+  <h2>4. Nhiệm vụ</h2>
+  <p><strong>Bước 1: tạo trang mới.</strong> Tạo <code>TablePage.kt</code>, thêm route <code>"table"</code> vào
+  <code>NavHost</code>, rồi thêm một link từ <code>TemplatePage</code> đi tới trang này. Bạn đã làm việc này ở bài 3
+  (có thể dùng <code>popBackStack()</code> cho nút Back).</p>
+
+  <p><strong>Bước 2: khung bảng và hàng header.</strong> Đây là phần mẫu, đã được build thử và chạy được:</p>
+  <pre><code>Column(
+    modifier = Modifier
+        .fillMaxWidth()
+        .clip(RoundedCornerShape(8.dp))
+        .border(1.dp, colors.light, RoundedCornerShape(8.dp))
+) {
+    // Header
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(IntrinsicSize.Min)   // hàng cao bằng ô cao nhất
+            .background(colors.primary)
+    ) {
+        Text("Sản phẩm", color = colors.white, fontWeight = FontWeight.Bold,
+             modifier = Modifier.weight(2f).fillMaxHeight()
+                 .border(0.5.dp, colors.light).padding(12.dp))
+        Text("SL", color = colors.white, fontWeight = FontWeight.Bold, textAlign = TextAlign.End,
+             modifier = Modifier.weight(1f).fillMaxHeight()
+                 .border(0.5.dp, colors.light).padding(12.dp))
+        Text("Giá", color = colors.white, fontWeight = FontWeight.Bold, textAlign = TextAlign.End,
+             modifier = Modifier.weight(1f).fillMaxHeight()
+                 .border(0.5.dp, colors.light).padding(12.dp))
+    }
+    // Bước 3: các hàng dữ liệu viết ở đây
+}</code></pre>
+
+  <p><strong>Bước 3: tự viết 3 hàng dữ liệu.</strong> Nội dung do bạn chọn (ví dụ Áo thun / 2 / 150k). Mỗi
+  <code>Row</code> đều cần <code>.height(IntrinsicSize.Min)</code>, mỗi ô đều cần
+  <code>.fillMaxHeight().border(0.5.dp, colors.light).padding(12.dp)</code>. Dùng <code>color = colors.text</code> cho chữ,
+  và cho hàng thứ 2 có nền nhạt (zebra). Không cần <code>HorizontalDivider</code> nữa, vì viền ô đã tạo đường kẻ ngang.
+  Viết xong, bạn sẽ thấy chuỗi Modifier dài này lặp lại ở <em>mọi</em> ô.</p>
+
+  <p><strong>Bước 4: tách component <code>AppTableCell</code>.</strong> Đặt ở
+  <code>ui/components/table/AppTableCell.kt</code>. Vận dụng lại bài 4:</p>
+  <pre><code>@Composable
+fun AppTableCell(
+    text: String,
+    modifier: Modifier = Modifier,
+    isHeader: Boolean = false,
+    textAlign: TextAlign = TextAlign.Start,
+) {
+    Text(
+        text = text,
+        modifier = modifier
+            .fillMaxHeight()
+            .border(0.5.dp, colors.light)
+            .padding(12.dp),
+        // color: nếu isHeader thì colors.white, còn không thì colors.text
+        // fontWeight: nếu isHeader thì Bold, còn không thì Normal
+        textAlign = textAlign,
+    )
+}</code></pre>
+  <p>Khi gọi, <strong>nơi gọi truyền weight vào</strong>:
+  <code>AppTableCell("SL", Modifier.weight(1f), isHeader = true, textAlign = TextAlign.End)</code>.
+  Lý do: <code>weight</code> chỉ dùng được khi <em>trực tiếp</em> nằm trong một <code>Row</code>/<code>Column</code>,
+  và độ rộng cột là quyết định của bảng, không phải của từng ô. Nguyên tắc này giống bài 4: khoảng cách bên ngoài do
+  nơi gọi quyết định.</p>
+  <p>Lợi ích lớn nhất: chuỗi viền và padding giờ chỉ nằm ở <em>một</em> chỗ. Muốn đổi viền sang 1dp hay padding 8dp,
+  bạn chỉ sửa trong <code>AppTableCell</code>.</p>
+  <p>Sau đó, thay mọi <code>Text</code> trong bảng bằng <code>AppTableCell</code>. Bảng phải <em>trông y như cũ</em>.</p>
+
+  <p><strong>Bước 5: kiểm tra.</strong> Build, chạy thử, rồi chuyển qua lại Light/Dark Mode. Kiểm tra: các cột có
+  thẳng hàng không? Viền dọc có liền mạch không? Thử đổi "Mũ lưỡi trai" thành một tên thật dài để nó xuống 2 dòng:
+  các ô khác trong hàng đó phải cao theo. Hàng zebra có đẹp ở cả hai chế độ không?</p>
+
+  <div class="callout ask">
+  <p>Muốn thêm cột có badge màu (ví dụ "Còn hàng" nền xanh), hay bảng quá rộng cần cuộn ngang? Hãy hỏi agent,
+  cả hai đều làm được mà không cần dữ liệu động. Báo "xong bài 6" khi xong.</p>
+  </div>
+
+  <h2>5. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Một <code>Row</code> có 3 ô với weight lần lượt <code>2f</code>, <code>1f</code>, <code>1f</code>. Ô đầu tiên chiếm bao nhiêu?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: tổng là 4 phần, ô đầu có 2 phần, tức 2/4.">Hai phần ba chiều ngang của hàng</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: 2 / (2 + 1 + 1) = 1/2, giống 2fr trong grid 2fr 1fr 1fr.">Đúng một nửa chiều ngang của hàng</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: 1/4 là phần của mỗi ô 1f, không phải ô 2f.">Một phần tư chiều ngang của hàng</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: weight là tỉ lệ, không phải kích thước dp cố định.">Rộng cố định 2dp và không co giãn</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Vì sao các cột giữa các hàng thẳng hàng với nhau?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Compose không có table, các Row độc lập với nhau.">Compose tự canh cột như table</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Column chỉ xếp các hàng theo chiều dọc, không biết gì về cột.">Column tự chia đều mọi cột</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: cùng tỉ lệ weight thì mỗi ô ở cùng vị trí có cùng độ rộng, ở mọi hàng.">Mọi hàng dùng cùng bộ weight</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: HorizontalDivider chỉ là đường kẻ ngang giữa các hàng.">Nhờ HorizontalDivider giữ cột thẳng hàng</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. (Ôn bài 4) Vì sao <code>AppTableCell</code> nhận <code>modifier</code> từ bên ngoài, thay vì tự gọi <code>Modifier.weight()</code> bên trong?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: độ rộng cột là quyết định của bảng, và weight chỉ dùng được trực tiếp trong Row.">Để nơi gọi quyết định độ rộng</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Text nhận modifier bình thường, AppTableCell đang truyền nó xuống Text.">Vì Text không nhận được modifier</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: màu theo theme đến từ colors.xxx, không liên quan modifier.">Để ô tự đổi theo theme</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: weight dùng được trong cả Row lẫn Column.">Vì weight chỉ dùng trong Column</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/modifiers">Compose modifiers</a>: đọc hai mục
+  <em>"Order of modifiers matters"</em> và phần <em>weight</em> trong <em>"Built-in modifiers"</em>. Đây là hai điều
+  quyết định bảng của bạn thẳng hàng và bo góc đẹp. Xem thêm
+  <a href="https://developer.android.com/develop/ui/compose/layouts/basics">Compose layout basics</a> để ôn lại
+  Row/Column.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0005-bao-loi-confirm-password.html">← Bài 5</a>
+    <a href="../reference/html-css-to-compose-cheatsheet.html">Cheat sheet →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

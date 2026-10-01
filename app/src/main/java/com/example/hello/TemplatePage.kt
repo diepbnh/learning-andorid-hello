@@ -16,18 +16,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import com.example.hello.ui.theme.*
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Scaffold
-import com.example.hello.ui.components.textfield.AppTextField
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextDecoration
 import com.example.hello.ui.components.button.AppButton
 import com.example.hello.ui.components.button.AppButtonSize
 import com.example.hello.ui.components.textfield.AppFormField
@@ -76,6 +67,8 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                 onValueChange = {  },
                 placeholder = "Enter input.....",
                 isPassword = false,
+                isError=true,
+                errorMessage = "Hiện thị error của input ở đây"
             )
             Spacer(
                 modifier = Modifier.height(25.dp)

@@ -1,5 +1,6 @@
 package com.example.hello.ui.components.textfield
 
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -14,7 +15,6 @@ import com.example.hello.ui.theme.AppColors
 import com.example.hello.ui.theme.colors
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.text.BasicTextField
@@ -23,7 +23,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.SolidColor
-
+import androidx.compose.ui.graphics.Color
 fun appTextFieldBorderColor(
     isError: Boolean,
     isFocused: Boolean,
@@ -60,6 +60,10 @@ fun AppTextField(
         modifier = modifier
             .height(48.dp)
             .fillMaxWidth()
+            .background(
+                color = colors.backgroundTextField,
+                shape = RoundedCornerShape(30.dp)
+            )
             .border(
                 width = 1.dp,
                 color = appTextFieldBorderColor(isError, isFocused, colors),

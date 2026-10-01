@@ -29,6 +29,11 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("") }
+    //val confirmError= remember { mutableStateOf("") }//Biến truyền lỗi
+    val usernameError = remember { mutableStateOf("") }
+    val passwordError = remember { mutableStateOf("") }
+    val confirmPasswordError = remember { mutableStateOf("") }
+
     Scaffold(modifier,containerColor = Color.Transparent) {
         innerPadding ->
         Column(
@@ -50,29 +55,55 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
             AppFormField(
                 label = "User Name:",
                 value = username.value,
-                onValueChange = { username.value = it },
+                onValueChange = {
+                    username.value = it
+                    usernameError.value="" },
                 placeholder = "Enter Username.....",
+                isError = usernameError.value.isNotEmpty(),
+                errorMessage = usernameError.value,
                 )
             Spacer(modifier = Modifier.height(20.dp))
             AppFormField(
                 label = "Password:",
                 value = password.value,
-                onValueChange = { password.value = it },
+                onValueChange = {
+                    password.value = it
+                    passwordError.value=""
+                                },
                 placeholder = "Enter password.....",
                 isPassword = true,
+                isError=passwordError.value.isNotEmpty(),
+                errorMessage = passwordError.value,
             )
             Spacer(modifier = Modifier.height(20.dp))
             AppFormField(
                 label = "Confirm Password:",
                 value = confirmPassword.value,
-                onValueChange = { confirmPassword.value = it },
+                onValueChange = {
+                    confirmPassword.value = it
+                    confirmPasswordError.value ="" },
                 placeholder = "Enter password.....",
                 isPassword = true,
+                isError=confirmPasswordError.value.isNotEmpty(),
+                errorMessage = confirmPasswordError.value,
             )
             Spacer(modifier = Modifier.height(20.dp))
             AppButton(
                 text = "Sign up",
-                onClick = {},
+                onClick = {
+                    //check độ valid của input
+                    if(username.value.isEmpty()){
+                        usernameError.value = "Username is required"
+                    }
+                    else if(password.value.isEmpty()){
+                        passwordError.value = "Password is required"
+                    }
+                    else if(confirmPassword.value!=password.value){
+                        confirmPasswordError.value = "Confirm Password does not match"
+                    }else{
+                        navController.navigate("template")
+                    }
+                },
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier= Modifier.height(10.dp))
