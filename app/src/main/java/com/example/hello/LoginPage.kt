@@ -1,24 +1,24 @@
 package com.example.hello
 
-import android.R
-import androidx.compose.foundation.background
+
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.example.hello.ui.theme.*
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.hello.ui.components.button.AppButton
-import com.example.hello.ui.theme.colors
-import androidx.compose.ui.unit.sp
+import com.example.hello.ui.theme.*
 
 @Composable
 fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
@@ -89,6 +89,8 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
                 placeholder = {
                     Text("Enter Password")
                 },
+                visualTransformation = PasswordVisualTransformation(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = colors.white,
                     unfocusedContainerColor = colors.white,
@@ -125,7 +127,7 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
                         loginError.value="Password is required"
                     }
                     else{
-                        navController.navigate("template")
+                        navController.navigate("profile")
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),

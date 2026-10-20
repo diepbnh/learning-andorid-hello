@@ -108,14 +108,14 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
             )
             Spacer(modifier= Modifier.height(10.dp))
             Text(
-                text = "Back",
+                text = "Login",
                 fontWeight = FontWeight.Medium,
                 color=colors.primary,
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .clickable {
-                        navController.popBackStack()//hàm back trở về màn hình trước đó
+                        navController.navigate("login")
                     }
                 ,
             )

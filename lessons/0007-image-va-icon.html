@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 7 · Image và Icon</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 7 / Nhóm 1: Trang trí · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Image và Icon: <code>&lt;img&gt;</code>, <code>object-fit</code>, avatar tròn, icon SVG</h1>
+
+  <div class="callout">
+  <p><strong>Bài 6: xong, vượt yêu cầu.</strong> Bạn tự vẽ đường kẻ bằng <code>drawBehind</code> để không bị viền đôi, và
+  tự tạo hàng từ dữ liệu bằng <code>data class</code> + <code>forEachIndexed</code>. Từ bài này, mỗi bài học một nhóm
+  thành phần UI mà bạn đã quen trên web. Bài 7 mở đầu Nhóm 1 (Trang trí), phần gần CSS nhất.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Một trang <strong>Profile</strong>: ảnh bìa bo góc, avatar tròn có viền, tên, 3 icon có chữ, và một hàng so sánh
+  3 kiểu <code>ContentScale</code>. Ảnh trong hình là ảnh minh họa, bạn dùng ảnh thật của mình.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone">
+        <div class="m-title">Profile</div>
+        <img class="m-banner" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">
+        <img class="m-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">
+        <div class="m-center m-name">Hong Diep</div>
+        <div class="m-center m-sub">Product Designer</div>
+        <div class="m-icons">
+          <div class="m-icon"><svg viewBox="0 0 24 24"><path d="M4 21V9l8-6 8 6v12h-6v-7h-4v7z"/></svg>Home</div>
+          <div class="m-icon"><svg viewBox="0 0 24 24"><path d="M12 21l-1.45-1.3C5.4 15.1 2 12.1 2 8.4 2 5.4 4.4 3 7.4 3c1.7 0 3.4.8 4.6 2.1C13.2 3.8 14.9 3 16.6 3 19.6 3 22 5.4 22 8.4c0 3.7-3.4 6.7-8.55 11.3z"/></svg>Favorite</div>
+          <div class="m-icon"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4 0-8 2-8 5v2h16v-2c0-3-4-5-8-5z"/></svg>Profile</div>
+        </div>
+        <div class="m-section">ContentScale (cùng 1 ảnh, khung vuông)</div>
+        <div class="m-scale-row">
+          <div class="m-scale"><img class="crop" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">Crop</div>
+          <div class="m-scale"><img class="fit" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">Fit</div>
+          <div class="m-scale"><img class="fill" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">FillBounds</div>
+        </div>
+        <div class="m-link">Back</div>
+      </div>
+      <figcaption>Light Mode</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone">
+        <div class="m-title">Profile</div>
+        <img class="m-banner" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">
+        <img class="m-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">
+        <div class="m-center m-name">Hong Diep</div>
+        <div class="m-center m-sub">Product Designer</div>
+        <div class="m-icons">
+          <div class="m-icon"><svg viewBox="0 0 24 24"><path d="M4 21V9l8-6 8 6v12h-6v-7h-4v7z"/></svg>Home</div>
+          <div class="m-icon"><svg viewBox="0 0 24 24"><path d="M12 21l-1.45-1.3C5.4 15.1 2 12.1 2 8.4 2 5.4 4.4 3 7.4 3c1.7 0 3.4.8 4.6 2.1C13.2 3.8 14.9 3 16.6 3 19.6 3 22 5.4 22 8.4c0 3.7-3.4 6.7-8.55 11.3z"/></svg>Favorite</div>
+          <div class="m-icon"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4 0-8 2-8 5v2h16v-2c0-3-4-5-8-5z"/></svg>Profile</div>
+        </div>
+        <div class="m-section">ContentScale (cùng 1 ảnh, khung vuông)</div>
+        <div class="m-scale-row">
+          <div class="m-scale"><img class="crop" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">Crop</div>
+          <div class="m-scale"><img class="fit" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">Fit</div>
+          <div class="m-scale"><img class="fill" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">FillBounds</div>
+        </div>
+        <div class="m-link">Back</div>
+      </div>
+      <figcaption>Dark Mode</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: ảnh bìa rộng hết màn hình, cao khoảng 140dp, bo góc 12dp, ảnh bị cắt bớt chứ
+  không méo. Avatar tròn, có viền màu <code>colors.primary</code>. Icon có màu <code>colors.primary</code> và tự đổi màu
+  ở Dark Mode. Ở hàng ContentScale: Crop lấp đầy khung và cắt bớt ảnh, Fit thấy đủ ảnh nhưng có khoảng trống, FillBounds
+  lấp đầy nhưng ảnh bị méo.</p>
+
+  <h2>1. Chuẩn bị ảnh và icon</h2>
+  <p>Thư mục <code>app/src/main/res/drawable/</code> là thư mục <code>images/</code> của app. Có một quy tắc đặt tên mà
+  web không có: <strong>tên file chỉ được dùng chữ thường a–z, số 0–9 và dấu gạch dưới <code>_</code></strong>, và không
+  được bắt đầu bằng số. <code>Avatar-User.jpg</code> sẽ làm build lỗi, <code>avatar_user.jpg</code> thì hợp lệ.</p>
+  <ul>
+    <li><strong>Ảnh:</strong> chép 2 ảnh bất kỳ (jpg/png/webp) vào <code>res/drawable/</code>, đặt tên
+    <code>banner.jpg</code> và <code>avatar.jpg</code>.</li>
+    <li><strong>Icon, cách 1:</strong> vào <a href="https://fonts.google.com/icons">Google Fonts Icons</a>, chọn icon,
+    mở tab <em>Android</em>, tải file XML về, đổi tên thành <code>ic_home.xml</code>, <code>ic_favorite.xml</code>,
+    <code>ic_person.xml</code> rồi chép vào <code>res/drawable/</code>.</li>
+    <li><strong>Icon, cách 2 (từ Figma):</strong> export icon ra SVG, rồi trong Android Studio chọn
+    <em>File › New › Vector Asset › Local file</em> và chọn file SVG. Android Studio sẽ đổi SVG thành XML giúp bạn.</li>
+  </ul>
+  <p>Vì sao không dùng bộ <code>Icons.Default...</code> có sẵn như nhiều hướng dẫn cũ? Vì Google
+  <a href="https://developer.android.com/develop/ui/compose/graphics/images/material">không còn khuyên dùng thư viện đó</a>:
+  icon kiểu cũ và làm build chậm đi nhiều. Tải icon dạng XML là cách hiện tại.</p>
+
+  <h2>2. <code>&lt;img&gt;</code> → <code>Image</code></h2>
+  <div class="compare">
+    <div>
+      <span class="label">HTML</span>
+      <pre><code>&lt;img src="images/banner.jpg"
+     alt="Ảnh bìa"&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Image(
+  painter = painterResource(R.drawable.banner),
+  contentDescription = "Ảnh bìa",
+)</code></pre>
+    </div>
+  </div>
+  <p><code>R.drawable.banner</code> là "địa chỉ" mà Android tự tạo cho mỗi file trong <code>drawable/</code>, không có
+  đuôi <code>.jpg</code>. Nó khác <code>src</code> của web ở một điểm: nếu gõ sai tên, <strong>build báo lỗi ngay</strong>,
+  thay vì hiện ảnh vỡ khi chạy. <code>contentDescription</code> chính là <code>alt</code>. Ảnh chỉ để trang trí thì để
+  <code>null</code>.</p>
+
+  <h2>3. <code>object-fit</code> → <code>ContentScale</code></h2>
+  <table>
+    <tr><th>CSS</th><th>Compose</th><th>Kết quả</th></tr>
+    <tr><td><code>object-fit: cover</code></td><td><code>ContentScale.Crop</code></td><td>Lấp đầy khung, cắt bớt ảnh. Hay dùng nhất cho ảnh bìa và avatar.</td></tr>
+    <tr><td><code>object-fit: contain</code></td><td><code>ContentScale.Fit</code></td><td>Thấy đủ ảnh, có thể dư khoảng trống. Đây là mặc định.</td></tr>
+    <tr><td><code>object-fit: fill</code></td><td><code>ContentScale.FillBounds</code></td><td>Lấp đầy khung bằng cách kéo méo ảnh.</td></tr>
+  </table>
+  <p>Giống CSS, <code>ContentScale</code> chỉ tạo ra khác biệt khi khung có tỉ lệ khác với ảnh. Vì vậy luôn đặt kích
+  thước cho khung, ví dụ <code>Modifier.fillMaxWidth().height(140.dp)</code>
+  (<a href="https://developer.android.com/develop/ui/compose/graphics/images/customize">Customize an image — Android Developers</a>).</p>
+
+  <h2>4. Bo góc, ảnh tròn, viền</h2>
+  <table>
+    <tr><th>CSS</th><th>Compose</th></tr>
+    <tr><td><code>border-radius: 12px; overflow: hidden</code></td><td><code>Modifier.clip(RoundedCornerShape(12.dp))</code></td></tr>
+    <tr><td><code>border-radius: 50%</code> (ảnh tròn)</td><td><code>Modifier.clip(CircleShape)</code></td></tr>
+    <tr><td><code>border: 2px solid</code> cho ảnh tròn</td><td><code>.border(2.dp, colors.primary, CircleShape)</code></td></tr>
+  </table>
+  <p>Ảnh tròn chỉ tròn đẹp khi khung là hình vuông, ví dụ <code>Modifier.size(96.dp)</code>, và có
+  <code>ContentScale.Crop</code>.</p>
+
+  <h2>5. <code>Icon</code> khác <code>Image</code> ở đâu?</h2>
+  <div class="compare">
+    <div>
+      <span class="label">SVG trên web</span>
+      <pre><code>svg { fill: currentColor; }
+.icon { color: var(--primary); }</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Icon(
+  painter = painterResource(R.drawable.ic_home),
+  contentDescription = "Home",
+  tint = colors.primary,
+)</code></pre>
+    </div>
+  </div>
+  <p><code>Icon</code> tô <strong>toàn bộ</strong> hình bằng một màu <code>tint</code>, giống <code>fill: currentColor</code>.
+  Dùng theme token cho <code>tint</code> thì icon tự đổi màu theo Light/Dark. Ảnh nhiều màu (logo, ảnh chụp) thì dùng
+  <code>Image</code>, vì <code>Image</code> giữ nguyên màu gốc. Kích thước icon chuẩn là 24dp:
+  <code>Modifier.size(24.dp)</code>.</p>
+
+  <h2>6. Nhiệm vụ</h2>
+  <p><strong>Bước 1: trang mới.</strong> Tạo <code>ImagePage.kt</code>, route <code>"image"</code>, và một link từ
+  <code>TemplatePage</code> đi tới trang này. Nhớ thêm <code>verticalScroll</code> như bạn đã làm ở bài 6.</p>
+
+  <p><strong>Bước 2: ảnh bìa.</strong> Code mẫu (đã build thử, chạy được):</p>
+  <pre><code>Image(
+    painter = painterResource(R.drawable.banner),
+    contentDescription = "Ảnh bìa",
+    contentScale = ContentScale.Crop,
+    modifier = Modifier
+        .fillMaxWidth()
+        .height(140.dp)
+        .clip(RoundedCornerShape(12.dp))
+)</code></pre>
+
+  <p><strong>Bước 3: avatar, tên và 3 icon.</strong> Tự viết theo hình kết quả. Gợi ý: avatar 96dp đặt giữa bằng
+  <code>Modifier.align(Alignment.CenterHorizontally)</code>. Hàng icon là một <code>Row</code> có
+  <code>horizontalArrangement = Arrangement.SpaceAround</code> (giống <code>justify-content: space-around</code>), mỗi
+  phần tử là một <code>Column</code> gồm <code>Icon</code> và <code>Text</code>.</p>
+
+  <p><strong>Bước 4: so sánh ContentScale.</strong> Một <code>Row</code> có 3 <code>Image</code> cùng dùng
+  <code>R.drawable.banner</code>, khung vuông 80dp, viền 1dp, lần lượt dùng <code>Crop</code>, <code>Fit</code> và
+  <code>FillBounds</code>. Mỗi ảnh có một <code>Text</code> ghi tên kiểu bên dưới.</p>
+
+  <p><strong>Bước 5: tách component <code>AppAvatar</code></strong> vào <code>ui/components/image/AppAvatar.kt</code>.
+  Avatar sẽ dùng ở nhiều màn hình (profile, danh sách, comment), nên đây là component nên có cho team:</p>
+  <pre><code>@Composable
+fun AppAvatar(
+    @DrawableRes imageRes: Int,
+    modifier: Modifier = Modifier,
+    size: Dp = 96.dp,
+) {
+    // Image tròn, ContentScale.Crop, viền 2dp colors.primary
+}</code></pre>
+  <p><code>R.drawable.avatar</code> thực chất là một con số (<code>Int</code>). Nhãn <code>@DrawableRes</code> báo cho
+  Android Studio biết số này phải là một <code>R.drawable...</code>. Nếu truyền nhầm một số bất kỳ, Android Studio sẽ
+  cảnh báo. Dùng <code>AppAvatar</code> trong <code>ImagePage</code>, và thêm một <code>AppAvatar</code> cỡ nhỏ (48dp)
+  vào <code>TemplatePage</code>.</p>
+
+  <p><strong>Bước 6: kiểm tra.</strong> Build, chạy, chuyển Light/Dark. Thử đổi tên file thành
+  <code>Banner.jpg</code> (chữ B hoa) rồi build lại để thấy lỗi tên file trông thế nào, sau đó đổi lại tên cũ.</p>
+
+  <div class="callout ask">
+  <p>Muốn đặt avatar đè lên mép ảnh bìa như Facebook? Cần dùng <code>Box</code> và <code>offset</code>, hãy hỏi agent.
+  Ảnh tải từ internet sẽ học ở Bài 20. Báo "xong bài 7" khi xong.</p>
+  </div>
+
+  <h2>7. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. CSS <code>object-fit: cover</code> tương ứng với gì trong Compose?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Fit giống contain, thấy đủ ảnh và dư khoảng trống.">ContentScale.Fit</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: FillBounds giống fill, ảnh bị kéo méo.">ContentScale.FillBounds</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: Crop lấp đầy khung và cắt phần dư, giống cover.">ContentScale.Crop</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: None giữ kích thước gốc, không co giãn.">ContentScale.None</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Tên file ảnh nào hợp lệ trong <code>res/drawable/</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: không được có chữ hoa và dấu gạch ngang.">Avatar-User.jpg</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: toàn chữ thường, số và gạch dưới, không bắt đầu bằng số.">avatar_user.jpg</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: tên file không được bắt đầu bằng số.">01_avatar.jpg</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: tên file không được có dấu cách.">avatar user.jpg</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. <code>contentDescription</code> của <code>Image</code>/<code>Icon</code> tương đương thuộc tính nào của <code>&lt;img&gt;</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: src tương ứng painterResource(R.drawable...).">src</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: class tương ứng Modifier.">class</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: title là tooltip khi rê chuột.">title</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: mô tả ảnh cho trình đọc màn hình, để null nếu ảnh chỉ trang trí.">alt</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. (Ôn bài 6) Bảng có lưới weight <code>1.5f / 1f / 1f</code>. Một ô gộp 2 cột cuối cần weight bao nhiêu?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: 1f chỉ bằng một cột.">1f</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: bằng tổng weight các cột bị gộp, 1f + 1f, giống colspan 2.">2f</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: 3f sẽ làm lệch lưới so với các hàng khác.">3f</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: 2.5f là tổng của cột đầu và một cột, không phải 2 cột cuối.">2.5f</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/graphics/images/customize">Customize an image</a>: có hình
+  minh họa từng kiểu <code>ContentScale</code> và cách clip ảnh thành hình tròn. Xem thêm
+  <a href="https://developer.android.com/develop/ui/compose/graphics/images/material">Material icons</a> về cách dùng
+  icon tải từ Google Fonts.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0006-ve-table-ui.html">← Bài 6</a>
+    <a href="../reference/lo-trinh-ui.html">Lộ trình →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

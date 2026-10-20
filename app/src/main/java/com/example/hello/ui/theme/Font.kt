@@ -14,17 +14,17 @@ val MontserratFontFamily = FontFamily(
     Font(
         resId = R.font.montserrat_regular,
         weight = FontWeight.Normal,
-        style = FontStyle.Normal
+
     ),
     Font(
         resId = R.font.montserrat_medium,
         weight = FontWeight.Medium,
-        style = FontStyle.Normal
+
     ),
     Font(
         resId = R.font.montserrat_semibold,
         weight = FontWeight.SemiBold,
-        style = FontStyle.Normal
+
     ),
     Font(
         resId = R.font.montserrat_bold,
@@ -34,7 +34,7 @@ val MontserratFontFamily = FontFamily(
     Font(
         resId = R.font.montserrat_black,
         weight = FontWeight.Black,
-        style = FontStyle.Normal
+
     ),
 
 )

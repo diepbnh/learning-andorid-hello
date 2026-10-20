@@ -161,6 +161,15 @@
     <tr><td><code>text-align: right</code></td><td><code>textAlign = TextAlign.End</code></td><td>Dùng cho cột số, cột giá.</td></tr>
   </table>
 
+  <h2>Ảnh & Icon</h2>
+  <table>
+    <tr><th>HTML/CSS</th><th>Compose</th><th>Ghi chú</th></tr>
+    <tr><td><code>&lt;img src alt&gt;</code></td><td><code>Image(painterResource(R.drawable.x), contentDescription = "...")</code></td><td>File trong <code>res/drawable/</code>, tên chỉ chữ thường, số, <code>_</code>.</td></tr>
+    <tr><td><code>object-fit: cover / contain / fill</code></td><td><code>ContentScale.Crop / Fit / FillBounds</code></td><td>Mặc định là Fit.</td></tr>
+    <tr><td><code>border-radius: 50%</code></td><td><code>Modifier.size(96.dp).clip(CircleShape)</code></td><td>Khung vuông + Crop thì mới tròn đẹp.</td></tr>
+    <tr><td>SVG <code>fill: currentColor</code></td><td><code>Icon(painterResource(R.drawable.ic_x), "...", tint = colors.primary)</code></td><td>Icon tải XML từ Google Fonts hoặc Vector Asset từ SVG Figma.</td></tr>
+  </table>
+
   <h2>Cú pháp Kotlin tối thiểu cần biết</h2>
   <table>
     <tr><th>Kotlin</th><th>Ý nghĩa</th></tr>
@@ -206,7 +215,9 @@
     <a href="../lessons/0003-tu-dung-man-hinh-moi.html">Bài 3</a>
     <a href="../lessons/0004-tach-component-app-form-field.html">Bài 4</a>
     <a href="../lessons/0005-bao-loi-confirm-password.html">Bài 5</a>
-    <a href="../lessons/0006-ve-table-ui.html">Bài 6 →</a>
+    <a href="../lessons/0006-ve-table-ui.html">Bài 6</a>
+    <a href="../lessons/0007-image-va-icon.html">Bài 7 →</a>
+    <a href="lo-trinh-ui.html">Lộ trình</a>
   </div>
 </div>
 </body>

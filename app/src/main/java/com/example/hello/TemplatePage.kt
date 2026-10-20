@@ -58,6 +58,7 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                     .padding(25.dp, 10.dp)
             )
 
+
             Spacer(
                 modifier = Modifier.height(25.dp)
             )

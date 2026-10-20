@@ -6,9 +6,10 @@ import androidx.compose.ui.unit.sp
 enum class AppButtonSize (
     val height:Dp,
     val fontSize: TextUnit
+
 ){
     Small(
-        height = 30.dp,
+        height = 34.dp,
         fontSize = 12.sp
     ),
     Medium(

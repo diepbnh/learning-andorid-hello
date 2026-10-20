@@ -43,6 +43,13 @@
 - [Intrinsic measurements — Android Developers](https://developer.android.com/develop/ui/compose/layouts/intrinsic-measurements)
   `IntrinsicSize.Min` để các con trong Row cao bằng nhau (ví dụ chính thức dùng đúng cho Divider dọc). Dùng cho: Lesson 6 (viền ô table).
 
+- [Material icons — Android Developers](https://developer.android.com/develop/ui/compose/graphics/images/material)
+  Google không còn khuyên dùng thư viện `material-icons`; tải Material Symbols dạng XML từ Google Fonts và dùng `Icon(painterResource(...))`. Dùng cho: Lesson 7.
+- [Customize an image — Android Developers](https://developer.android.com/develop/ui/compose/graphics/images/customize)
+  `ContentScale`, clip hình tròn/bo góc, viền ảnh. Dùng cho: Lesson 7, primary source.
+- [Google Fonts Icons](https://fonts.google.com/icons)
+  Nơi tải icon Material Symbols (tab Android → XML). Dùng cho: mọi bài có icon.
+
 ## Wisdom (Communities)
 
 - [r/androiddev](https://reddit.com/r/androiddev)

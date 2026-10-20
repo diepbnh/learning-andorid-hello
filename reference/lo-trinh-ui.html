@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Lộ trình UI · HTML/CSS → Compose</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Reference / Mission: Jetpack Compose UI cho Designer</div>
+  <h1>Lộ trình UI: mọi thứ HTML có, Compose làm thế nào</h1>
+  <p>Mỗi dòng là một thành phần UI quen thuộc trên web và tên tương đương trong Compose. Cột "Bài" cho biết thành phần
+  đó được học ở bài nào. ✓ là đã xong. Thứ tự đi từ gần CSS nhất tới cần nhiều kiến thức nhất.</p>
+
+  <h2>Đã học</h2>
+  <table>
+    <tr><th>HTML/CSS</th><th>Compose</th><th>Bài</th></tr>
+    <tr><td><code>&lt;div&gt;</code>, flexbox, <code>gap</code></td><td><code>Column</code>, <code>Row</code>, <code>Spacer</code></td><td>✓ 1</td></tr>
+    <tr><td>class biến thể <code>btn-primary</code></td><td><code>enum class</code>, <code>when</code></td><td>✓ 2</td></tr>
+    <tr><td>trang, <code>&lt;a href="/page"&gt;</code> trong app</td><td><code>NavHost</code>, route, <code>navigate</code></td><td>✓ 3</td></tr>
+    <tr><td><code>&lt;input&gt;</code>, <code>&lt;label&gt;</code>, <code>type="password"</code></td><td><code>AppTextField</code>, <code>AppFormField</code></td><td>✓ 4</td></tr>
+    <tr><td><code>:invalid</code>, thông báo lỗi form</td><td><code>isError</code>, <code>if</code></td><td>✓ 5</td></tr>
+    <tr><td><code>&lt;table&gt;</code>, <code>colspan</code></td><td><code>Column</code> + <code>Row</code> + <code>weight</code></td><td>✓ 6</td></tr>
+  </table>
+
+  <h2>Nhóm 1: Trang trí (phần CSS)</h2>
+  <table>
+    <tr><th>HTML/CSS</th><th>Compose</th><th>Bài</th></tr>
+    <tr><td><code>&lt;img&gt;</code>, <code>object-fit</code>, avatar tròn, icon SVG</td><td><code>Image</code>, <code>ContentScale</code>, <code>CircleShape</code>, <code>Icon</code></td><td><a href="../lessons/0007-image-va-icon.html">7</a></td></tr>
+    <tr><td><code>box-shadow</code>, <code>linear-gradient</code>, <code>opacity</code></td><td><code>Modifier.shadow</code>, <code>Brush.linearGradient</code>, <code>alpha</code></td><td>8</td></tr>
+    <tr><td>card, badge, <code>&lt;hr&gt;</code></td><td><code>Card</code>, <code>Badge</code>, <code>HorizontalDivider</code></td><td>9</td></tr>
+  </table>
+
+  <h2>Nhóm 2: Form</h2>
+  <table>
+    <tr><th>HTML</th><th>Compose</th><th>Bài</th></tr>
+    <tr><td><code>type="checkbox"</code>, nút gạt</td><td><code>Checkbox</code>, <code>Switch</code></td><td>10</td></tr>
+    <tr><td><code>type="radio"</code></td><td><code>RadioButton</code></td><td>11</td></tr>
+    <tr><td><code>&lt;select&gt;</code></td><td><code>ExposedDropdownMenuBox</code></td><td>12</td></tr>
+    <tr><td><code>type="range"</code></td><td><code>Slider</code></td><td>13</td></tr>
+  </table>
+
+  <h2>Nhóm 3: Khung app</h2>
+  <table>
+    <tr><th>HTML</th><th>Compose</th><th>Bài</th></tr>
+    <tr><td><code>&lt;header&gt;</code>, footer menu</td><td><code>TopAppBar</code>, <code>NavigationBar</code></td><td>14</td></tr>
+    <tr><td>side menu</td><td><code>ModalNavigationDrawer</code></td><td>15</td></tr>
+    <tr><td>tabs</td><td><code>TabRow</code></td><td>16</td></tr>
+    <tr><td>modal, toast, popup</td><td><code>AlertDialog</code>, <code>Snackbar</code>, <code>ModalBottomSheet</code></td><td>17</td></tr>
+    <tr><td><code>&lt;ul&gt;</code>/<code>&lt;li&gt;</code> danh sách dài</td><td><code>LazyColumn</code></td><td>18</td></tr>
+  </table>
+
+  <h2>Nhóm 4: Media và nâng cao</h2>
+  <table>
+    <tr><th>HTML/CSS</th><th>Compose</th><th>Bài</th></tr>
+    <tr><td><code>&lt;a href="https://..."&gt;</code></td><td>link trong <code>Text</code>, mở trình duyệt</td><td>19</td></tr>
+    <tr><td><code>&lt;img src="https://..."&gt;</code></td><td>thư viện Coil</td><td>20</td></tr>
+    <tr><td><code>&lt;video&gt;</code></td><td>Media3 ExoPlayer</td><td>21</td></tr>
+    <tr><td><code>transition</code>, <code>animation</code></td><td><code>animate*AsState</code></td><td>22</td></tr>
+    <tr><td>đóng gói thư viện component cho team</td><td>Android library module</td><td>cuối</td></tr>
+  </table>
+
+  <div class="callout">
+  <p><strong>Quy ước component cho dự án team:</strong> thành phần nào mang style riêng của app <em>và</em> dùng ở nhiều
+  màn hình thì tách thành <code>App...</code> trong <code>ui/components/</code> (ví dụ <code>AppAvatar</code>,
+  <code>AppCheckbox</code>), và trưng bày trong <code>TemplatePage</code>. Thành phần chỉ dùng một lần thì dùng trực
+  tiếp.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="html-css-to-compose-cheatsheet.html">← Cheat sheet</a>
+    <a href="../lessons/0007-image-va-icon.html">Bài 7 →</a>
+  </div>
+</div>
+</body>
+</html>

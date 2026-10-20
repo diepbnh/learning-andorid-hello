@@ -1,20 +1,27 @@
 package com.example.hello
 
 
+import android.util.Log
 import com.example.hello.ui.theme.colors
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -31,11 +38,26 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import com.example.hello.ui.components.table.AppTableCell
+import androidx.compose.material3.LocalTextStyle
+import com.example.hello.ui.theme.titleMedium
 
+
+data class Product(
+    val name: String,
+    val number: String,
+    val price: String
+)
+val products=listOf(
+    Product("Car 01","12","200$"),
+    Product("Car 02","12","200$"),
+    Product("Car 03","12","200$"),
+    Product("Car 04","12","200$"),
+)
 @Composable
 fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()//true khi đang nhấn
+
 
     Scaffold(modifier, containerColor = Color.Transparent)
     { innerPadding ->
@@ -45,6 +67,7 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
                 .fillMaxWidth()
                 .padding(innerPadding)
                 .padding(32.dp)
+                .verticalScroll(rememberScrollState())//scroll content ben trong
         ) {
             Column(
                 modifier = Modifier
@@ -125,6 +148,7 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
                     Modifier
                         .height(IntrinsicSize.Min)
                         .fillMaxWidth()
+                        .background(colors.light)
 
                 ) {
                     Text(
@@ -190,6 +214,7 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(IntrinsicSize.Min)//đường dọc cao bằng dòng
+                        .background(colors.light)
                 ) {
                     Text(
                         "Car 01",
@@ -218,22 +243,38 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
                 }
             }
             Spacer(modifier = Modifier.height(15.dp))
-
-            Text(
-                text = "Back",
-                fontWeight = FontWeight.Bold,
-                textDecoration = TextDecoration.Underline,
-                color = if (isPressed) colors.secondary else colors.primary,//đang nhấn -> secondary
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .clickable(
-                        interactionSource = interactionSource,
-                        indication = null//tắt hiệu ứng gợn sóng mặc định
-                    ) {
-                        navController.popBackStack()//quay lại trang trước
+            Row(
+                modifier=Modifier.fillMaxWidth(),
+                //widht 100%
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Back",
+                    fontWeight = FontWeight.Bold,
+                    textDecoration = TextDecoration.Underline,
+                    color = if (isPressed) colors.secondary else colors.primary,//đang nhấn -> secondary
+                    modifier = Modifier
+                        .clickable(
+                            interactionSource = interactionSource,
+                            indication = null//tắt hiệu ứng gợn sóng mặc định
+                        ) {
+                            navController.popBackStack()//quay lại trang trước
+                        }
+                )
+                Spacer(modifier = Modifier.width(15.dp))
+                Text(
+                    text = "Home",
+                    fontWeight = FontWeight.Bold,
+                    modifier=Modifier.clickable {
+                        navController.navigate("sign_up")
                     }
+                )
+            }
+
+            Spacer(
+                modifier = Modifier.height(25.dp)
             )
-            Spacer(modifier = Modifier.height(15.dp))
 
             Text(
                 text = "Table thứ 2: dùng tableCell",
@@ -241,7 +282,7 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
             Spacer(modifier = Modifier.height(15.dp))
 
 
-
+            //table thứ 2
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -302,7 +343,9 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
                     )
                 }
                 Row(
-                    Modifier.height(IntrinsicSize.Min)
+                    Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Min)
                 ) {
                     AppTableCell(
                         text = "Car 01 ",
@@ -318,19 +361,73 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
                     )
                 }
                 Row(
-                    Modifier.height(IntrinsicSize.Min)
+                    Modifier
+                        .fillMaxWidth()
+                        .height(IntrinsicSize.Min)
                 ) {
                     AppTableCell(
                         text = "Car 01 ",
-                        modifier = Modifier.weight(1.5f)
+                        modifier = Modifier.weight(3f)
                     )
                     AppTableCell(
                         text = "Car 01",
-                        modifier = Modifier.weight(2f)
+                        modifier = Modifier.weight(4f)
                     )
 
                 }
             }
+            Spacer(modifier = Modifier.height(15.dp))
+            //table thứ 3
+            Text(
+                text = "Table thứ 3: dùng tableCell",
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Column(
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, colors.primary)
+            ) {
+                Row(
+                    Modifier.height(IntrinsicSize.Min)
+
+                ) {
+                    AppTableCell(
+                        "Product",
+                        isHeader = true,
+                        modifier = Modifier.weight(1.5f)
+                    )
+                    AppTableCell(
+                        "Number",
+                        isHeader = true,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.End
+                    )
+                    AppTableCell(
+                        "Price",
+                        isHeader = true,
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.End
+                    )
+                }
+                products.forEachIndexed { index, product ->
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Min)
+                            .background(
+                                if (index % 2 == 0) Color.Transparent   // chẵn
+                                else colors.light                       // lẻ
+                            )
+
+                    ) {
+                        AppTableCell(product.name,modifier= Modifier.weight(1.5f))
+                        AppTableCell(product.number,modifier= Modifier.weight(1f),textAlign = TextAlign.End)
+                        AppTableCell(product.price,modifier= Modifier.weight(1f),textAlign = TextAlign.End)
+                    }
+                }
+            }
+
         }
     }
 }
