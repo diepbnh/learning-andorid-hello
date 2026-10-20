@@ -3,6 +3,8 @@ package com.example.hello
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.example.hello.ui.theme.colors
 import com.example.hello.ui.theme.titleXLarge
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -52,7 +55,6 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Crop
             )
-
         }
         //hongdiep
         Spacer(modifier = Modifier.height(15.dp))
@@ -78,6 +80,28 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
             borderColor = colors.white,
             modifier = Modifier.align(Alignment.CenterHorizontally) //căn giữa
         )
+
+        Row(
+            modifier=Modifier.fillMaxWidth(),
+        ) {
+            //cột home
+            Column(
+                modifier = Modifier.weight(1f),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Home,
+                    contentDescription = "Home",
+                    tint = colors.primary,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Home",
+                    fontSize = 13.sp
+                )
+            }
+        }
     }
 
 }
