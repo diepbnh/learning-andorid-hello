@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import com.example.hello.ui.components.button.AppButton
 import com.example.hello.ui.components.button.AppButtonSize
 import com.example.hello.ui.components.textfield.AppFormField
+import androidx.compose.ui.text.style.TextDecoration
 
 @Composable
 fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
@@ -58,6 +59,21 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                     .padding(25.dp, 10.dp)
             )
 
+            Spacer(
+                modifier = Modifier.height(25.dp)
+            )
+            Text(
+                text = "Table",
+                textDecoration = TextDecoration.Underline,
+                style = titleMedium,
+                color = colors.primary,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .clickable {
+                        navController.navigate("table")
+                    }
+
+            )
 
             Spacer(
                 modifier = Modifier.height(25.dp)

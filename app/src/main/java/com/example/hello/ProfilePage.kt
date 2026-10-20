@@ -17,10 +17,12 @@ import androidx.compose.ui.text.style.TextAlign
 import com.example.hello.ui.theme.colors
 import com.example.hello.ui.theme.titleXLarge
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.sp
+import com.example.hello.ui.components.avatar.AppAvatar
 import com.example.hello.ui.theme.titleMedium
 
 
@@ -66,6 +68,15 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
             fontSize = 15.sp,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(15.dp))
+
+        //component avatar
+        AppAvatar(
+            imageRes = R.drawable.avatar01,
+            borderWidth = 2.dp,
+            borderColor = colors.white,
+            modifier = Modifier.align(Alignment.CenterHorizontally) //căn giữa
         )
     }
 

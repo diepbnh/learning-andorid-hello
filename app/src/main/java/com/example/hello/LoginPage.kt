@@ -1,6 +1,4 @@
 package com.example.hello
-
-
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -36,7 +34,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
                 .padding(32.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
-
         )
         {
             //khoản cach
@@ -50,7 +47,6 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
             )
             //khoản cach
             Spacer(modifier = Modifier.height(25.dp))
-
             // Username input
             OutlinedTextField(
                 value = username.value,
