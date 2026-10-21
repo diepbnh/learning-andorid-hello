@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 8 · Shadow, Gradient, Opacity</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 8 / Nhóm 1: Trang trí · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Shadow, Gradient, Opacity: <code>box-shadow</code>, <code>linear-gradient</code>, <code>opacity</code></h1>
+
+  <div class="callout">
+  <p><strong>Bài 7: xong.</strong> <code>AppAvatar</code> có API tốt và đặt <code>shadow</code> trước <code>clip</code> đúng
+  thứ tự. Bạn còn tự làm thêm chữ in đậm một phần (<code>buildAnnotatedString</code>) và con bướm bay
+  (animation). Ảnh cũng đã được giảm kích thước, nên app nhẹ hơn nhiều.</p>
+  <p><strong>Còn 1 việc dọn dẹp (nên làm trước bài này):</strong> <code>ProfilePage</code> vẫn dùng
+  <code>Icons.Default.Home/Favorite/Person</code>, và <code>app/build.gradle.kts</code> vẫn còn 2 dòng
+  <code>material.icons.core</code> và <code>material.icons.extended</code>. Thư viện <code>extended</code> rất nặng, đây là
+  lý do build chậm. Cách sửa: tải 3 icon XML như mục 1 của Bài 7, đổi sang
+  <code>Icon(painter = painterResource(R.drawable.ic_home), ...)</code>, xoá 3 dòng <code>import ...icons...</code>, rồi
+  xoá 2 dòng thư viện trong <code>build.gradle.kts</code>. Bấm Sync rồi build lại.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Một trang <strong>Effect</strong> có 4 khối: banner gradient, card có bóng đổ, ảnh có lớp phủ tối để chữ dễ đọc, và
+  2 hàng so sánh <code>opacity</code> với <code>rgba</code>.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone">
+        <div class="m-title">Effect</div>
+        <div class="m-gradient">Chào mừng!</div>
+        <div class="m-card"><b>Bài 8 · Shadow</b>Card nổi lên khỏi nền nhờ bóng đổ 8dp.</div>
+        <div class="m-overlay">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">
+          <span>Đà Lạt mùa hoa</span>
+        </div>
+        <div class="m-section">Modifier.alpha (mờ cả chữ)</div>
+        <div class="m-alpha-row">
+          <div class="m-alpha fade" style="opacity:1">100%</div>
+          <div class="m-alpha fade" style="opacity:.6">60%</div>
+          <div class="m-alpha fade" style="opacity:.3">30%</div>
+        </div>
+        <div class="m-section">color.copy(alpha) (chữ vẫn rõ)</div>
+        <div class="m-alpha-row">
+          <div class="m-alpha rgba" style="background:color-mix(in srgb, var(--app-primary) 100%, transparent); color:var(--app-white)">100%</div>
+          <div class="m-alpha rgba" style="background:color-mix(in srgb, var(--app-primary) 60%, transparent)">60%</div>
+          <div class="m-alpha rgba" style="background:color-mix(in srgb, var(--app-primary) 30%, transparent)">30%</div>
+        </div>
+        <div class="m-link">Back</div>
+      </div>
+      <figcaption>Light Mode</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone">
+        <div class="m-title">Effect</div>
+        <div class="m-gradient">Chào mừng!</div>
+        <div class="m-card"><b>Bài 8 · Shadow</b>Card nổi lên khỏi nền nhờ bóng đổ 8dp.</div>
+        <div class="m-overlay">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200' preserveAspectRatio='none'><rect width='300' height='200' fill='%23bfe0ff'/><circle cx='230' cy='55' r='28' fill='%23ffd36b'/><polygon points='0,200 90,80 170,200' fill='%234b9cdf'/><polygon points='110,200 200,95 300,200' fill='%231a75cf'/><rect y='175' width='300' height='25' fill='%2381c784'/></svg>" alt="">
+          <span>Đà Lạt mùa hoa</span>
+        </div>
+        <div class="m-section">Modifier.alpha (mờ cả chữ)</div>
+        <div class="m-alpha-row">
+          <div class="m-alpha fade" style="opacity:1">100%</div>
+          <div class="m-alpha fade" style="opacity:.6">60%</div>
+          <div class="m-alpha fade" style="opacity:.3">30%</div>
+        </div>
+        <div class="m-section">color.copy(alpha) (chữ vẫn rõ)</div>
+        <div class="m-alpha-row">
+          <div class="m-alpha rgba" style="background:color-mix(in srgb, var(--app-primary) 100%, transparent); color:var(--app-white)">100%</div>
+          <div class="m-alpha rgba" style="background:color-mix(in srgb, var(--app-primary) 60%, transparent)">60%</div>
+          <div class="m-alpha rgba" style="background:color-mix(in srgb, var(--app-primary) 30%, transparent)">30%</div>
+        </div>
+        <div class="m-link">Back</div>
+      </div>
+      <figcaption>Dark Mode</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: banner chuyển màu từ <code>colors.primary</code> (trái) sang
+  <code>colors.secondary</code> (phải). Card có bóng đổ rõ ở Light Mode. Ở Dark Mode bóng gần như không thấy, nên card
+  được phân biệt nhờ nền sáng hơn nền trang. Chữ trên ảnh luôn đọc được vì nửa dưới ảnh tối dần. Ở hàng
+  <code>alpha</code>, chữ mờ theo ô. Ở hàng <code>copy(alpha)</code>, chỉ nền mờ, chữ vẫn rõ.</p>
+
+  <h2>1. <code>linear-gradient</code> → <code>Brush</code></h2>
+  <div class="compare">
+    <div>
+      <span class="label">CSS</span>
+      <pre><code>.banner {
+  background: linear-gradient(
+    to right,
+    var(--primary),
+    var(--secondary));
+  border-radius: 12px;
+}</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Modifier.background(
+  brush = Brush.horizontalGradient(
+    listOf(colors.primary, colors.secondary)
+  ),
+  shape = RoundedCornerShape(12.dp)
+)</code></pre>
+    </div>
+  </div>
+  <p><code>Brush</code> là "cây cọ" để tô nền: thay vì tô một màu (<code>Color</code>) thì tô một dải màu.
+  <code>listOf(...)</code> là danh sách các màu, giống danh sách color stop trong CSS, và bạn có thể đưa vào 3–4 màu.</p>
+  <table>
+    <tr><th>CSS</th><th>Compose</th></tr>
+    <tr><td><code>linear-gradient(to right, …)</code></td><td><code>Brush.horizontalGradient(…)</code></td></tr>
+    <tr><td><code>linear-gradient(to bottom, …)</code></td><td><code>Brush.verticalGradient(…)</code></td></tr>
+    <tr><td><code>linear-gradient(135deg, …)</code> (chéo)</td><td><code>Brush.linearGradient(…)</code>, mặc định đi từ góc trên trái xuống góc dưới phải</td></tr>
+    <tr><td><code>radial-gradient(…)</code></td><td><code>Brush.radialGradient(…)</code></td></tr>
+  </table>
+  <p>Truyền <code>shape</code> vào <code>background</code> thì nền được bo góc ngay, không cần <code>clip</code>. Dùng màu
+  theme thì gradient tự đổi theo Light/Dark.</p>
+
+  <h2>2. <code>box-shadow</code> → <code>Modifier.shadow</code></h2>
+  <div class="compare">
+    <div>
+      <span class="label">CSS</span>
+      <pre><code>.card {
+  box-shadow: 0 4px 10px
+    rgba(0,0,0,.18);
+  border-radius: 16px;
+  background: white;
+  padding: 16px;
+}</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Modifier
+  .shadow(
+    elevation = 8.dp,
+    shape = RoundedCornerShape(16.dp)
+  )
+  .background(colors.surface,
+    RoundedCornerShape(16.dp))
+  .padding(16.dp)</code></pre>
+    </div>
+  </div>
+  <p>Compose không cho chỉnh từng thông số <code>x / y / blur / spread</code> như CSS. Bạn chỉ chọn
+  <code>elevation</code>, tức là "card nổi cao bao nhiêu", và Android tự vẽ bóng. Số càng lớn thì bóng càng to và mềm.
+  Thường dùng 1–2dp cho card nhẹ, 6–8dp cho card nổi bật, 16dp cho popup.</p>
+  <p><strong>Thứ tự quan trọng</strong>, giống <code>AppAvatar</code> của bạn: <code>shadow</code> phải đứng
+  <strong>trước</strong> <code>background</code>. Modifier được áp dụng từ trên xuống: vẽ bóng trước, rồi tô nền lên
+  trên, rồi mới thụt <code>padding</code> vào trong. Nếu đặt <code>padding</code> lên đầu thì bóng và nền sẽ nhỏ lại, giống
+  như bạn đặt <code>margin</code> thay vì <code>padding</code> trong CSS.</p>
+  <p><strong>Dark Mode:</strong> bóng màu đen không thấy được trên nền tối. Vì vậy Material Design dùng
+  <strong>nền card sáng hơn nền trang</strong> để thể hiện độ nổi. Đó là lý do bài này cần thêm một màu mới:
+  <code>surface</code> (màu nền card), ở Bước 2.</p>
+
+  <h2>3. Chữ trên ảnh: lớp phủ gradient bằng <code>Box</code></h2>
+  <div class="compare">
+    <div>
+      <span class="label">CSS</span>
+      <pre><code>.hero { position: relative; }
+.hero::after {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to bottom, transparent,
+    rgba(0,0,0,.7));
+}
+.hero span {
+  position: absolute;
+  left: 12px; bottom: 12px;
+}</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Box(Modifier...clip(...)) {
+  Image(...)       // lớp dưới cùng
+  Box(             // lớp phủ
+    Modifier.fillMaxSize()
+      .background(Brush.verticalGradient(
+        listOf(Color.Transparent,
+          Color.Black.copy(alpha = 0.7f))))
+  )
+  Text(..., Modifier          // lớp trên cùng
+    .align(Alignment.BottomStart))
+}</code></pre>
+    </div>
+  </div>
+  <p><code>Box</code> là <code>position: relative</code>: các con bên trong <strong>chồng lên nhau</strong>, con viết sau
+  nằm trên con viết trước (giống <code>z-index</code> tăng dần theo thứ tự). <code>Modifier.align(...)</code> chỉ dùng
+  được bên trong <code>Box</code> và tương đương <code>position: absolute</code> với <code>left/bottom</code>. Lớp phủ này
+  là mẹo designer rất hay dùng để chữ trắng luôn đọc được trên ảnh bất kỳ.</p>
+
+  <h2>4. <code>opacity</code> khác <code>rgba</code> thế nào?</h2>
+  <table>
+    <tr><th>CSS</th><th>Compose</th><th>Làm mờ cái gì</th></tr>
+    <tr><td><code>opacity: 0.3</code></td><td><code>Modifier.alpha(0.3f)</code></td><td>Cả khối, gồm nền, chữ, icon bên trong</td></tr>
+    <tr><td><code>background: rgba(…, 0.3)</code></td><td><code>colors.primary.copy(alpha = 0.3f)</code></td><td>Chỉ màu đó, chữ bên trong vẫn rõ</td></tr>
+  </table>
+  <p><code>copy(alpha = ...)</code> nghĩa là "chép màu này ra một bản mới, chỉ đổi độ trong suốt". Màu gốc
+  <code>colors.primary</code> không bị thay đổi. Chữ <code>f</code> sau số (<code>0.3f</code>) là cách Kotlin ghi số
+  thập phân kiểu <code>Float</code>, bạn đã gặp ở <code>weight(1f)</code>. Giá trị đi từ <code>0f</code> (trong suốt hẳn)
+  đến <code>1f</code> (đặc hoàn toàn), giống CSS.</p>
+
+  <h2>5. Nhiệm vụ</h2>
+  <p><strong>Bước 1: trang mới.</strong> Tạo <code>EffectPage.kt</code>, route <code>"effect"</code>, dùng
+  <code>AppPage</code> giống <code>ProfilePage</code>, và thêm một link từ <code>TemplatePage</code> tới trang này.</p>
+
+  <p><strong>Bước 2: thêm màu <code>surface</code> vào theme.</strong> Mở <code>ui/theme/Color.kt</code>. Thêm
+  <code>surface</code> vào đủ 4 chỗ giống cách bạn đã làm với các màu khác: <code>LightMode</code>
+  (<code>0xFFFFFFFF</code>), <code>DarkMode</code> (<code>0xFF1E2228</code>), <code>data class AppColors</code>, và hai
+  biến <code>LightAppColors</code> / <code>DarkAppColors</code>. Nếu thiếu một chỗ, build sẽ báo lỗi và chỉ ra chỗ còn
+  thiếu.</p>
+
+  <p><strong>Bước 3: banner gradient.</strong> Code mẫu (đã build thử, chạy được):</p>
+  <pre><code>Box(
+    modifier = Modifier
+        .fillMaxWidth()
+        .height(100.dp)
+        .background(
+            brush = Brush.horizontalGradient(listOf(colors.primary, colors.secondary)),
+            shape = RoundedCornerShape(12.dp)
+        ),
+    contentAlignment = Alignment.Center // căn giữa con bên trong, giống flex center
+) {
+    Text(text = "Chào mừng!", color = colors.white, style = titleMedium)
+}</code></pre>
+
+  <p><strong>Bước 4: card có bóng đổ.</strong> Tự viết theo mục 2: một <code>Column</code> có
+  <code>shadow(8.dp)</code> → <code>background(colors.surface)</code> → <code>padding(16.dp)</code>, bên trong có tiêu đề
+  in đậm và một dòng mô tả. Thử đổi <code>elevation</code> thành <code>2.dp</code> rồi <code>16.dp</code> để thấy khác
+  biệt. Thêm <code>spotColor = colors.primary</code> vào <code>shadow(...)</code> để có bóng màu xanh, giống
+  <code>box-shadow</code> có màu.</p>
+
+  <p><strong>Bước 5: ảnh có chữ.</strong> Tự viết theo mục 3: dùng <code>R.drawable.banner</code>, cao 160dp, bo góc 12dp,
+  chữ <code>"Đà Lạt mùa hoa"</code> màu trắng ở góc dưới trái. Thử xoá lớp phủ để thấy chữ khó đọc thế nào khi ảnh sáng.</p>
+
+  <p><strong>Bước 6: hai hàng opacity.</strong> Mỗi hàng là một <code>Row</code> có 3 <code>Box</code> (cao 40dp,
+  <code>weight(1f)</code>, bo góc 8dp, có chữ "100%", "60%", "30%" ở giữa). Hàng 1: nền <code>colors.primary</code> và
+  <code>Modifier.alpha(...)</code>. Hàng 2: nền <code>colors.primary.copy(alpha = ...)</code>. Chú ý: trong
+  <code>Row</code>, giữa các ô cần khoảng cách, dùng <code>horizontalArrangement = Arrangement.spacedBy(8.dp)</code>
+  (giống <code>gap: 8px</code>).</p>
+
+  <p><strong>Bước 7: kiểm tra.</strong> Build, chạy, chuyển Light/Dark và so sánh với hình kết quả.</p>
+
+  <div class="callout ask">
+  <p>Bài này chưa tách component mới: card có bóng đổ sẽ thành <code>AppCard</code> ở Bài 9, dùng lại đúng những gì bạn
+  làm ở Bước 4. Muốn chữ có màu gradient (<code>background-clip: text</code>) hoặc nút bấm có nền gradient? Hãy hỏi agent.
+  Báo "xong bài 8" khi xong.</p>
+  </div>
+
+  <h2>6. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. CSS <code>linear-gradient(to bottom, ...)</code> tương ứng với gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: horizontalGradient đi từ trái sang phải (to right).">Brush.horizontalGradient</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: verticalGradient đi từ trên xuống dưới.">Brush.verticalGradient</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: radialGradient tỏa tròn từ tâm ra.">Brush.radialGradient</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: copy(alpha) chỉ đổi độ trong suốt của một màu.">Color.copy(alpha)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Thứ tự Modifier nào cho card có bóng đổ đúng?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: padding đứng đầu làm bóng và nền nhỏ lại, giống margin.">.padding(16.dp).shadow(8.dp).background(...)</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: nền vẽ trước rồi mới tới bóng, nên bóng bị vẽ đè sai thứ tự.">.background(...).shadow(8.dp).padding(16.dp)</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: vẽ bóng, tô nền lên trên, rồi thụt nội dung vào trong.">.shadow(8.dp).background(...).padding(16.dp)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. Bạn muốn nút có nền mờ 30% nhưng chữ trên nút vẫn rõ. Dùng gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: alpha làm mờ cả chữ, giống opacity trong CSS.">Modifier.alpha(0.3f)</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: chỉ màu nền mờ, giống rgba trong CSS.">background(colors.primary.copy(alpha = 0.3f))</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: shadow tạo bóng đổ, không làm mờ.">Modifier.shadow(0.3.dp)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. Trong một <code>Box</code> có <code>Image</code> rồi tới <code>Text</code>, cái nào nằm trên?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: con viết sau nằm trên, giống z-index tăng theo thứ tự.">Text, vì được viết sau</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Box chồng các con theo thứ tự viết, con sau nằm trên.">Image, vì được viết trước</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: đó là Column. Box thì chồng các con lên nhau.">Không chồng, chúng xếp dọc như Column</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. (Ôn bài 7) Muốn icon tự đổi màu theo Light/Dark, bạn đặt màu ở đâu?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: sửa trong file XML thì màu cố định, không theo theme.">Sửa màu fill trong file ic_home.xml</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: tint dùng theme token, giống fill: currentColor.">tint = colors.primary</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Image giữ màu gốc, không tô lại màu.">Dùng Image thay cho Icon</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/graphics/draw/brush">Brush: gradients and shaders</a>: có
+  hình minh họa từng loại gradient.
+  <a href="https://developer.android.com/develop/ui/compose/modifiers">Compose modifiers</a>: giải thích vì sao thứ tự
+  Modifier làm thay đổi kết quả.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0007-image-va-icon.html">← Bài 7</a>
+    <a href="../reference/lo-trinh-ui.html">Lộ trình →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

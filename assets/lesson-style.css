@@ -252,3 +252,24 @@ pre code { background: none; padding: 0; }
 .m-scale img.crop { object-fit: cover; }
 .m-scale img.fit { object-fit: contain; }
 .m-scale img.fill { object-fit: fill; }
+
+/* Mockup blocks cho shadow, gradient, opacity (Bài 8+) */
+.mockup { --app-secondary: #4b9cdf; --app-surface: #ffffff; }
+.mockup.dark { --app-secondary: #79b8ea; --app-surface: #1e2228; }
+.m-gradient { height: 70px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  color: var(--app-white); font-weight: 700; font-size: 14px;
+  background: linear-gradient(to right, var(--app-primary), var(--app-secondary)); }
+.m-card { background: var(--app-surface); border-radius: 16px; padding: 12px; margin-top: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.18); }
+.mockup.dark .m-card { box-shadow: none; }
+.m-card b { display: block; font-size: 13px; margin-bottom: 2px; }
+.m-overlay { position: relative; height: 110px; border-radius: 12px; overflow: hidden; margin-top: 14px; }
+.m-overlay img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.m-overlay::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7)); }
+.m-overlay span { position: absolute; left: 10px; bottom: 8px; z-index: 1; color: #fff; font-weight: 700; font-size: 13px; }
+.m-alpha-row { display: flex; justify-content: space-between; gap: 6px; }
+.m-alpha { flex: 1; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: var(--app-white); }
+.m-alpha.fade { background: var(--app-primary); }
+.m-alpha.rgba { color: var(--app-text); }
