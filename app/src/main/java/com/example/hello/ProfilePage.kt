@@ -1,7 +1,6 @@
 package com.example.hello
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -27,6 +27,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.sp
 import com.example.hello.ui.components.avatar.AppAvatar
 import com.example.hello.ui.theme.titleMedium
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
+import com.example.hello.ui.components.animation.AppGrassButterfly
+
 
 
 @Composable
@@ -40,7 +50,7 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()//width 100%
         );
-        Spacer(modifier=Modifier.height(15.dp))
+        Spacer(modifier = Modifier.height(15.dp))
 
         //banner <div> bao ảnh lại
         Box(
@@ -61,7 +71,7 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
 
         Text(
             text = "Hong Diep",
-            style = titleMedium,
+            style = titleMedium,//style font weight đã định nghĩa sẵn
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
@@ -75,33 +85,101 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
 
         //component avatar
         AppAvatar(
-            imageRes = R.drawable.avatar01,
-            borderWidth = 2.dp,
+            imageRes = R.drawable.diep,
+            borderWidth = 3.dp,
             borderColor = colors.white,
+            shadowElevation = 20.dp,
             modifier = Modifier.align(Alignment.CenterHorizontally) //căn giữa
         )
-
+        Spacer(modifier = Modifier.height(20.dp))
         Row(
-            modifier=Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
         ) {
             //cột home
             Column(
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(2f)
+                    //.background(colors.secondary)
+                    .padding(5.dp),
+                horizontalAlignment = Alignment.CenterHorizontally//căn giữa tất cả con bên trong
+
             ) {
                 Icon(
                     imageVector = Icons.Default.Home,
                     contentDescription = "Home",
                     tint = colors.primary,
+                    // modifier = Modifier.align(Alignment.CenterHorizontally)
+
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = "Home",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+            //cột home
+            Column(
+                modifier = Modifier
+                    .weight(2f)
+                    .padding(5.dp),
+                horizontalAlignment = Alignment.CenterHorizontally//căn giữa tất cả con bên trong
+
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Favorite,
+                    contentDescription = "Favorite",
+                    tint = colors.danger,
                     modifier = Modifier.align(Alignment.CenterHorizontally)
 
                 )
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = "Home",
-                    fontSize = 13.sp
+                    text = "Favorite",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+            //cột home
+            Column(
+                modifier = Modifier
+                    .weight(2f)
+                    .padding(5.dp),
+                horizontalAlignment = Alignment.CenterHorizontally//căn giữa tất cả con bên trong
+
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = "Profile",
+                    tint = colors.primary,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = "Profile",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Medium
                 )
             }
         }
-    }
+        //end row
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = buildAnnotatedString {
+                append("Xin chào ! \nMình là ")
+               withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                   append("Hồng Điệp")
+               }
+                append(" Mình đang học lập trình Android với Jetpack Compose")
+                append(". Mục tiêu cuối là dựng được giao diện người dùng trên thiết bị di động. " +
+                        "Nhiêu đó thôi cũng đã đủ mệt roài.......ahihi...")
+            },
 
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        //component grass butterfly
+        AppGrassButterfly()
+
+    }
 }

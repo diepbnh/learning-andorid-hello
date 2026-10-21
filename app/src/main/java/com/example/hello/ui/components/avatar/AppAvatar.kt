@@ -10,8 +10,10 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CardElevation
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import com.example.hello.ui.theme.colors
 import androidx.compose.ui.graphics.Color
@@ -24,6 +26,7 @@ fun AppAvatar(
     shape: Shape = CircleShape,//mặc định bo tròn
     borderWidth: Dp = 0.dp, //mặc định
     borderColor: Color = colors.white,
+    shadowElevation: Dp=0.dp,//mặc định không bóng
     contentDescription: String? = "Avatar"
 ) {
     Image(
@@ -31,6 +34,7 @@ fun AppAvatar(
         contentDescription = contentDescription,//mô tả ảnh
         modifier = modifier
             .size(size)
+            .shadow(shadowElevation,shape) // bóng trước
             .clip(shape)//cắt ảnh
             .then(
                 if (borderWidth > 0.dp)
