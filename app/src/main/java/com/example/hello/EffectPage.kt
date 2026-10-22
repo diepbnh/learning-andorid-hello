@@ -64,7 +64,10 @@ fun EffectPage(modifier: Modifier = Modifier, navController: NavController) {
             Spacer(modifier = Modifier.height(15.dp))
             ShadowCard3()
             Spacer(modifier = Modifier.height(15.dp))
-            AlphaDemoRow()
+            AlphaModifyText()
+            Spacer(modifier = Modifier.height(15.dp))
+            AlphaCopyText()
+
 
         }
     }
@@ -190,9 +193,9 @@ private fun ImageWithTextCard() {
         modifier = Modifier
             .fillMaxWidth()
             .height(100.dp)
-            .border(1.dp,colors.secondary,cardShape)
+            .border(1.dp, colors.secondary, cardShape)
             .clip(cardShape)//bo góc gọi lại
-            //.background(colors.primary)
+        //.background(colors.primary)
     )
     {
         Image(
@@ -220,7 +223,7 @@ private fun ImageWithTextCard() {
 }
 
 @Composable
-private fun AlphaDemoRow(){
+private fun AlphaModifyText() {
     Column() {
         Text(
             text = "Modifier.alpha (mờ cả chữ)",
@@ -229,64 +232,79 @@ private fun AlphaDemoRow(){
         Spacer(modifier = Modifier.height(5.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-               // .background(colors.primary)
-            ,
+            horizontalArrangement = Arrangement.spacedBy(10.dp), //khoảng cách giữa các box
         ) {
-            //box 01
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .alpha(1f)
-                    .background(colors.primary)
-                    .padding(10.dp),
-                contentAlignment = Alignment.Center //giữa ngang + giữa dọc
-
-            ){
-                Text(
-                    text = "100%",
-                    color = colors.white,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-            //box 02
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .alpha(0.6f)
-                    .background(colors.primary)
-                    .padding(10.dp),
-                contentAlignment = Alignment.Center
-
-            ){
-                Text(
-                    text = "60%",
-                    color = colors.white,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-            //box 03
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .height(40.dp)
-                    .clip(RoundedCornerShape(10.dp))
-                    .alpha(0.3f)
-                    .background(colors.primary)
-                    .padding(10.dp),
-                contentAlignment = Alignment.Center
-
-            ){
-                Text(
-                    text = "30%",
-                    color = colors.white,
-                    fontWeight = FontWeight.Medium
-                )
-            }
+            //gọi lại AlphaBox, tự truyền text + alpha
+            AlphaBox(text = "100%", alpha = 1f, modifier = Modifier.weight(1f))
+            AlphaBox(text = "60%", alpha = 0.6f, modifier = Modifier.weight(1f))
+            AlphaBox(text = "30%", alpha = 0.3f, modifier = Modifier.weight(1f))
         }
     }
+}
+
+//box dùng chung cho AlphaDemoRow
+@Composable
+private fun AlphaBox(
+    text: String, //chữ hiển thị
+    alpha: Float = 1f, //độ mờ, mặc định không mờ
+    modifier: Modifier = Modifier, //weight truyền từ Row vào
+) {
+    Box(
+        modifier = modifier
+            .height(40.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .alpha(alpha)
+            .background(colors.primary),
+        contentAlignment = Alignment.Center //giữa ngang + giữa dọc
+    ) {
+        Text(
+            text = text,
+            color = colors.white,
+            fontWeight = FontWeight.Medium
+        )
+    }
+}
+
+@Composable
+private fun AlphaCopyText() {
+    Column() {
+        Text(
+            text = "colo.copy (alpha) (chữ vẫn rõ)",
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(5.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp), //khoảng cách giữa các box
+        ) {
+            //gọi lại AlphaBox, tự truyền text + alpha
+            ColorAlPhaBox(text = "100%", textAlPha = 1f, modifier = Modifier.weight(1f))
+            ColorAlPhaBox(text = "60%", textAlPha = 0.6f, modifier = Modifier.weight(1f))
+            ColorAlPhaBox(text = "30%", textAlPha = 0.3f, modifier = Modifier.weight(1f))
+        }
+    }
+}
+
+//Box chữ mờ nhưng nền rõ dung copy(alpha)
+@Composable
+private fun ColorAlPhaBox(
+    text: String, // chữ truyền vào
+    textAlPha: Float = 1f, // độ mờ của chữ
+    backgroundAlpha: Float = 1f, // độ mờ của nền
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .height(40.dp)
+            .clip(RoundedCornerShape(10.dp))
+            .background(colors.primary.copy(alpha = backgroundAlpha)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = text,
+            color = colors.white.copy(alpha = textAlPha),
+            fontWeight = FontWeight.Medium
+        )
+    }
+
 }
