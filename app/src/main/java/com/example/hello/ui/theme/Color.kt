@@ -19,6 +19,7 @@ private object LightMode{
     val backgroundBody= Color(0xFFeff5ff) // màu nền body
     val white= Color(0xFFFFFFFF)
    val backgroundTextField= Color(0xFFFFFFFF)//// màu nền TextField
+   val surface= Color(0xFFFFFFFF) // nền card trắng
 
 }
 
@@ -30,9 +31,9 @@ private object DarkMode{
     val danger= Color(0xFFf28b8b)
     val text= Color(0xFFffffff)//màu text
     val backgroundBody= Color(0xFF12141A) // màu nền body
-    val white= Color(0xFFFFFFFF)
+    val white= Color(0xFF000000)
     val backgroundTextField= Color(0xFF000000)
-
+    val surface= Color(0xFF1E2228) // nền card xám tô
 }
 // ============================================================
 // 2. APP COLORS
@@ -46,6 +47,7 @@ data class AppColors(
     val backgroundBody: Color,
     val white: Color,
     val backgroundTextField: Color,
+    val surface: Color,
 )
 // ============================================================
 // 3. LIGHT AND DARK APP COLORs
@@ -59,6 +61,7 @@ val LightAppColors=AppColors(
     backgroundBody = LightMode.backgroundBody,
     white= LightMode.white,
     backgroundTextField = LightMode.backgroundTextField,
+    surface= LightMode.surface,
 )
 val DarkAppColors=AppColors(
     primary = DarkMode.primary,
@@ -68,7 +71,8 @@ val DarkAppColors=AppColors(
     text = DarkMode.text,
     backgroundBody = DarkMode.backgroundBody,
     white= DarkMode.white,
-    backgroundTextField = DarkMode.backgroundTextField
+    backgroundTextField = DarkMode.backgroundTextField,
+    surface= DarkMode.surface,
 )
 
 // ============================================================

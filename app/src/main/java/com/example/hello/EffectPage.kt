@@ -54,7 +54,7 @@ fun EffectPage(modifier: Modifier = Modifier, navController: NavController) {
         )
         {
             //call function bellow
-            BoxWellcome()
+            BoxWelcome()
             Spacer(modifier = Modifier.height(15.dp))
             ImageWithTextCard()
             Spacer(modifier = Modifier.height(15.dp))
@@ -74,7 +74,7 @@ fun EffectPage(modifier: Modifier = Modifier, navController: NavController) {
 }
 
 @Composable
-private fun BoxWellcome() {
+private fun BoxWelcome() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -113,7 +113,7 @@ private fun ShadowCard() {
             ),
         shape = cardShape,
         colors = CardDefaults.cardColors(
-            containerColor = colors.white,//màu nền
+            containerColor = colors.surface,//màu nền
             contentColor = colors.text // màu chữ
         ),
     )
@@ -143,7 +143,7 @@ private fun ShadowCard2() {
             ),
         shape = cardShape,
         colors = CardDefaults.cardColors(
-            containerColor = colors.white,//màu nền
+            containerColor = colors.surface,//màu nền
             contentColor = colors.text // màu chữ
         ),
     )
@@ -172,7 +172,7 @@ private fun ShadowCard3() {
             ),
         shape = cardShape,
         colors = CardDefaults.cardColors(
-            containerColor = colors.white,//màu nền
+            containerColor = colors.surface,//màu nền
             contentColor = colors.text // màu chữ
         ),
     )
@@ -269,7 +269,7 @@ private fun AlphaBox(
 private fun AlphaCopyText() {
     Column() {
         Text(
-            text = "colo.copy (alpha) (chữ vẫn rõ)",
+            text = "color.copy (alpha) (chữ vẫn rõ)",
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(5.dp))
