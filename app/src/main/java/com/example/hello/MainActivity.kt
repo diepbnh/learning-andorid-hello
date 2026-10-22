@@ -47,6 +47,10 @@ class MainActivity : ComponentActivity() {
                     composable(route = "profile") {
                         ProfilePage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
+                    composable(route = "effect") {
+                        EffectPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
+
                 }
             }
         }

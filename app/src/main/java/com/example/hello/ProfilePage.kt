@@ -28,9 +28,12 @@ import androidx.compose.ui.unit.sp
 import com.example.hello.ui.components.avatar.AppAvatar
 import com.example.hello.ui.theme.titleMedium
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.IconButton
+
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -38,18 +41,36 @@ import androidx.compose.ui.text.withStyle
 import com.example.hello.ui.components.animation.AppGrassButterfly
 
 
-
 @Composable
 fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
 
     AppPage(modifier = modifier) {
-        Text(
-            text = "Profile Page",
-            color = colors.primary,
-            style = titleXLarge,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth()//width 100%
-        );
+        Box(
+            modifier = Modifier.fillMaxWidth()
+                //.background(colors.danger)
+        ) {
+            IconButton(
+                onClick = {
+                    navController.popBackStack()//về trước đó
+                },
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = colors.primary
+                )
+            }
+
+            Text(
+                text = "Profile Page",
+                color = colors.primary,
+                style = titleXLarge,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()//width 100%
+                    .align(Alignment.Center) // text center middle
+            )
+        }
         Spacer(modifier = Modifier.height(15.dp))
 
         //banner <div> bao ảnh lại
@@ -168,15 +189,17 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
         Text(
             text = buildAnnotatedString {
                 append("Xin chào ! \nMình là ")
-               withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                   append("Hồng Điệp")
-               }
+                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                    append("Hồng Điệp")
+                }
                 append(" Mình đang học lập trình Android với Jetpack Compose")
-                append(". Mục tiêu cuối là dựng được giao diện người dùng trên thiết bị di động. " +
-                        "Nhiêu đó thôi cũng đã đủ mệt roài.......ahihi...")
+                append(
+                    ". Mục tiêu cuối là dựng được giao diện người dùng trên thiết bị di động. " +
+                            "Nhiêu đó thôi cũng đã đủ mệt roài.......ahihi..."
+                )
             },
 
-        )
+            )
         Spacer(modifier = Modifier.height(20.dp))
         //component grass butterfly
         AppGrassButterfly()

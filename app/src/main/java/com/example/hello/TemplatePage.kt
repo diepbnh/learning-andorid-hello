@@ -33,22 +33,22 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                 .padding(innerPadding)
                 .padding(32.dp),
             verticalArrangement = Arrangement.Top,
-           // horizontalAlignment = Alignment.CenterHorizontally
+            // horizontalAlignment = Alignment.CenterHorizontally
 
-        ){
-            Spacer(modifier = Modifier.height(35.dp))
+        ) {
+            Spacer(modifier = Modifier.height(15.dp))
             Text(
                 text = "Template Page",
                 color = colors.primary,
                 style = titleXLarge,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = "Back",
                 style = titleMedium,
                 modifier = Modifier
-                .align(Alignment.CenterHorizontally)
+                    .align(Alignment.CenterHorizontally)
                     .background(colors.primary)
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
@@ -58,10 +58,25 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                     }
                     .padding(25.dp, 10.dp)
             )
-
             Spacer(
-                modifier = Modifier.height(25.dp)
+                modifier = Modifier.height(5.dp)
             )
+            Text(
+                text = "Profile",
+                style = titleMedium,
+                color = colors.primary,
+                textDecoration = TextDecoration.Underline,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null // bỏ hiệu ứng ripple khi nhấn
+                    ) {
+                        navController.navigate("profile")//hàm back trở về màn hình trước đó
+                    }
+
+            )
+            Spacer(modifier = Modifier.height(5.dp))
             Text(
                 text = "Table",
                 textDecoration = TextDecoration.Underline,
@@ -74,6 +89,19 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                     }
 
             )
+            Spacer(modifier = Modifier.height(5.dp))
+            Text(
+                text = "Effect",
+                textDecoration = TextDecoration.Underline,
+                style = titleMedium,
+                color = colors.primary,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .clickable {
+                        navController.navigate("effect")
+                    }
+
+            )
 
             Spacer(
                 modifier = Modifier.height(25.dp)
@@ -81,10 +109,10 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
             AppFormField(
                 label = "Label input",
                 value = "",
-                onValueChange = {  },
+                onValueChange = { },
                 placeholder = "Enter input.....",
                 isPassword = false,
-                isError=true,
+                isError = true,
                 errorMessage = "Hiện thị error của input ở đây"
             )
             Spacer(
