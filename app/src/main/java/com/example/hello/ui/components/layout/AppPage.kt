@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 //layout dùng chung padding cho all page
 fun AppPage(
     modifier: Modifier = Modifier,
+    scrollable: Boolean=true,
     contentPadding: PaddingValues= PaddingValues(
         start = 20.dp,
         top = 40.dp,
@@ -47,7 +48,13 @@ fun AppPage(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .padding(contentPadding)
-            .verticalScroll(rememberScrollState()) , //trang dài thì cuộn
+                .then(
+                    if(scrollable)
+                        Modifier.verticalScroll(rememberScrollState())
+                    else
+                        Modifier
+                ) ,
+
             verticalArrangement = Arrangement.Top,
             horizontalAlignment=horizontalAlignment
         )
