@@ -1,7 +1,9 @@
 package com.example.hello
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
@@ -13,6 +15,7 @@ import com.example.hello.ui.theme.titleXLarge
 import androidx.compose.ui.Alignment
 import com.example.hello.ui.theme.colors
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,16 +23,22 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.ui.draw.alpha
+
 import androidx.compose.ui.graphics.Brush
 import  androidx.compose.ui.unit.sp
 import  androidx.compose.ui.text.font.FontWeight
 import  androidx.compose.ui.unit.dp
-import androidx.compose.material3.CardElevation
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import com.example.hello.ui.theme.boxShadow
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 
 @Composable
 fun EffectPage(modifier: Modifier = Modifier, navController: NavController) {
-    AppPage(modifier = modifier, scrollable = false) {
+    AppPage(modifier = modifier, scrollable = true) {
         Text(
             text = "Effect Page",
             color = colors.primary,
@@ -47,9 +56,15 @@ fun EffectPage(modifier: Modifier = Modifier, navController: NavController) {
             //call function bellow
             BoxWellcome()
             Spacer(modifier = Modifier.height(15.dp))
+            ImageWithTextCard()
+            Spacer(modifier = Modifier.height(15.dp))
             ShadowCard()
             Spacer(modifier = Modifier.height(15.dp))
             ShadowCard2()
+            Spacer(modifier = Modifier.height(15.dp))
+            ShadowCard3()
+            Spacer(modifier = Modifier.height(15.dp))
+            AlphaDemoRow()
 
         }
     }
@@ -73,7 +88,7 @@ private fun BoxWellcome() {
         Alignment.Center //center
     ) {
         Text(
-            text = "Chào Mừng",
+            text = "Welcome",
             color = colors.white,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
@@ -101,13 +116,15 @@ private fun ShadowCard() {
     )
     {
         Text(
-            text = "Card and box-shadow \n" +
+            text = "Card sử dụng shadow mặc định.\n" +
                     "Card không có padding chính nó, nếu thêm nó sẽ đẩy ra khoảng cách xa giống margin",
-           modifier = Modifier.padding(24.dp)
+            modifier = Modifier.padding(24.dp),
+            lineHeight = 28.sp
         )
 
     }
 }
+
 @Composable
 private fun ShadowCard2() {
     val cardShape = RoundedCornerShape(12.dp)//border-radius
@@ -118,6 +135,8 @@ private fun ShadowCard2() {
             .shadow(
                 elevation = 6.dp,
                 shape = cardShape,
+                ambientColor = colors.primary,//viền mờ đều xung quanh
+                spotColor = colors.primary//bóng đậm phía dưới
             ),
         shape = cardShape,
         colors = CardDefaults.cardColors(
@@ -127,10 +146,147 @@ private fun ShadowCard2() {
     )
     {
         Text(
-            text = "Card and box-shadow \n" +
-                    "Card không có padding chính nó, nếu thêm nó sẽ đẩy ra khoảng cách xa giống margin",
+            text = "Card 2  \n" +
+                    "Card sử dụng shadow đỗ màu xanh",
             modifier = Modifier.padding(24.dp)
         )
 
+    }
+}
+
+@Composable
+private fun ShadowCard3() {
+    val cardShape = RoundedCornerShape(28.dp)//border-radius
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .boxShadow(
+                color = colors.danger,
+                x = 5.dp,
+                y = 4.dp,
+                blur = 6.dp,
+                shape = cardShape,
+            ),
+        shape = cardShape,
+        colors = CardDefaults.cardColors(
+            containerColor = colors.white,//màu nền
+            contentColor = colors.text // màu chữ
+        ),
+    )
+    {
+        Text(
+            text = "Card 3 \n" +
+                    "Card sử dụng shadow custom riêng và được truyền tham số tùy thích",
+            modifier = Modifier.padding(24.dp)
+        )
+
+    }
+}
+
+@Composable
+private fun ImageWithTextCard() {
+    val cardShape = RoundedCornerShape(15.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(100.dp)
+            .border(1.dp,colors.secondary,cardShape)
+            .clip(cardShape)//bo góc gọi lại
+            //.background(colors.primary)
+    )
+    {
+        Image(
+            painter = painterResource(R.drawable.banner),
+            contentDescription = "Cover Image",
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
+        )
+        Box(
+            modifier = Modifier
+                .matchParentSize() //độ lớn bằng cha
+                .background(colors.white.copy(alpha = 0.5f)) //rgba(255,255,255,0.5)
+        )
+        Text(
+            text = "Banner Image",
+            fontWeight = FontWeight.Bold,
+            //textAlign = TextAlign.End,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(20.dp)
+        )
+
+    }
+}
+
+@Composable
+private fun AlphaDemoRow(){
+    Column() {
+        Text(
+            text = "Modifier.alpha (mờ cả chữ)",
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(5.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+               // .background(colors.primary)
+            ,
+        ) {
+            //box 01
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(40.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .alpha(1f)
+                    .background(colors.primary)
+                    .padding(10.dp),
+                contentAlignment = Alignment.Center //giữa ngang + giữa dọc
+
+            ){
+                Text(
+                    text = "100%",
+                    color = colors.white,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+            //box 02
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(40.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .alpha(0.6f)
+                    .background(colors.primary)
+                    .padding(10.dp),
+                contentAlignment = Alignment.Center
+
+            ){
+                Text(
+                    text = "60%",
+                    color = colors.white,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+            //box 03
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .height(40.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .alpha(0.3f)
+                    .background(colors.primary)
+                    .padding(10.dp),
+                contentAlignment = Alignment.Center
+
+            ){
+                Text(
+                    text = "30%",
+                    color = colors.white,
+                    fontWeight = FontWeight.Medium
+                )
+            }
+        }
     }
 }

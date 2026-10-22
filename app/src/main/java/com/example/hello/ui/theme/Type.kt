@@ -43,7 +43,7 @@ private val bodyTextStyle= TextStyle(
     fontFamily=MontserratFontFamily,
     fontWeight=FontWeight.Normal,
     fontSize=16.sp,
-    lineHeight=20.sp
+    lineHeight=24.sp
 )
 // ============================================================
 // 2. Tích hợp vào Typography chuẩn của Material3
