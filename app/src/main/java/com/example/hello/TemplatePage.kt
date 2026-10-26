@@ -23,6 +23,9 @@ import com.example.hello.ui.components.button.AppButton
 import com.example.hello.ui.components.button.AppButtonSize
 import com.example.hello.ui.components.textfield.AppFormField
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
 
 @Composable
 fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
@@ -59,53 +62,101 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                     .padding(25.dp, 10.dp)
             )
             Spacer(
-                modifier = Modifier.height(5.dp)
+                modifier = Modifier.height(25.dp)
             )
-            Text(
-                text = "Profile",
-                style = titleMedium,
-                color = colors.primary,
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null // bỏ hiệu ứng ripple khi nhấn
-                    ) {
-                        navController.navigate("profile")//hàm back trở về màn hình trước đó
-                    }
 
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            Text(
-                text = "Table",
-                textDecoration = TextDecoration.Underline,
-                style = titleMedium,
-                color = colors.primary,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .clickable {
-                        navController.navigate("table")
-                    }
+            //row
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Profile",
+                    style = titleMedium,
+                    color = colors.primary,
+                    textDecoration = TextDecoration.Underline,
+                    modifier = Modifier
 
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            Text(
-                text = "Effect",
-                textDecoration = TextDecoration.Underline,
-                style = titleMedium,
-                color = colors.primary,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .clickable {
-                        navController.navigate("effect")
-                    }
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null // bỏ hiệu ứng ripple khi nhấn
+                        ) {
+                            navController.navigate("profile")//hàm back trở về màn hình trước đó
+                        }
 
-            )
+                )
+                Spacer(modifier = Modifier.width(15.dp))
+                Text(
+                    text = "Table",
+                    textDecoration = TextDecoration.Underline,
+                    style = titleMedium,
+                    color = colors.primary,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("table")
+                        }
+
+                )
+                Spacer(modifier = Modifier.width(15.dp))
+                Text(
+                    text = "Card",
+                    textDecoration = TextDecoration.Underline,
+                    style = titleMedium,
+                    color = colors.primary,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("card")
+                        }
+                )
+                Spacer(modifier = Modifier.width(15.dp))
+                Text(
+                    text = "Login",
+                    textDecoration = TextDecoration.Underline,
+                    style = titleMedium,
+                    color = colors.primary,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("login")
+                        }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(15.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "ToggleButton",
+                    textDecoration = TextDecoration.Underline,
+                    style = titleMedium,
+                    color = colors.primary,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("toggle_button")
+                        }
+                )
+                Spacer(modifier = Modifier.width(15.dp))
+                Text(
+                    text = "Dialog",
+                    textDecoration = TextDecoration.Underline,
+                    style = titleMedium,
+                    color = colors.primary,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("dialog")
+                        }
+                )
+            }
+
+
+
+
 
             Spacer(
                 modifier = Modifier.height(25.dp)
             )
+
+
+            //component input
             AppFormField(
                 label = "Label input",
                 value = "",

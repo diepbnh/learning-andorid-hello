@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 10b · Trang Dialog từ dễ đến khó</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 10b / Mở rộng Bài 10 · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Trang Dialog: 8 kiểu hộp thoại, từ dễ đến khó</h1>
+
+  <div class="callout">
+  <p>Bài 10 dạy 3 kiểu cơ bản (<code>Dialog</code>, <code>AlertDialog</code>, Bottom Sheet). Bài này gom tất cả vào
+  <strong>một trang showcase</strong> giống trang demo component của Ionic: mỗi nút mở một kiểu hộp thoại, xếp theo
+  3 mức <strong>Dễ / Vừa / Khó</strong>. Nếu bạn chưa làm <code>ModalPage</code> của Bài 10 thì làm luôn trang này,
+  thay cho Bài 10 Bước 1.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Một trang <strong>Dialog</strong> có 8 nút. Hai dòng đầu trang hiện <em>giá trị hiện tại</em>; hộp thoại số 5 và 6
+  sẽ đổi được 2 giá trị này. Hình dưới <strong>bấm được</strong>: thử chọn ngôn ngữ, đổi tên, để trống tên rồi bấm Lưu,
+  và thử bấm ra ngoài hộp thoại số 4.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone has-modal demo" data-open="language"></div>
+      <figcaption>Light Mode (đang mở số 5: Chọn ngôn ngữ)</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone has-modal demo" data-open="rename"></div>
+      <figcaption>Dark Mode (đang mở số 6: Đổi tên)</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: tất cả hộp thoại dùng nền <code>colors.surface</code>, chữ
+  <code>colors.text</code>. Số 3 có vòng tròn đỏ nhạt chứa icon cảnh báo. Số 4 <strong>không</strong> đóng khi bấm
+  ra ngoài hay bấm Back, chỉ đóng khi bấm nút. Số 5 và 6 chỉ đổi giá trị trên trang khi bấm <strong>Chọn / Lưu</strong>;
+  bấm Huỷ hoặc ra ngoài thì giữ nguyên giá trị cũ. Số 8 phủ kín màn hình, nội dung cuộn được, nút "Tôi đồng ý" luôn
+  nằm dưới đáy.</p>
+
+  <template id="dialog-phone">
+    <div class="m-title">Dialog</div>
+    <div class="m-info">Ngôn ngữ: <b class="js-language">Tiếng Việt</b><br>Tên: <b class="js-name">Hong Diep</b></div>
+
+    <div class="m-level">Dễ</div>
+    <button class="m-btn small" data-target="info">1. Thông báo 1 nút</button>
+    <button class="m-btn small" data-target="confirm">2. Xác nhận 2 nút</button>
+    <div class="m-level">Vừa</div>
+    <button class="m-btn small" data-target="delete">3. Có icon + nút nguy hiểm</button>
+    <button class="m-btn small" data-target="update">4. Bắt buộc bấm nút</button>
+    <button class="m-btn small" data-target="language">5. Chọn 1 trong danh sách</button>
+    <div class="m-level">Khó</div>
+    <button class="m-btn small" data-target="rename">6. Form nhập liệu</button>
+    <button class="m-btn small" data-target="sheet">7. Bottom Sheet</button>
+    <button class="m-btn small" data-target="terms">8. Toàn màn hình</button>
+
+    <div class="m-scrim" data-name="info">
+      <div class="m-dialog"><b>Đã lưu</b><p>Thông tin của bạn đã được lưu thành công.</p>
+        <div class="m-alert-actions"><span class="js-close">OK</span></div></div>
+    </div>
+    <div class="m-scrim" data-name="confirm">
+      <div class="m-dialog"><b>Đăng xuất?</b><p>Bạn có chắc muốn đăng xuất không?</p>
+        <div class="m-alert-actions"><span class="js-close">Huỷ</span><span class="js-close">Đăng xuất</span></div></div>
+    </div>
+    <div class="m-scrim" data-name="delete">
+      <div class="m-dialog center"><div class="m-icon-circle">!</div><b>Xoá ảnh này?</b>
+        <p>Ảnh sẽ bị xoá vĩnh viễn và không khôi phục được.</p>
+        <div class="m-btn-row"><button class="m-btn soft small js-close">Huỷ</button><button class="m-btn danger small js-close">Xoá</button></div></div>
+    </div>
+    <div class="m-scrim" data-name="update" data-static="true">
+      <div class="m-dialog"><b>Có bản cập nhật mới</b><p>Phiên bản 2.0 đã sẵn sàng. Bạn cần cập nhật để tiếp tục dùng app.</p>
+        <button class="m-btn small js-close">Cập nhật ngay</button></div>
+    </div>
+    <div class="m-scrim" data-name="language">
+      <div class="m-dialog"><b>Chọn ngôn ngữ</b>
+        <div class="m-radio" data-value="Tiếng Việt">Tiếng Việt</div>
+        <div class="m-radio" data-value="English">English</div>
+        <div class="m-radio" data-value="日本語">日本語</div>
+        <div class="m-alert-actions" style="margin-top:8px"><span class="js-close">Huỷ</span><span class="js-choose">Chọn</span></div></div>
+    </div>
+    <div class="m-scrim" data-name="rename">
+      <div class="m-dialog"><b>Đổi tên</b>
+        <div class="m-label">Tên hiển thị</div>
+        <input class="m-input" placeholder="Nhập tên...">
+        <div class="m-error"></div>
+        <div class="m-btn-row" style="margin-top:8px"><button class="m-btn soft small js-close">Huỷ</button><button class="m-btn small js-save">Lưu</button></div></div>
+    </div>
+    <div class="m-scrim sheet" data-name="sheet">
+      <div class="m-sheet"><div class="m-sheet-handle"></div><b>Chọn ảnh</b>
+        <div class="m-sheet-item">Chụp ảnh mới</div><div class="m-sheet-item">Chọn từ thư viện</div>
+        <button class="m-btn js-close">Đóng</button></div>
+    </div>
+    <div class="m-scrim full" data-name="terms">
+      <div class="m-full">
+        <div class="m-full-bar"><span class="js-close">✕</span>Điều khoản sử dụng</div>
+        <div class="m-full-body">
+          <p><b>Điều 1.</b> Bạn đồng ý dùng app đúng mục đích học tập.</p>
+          <p><b>Điều 2.</b> Không chia sẻ tài khoản cho người khác.</p>
+          <p><b>Điều 3.</b> Ảnh bạn tải lên thuộc về bạn.</p>
+          <p><b>Điều 4.</b> App có thể cập nhật điều khoản bất cứ lúc nào.</p>
+          <p><b>Điều 5.</b> Dữ liệu được lưu trên máy chủ ở Việt Nam.</p>
+          <p><b>Điều 6.</b> Bạn có thể xoá tài khoản trong phần Cài đặt.</p>
+          <p><b>Điều 7.</b> Mọi thắc mắc gửi về hỗ trợ của app.</p>
+          <p><b>Điều 8.</b> Điều khoản có hiệu lực từ ngày bạn đồng ý.</p>
+        </div>
+        <button class="m-btn js-close">Tôi đồng ý</button>
+      </div>
+    </div>
+  </template>
+
+  <h2>1. Bản đồ 8 kiểu</h2>
+  <p>Mỗi kiểu chỉ thêm <strong>1 điều mới</strong> so với kiểu trước. Cột cuối là thứ bạn cần học thêm.</p>
+  <table>
+    <tr><th>#</th><th>Kiểu</th><th>Giống Ionic</th><th>Điều mới</th></tr>
+    <tr><td>1</td><td>Thông báo 1 nút</td><td><code>ion-alert</code> 1 button</td><td><code>AlertDialog</code> bỏ trống <code>dismissButton</code></td></tr>
+    <tr><td>2</td><td>Xác nhận 2 nút</td><td><code>ion-alert</code> 2 buttons</td><td>Bài 10 Bước 3</td></tr>
+    <tr><td>3</td><td>Có icon + nút nguy hiểm</td><td><code>ion-modal</code> tự thiết kế</td><td>Bài 10 Bước 2 + <code>Icon</code> trong vòng tròn</td></tr>
+    <tr><td>4</td><td>Bắt buộc bấm nút</td><td><code>backdropDismiss="false"</code></td><td><code>DialogProperties(...)</code></td></tr>
+    <tr><td>5</td><td>Chọn 1 trong danh sách</td><td><code>ion-alert</code> có <code>inputs</code> radio</td><td><strong>State tạm</strong> + <code>RadioButton</code> + <code>forEach</code></td></tr>
+    <tr><td>6</td><td>Form nhập liệu</td><td><code>ion-modal</code> chứa form</td><td>State tạm + kiểm tra lỗi khi bấm Lưu</td></tr>
+    <tr><td>7</td><td>Bottom Sheet</td><td><code>ion-modal</code> có <code>breakpoints</code></td><td>Bài 10 Bước 4</td></tr>
+    <tr><td>8</td><td>Toàn màn hình</td><td><code>ion-modal</code> mặc định trên điện thoại</td><td><code>usePlatformDefaultWidth = false</code> + <code>weight(1f)</code></td></tr>
+  </table>
+
+  <h2>2. Khung trang</h2>
+  <p>Giống Bài 10: mỗi hộp thoại có 1 State <code>true/false</code>. Thêm 2 State giữ <strong>giá trị của trang</strong>
+  (ngôn ngữ, tên) để hộp thoại 5 và 6 có cái mà đổi.</p>
+  <pre><code>@Composable
+fun DialogPage(modifier: Modifier = Modifier, navController: NavController) {
+    // State mở/đóng: 8 cái, mỗi hộp thoại 1 cái
+    var showInfo by remember { mutableStateOf(false) }
+    var showConfirm by remember { mutableStateOf(false) }
+    // ... showDelete, showUpdate, showLanguage, showRename, showSheet, showTerms
+
+    // State giá trị của trang
+    var language by remember { mutableStateOf("Tiếng Việt") }
+    var name by remember { mutableStateOf("Hong Diep") }
+
+    Box(modifier = modifier.fillMaxSize()) {
+        AppPage {
+            // tiêu đề + link Back như ToggleButtonPage
+            Text("Ngôn ngữ: $language")
+            Text("Tên: $name")
+
+            Text("Dễ", style = titleMedium)
+            AppButton(text = "1. Thông báo 1 nút", onClick = { showInfo = true })
+            // ... 7 nút còn lại, có Spacer ở giữa
+        }
+
+        // 7. Bottom Sheet (AnimatedVisibility) đặt Ở ĐÂY: trong Box, sau AppPage
+        BackHandler(enabled = showSheet) { showSheet = false }
+    }
+
+    // 1–6 và 8 dùng Dialog / AlertDialog: đặt ở đây, ngoài Box
+    if (showInfo) { ... }
+    if (showConfirm) { ... }
+    // ...
+}</code></pre>
+  <p><code>"Ngôn ngữ: $language"</code> là cách chèn biến vào chuỗi, giống <code>`Ngôn ngữ: ${language}`</code> trong
+  JavaScript.</p>
+
+  <h2>3. Mức Dễ</h2>
+  <h3>Số 1: Thông báo 1 nút</h3>
+  <p>Chỉ là <code>AlertDialog</code> của Bài 10 nhưng <strong>bỏ</strong> tham số <code>dismissButton</code>. Không truyền
+  thì Material không vẽ nút đó, giống ô trống trong layout.</p>
+  <pre><code>if (showInfo) {
+    AlertDialog(
+        onDismissRequest = { showInfo = false },
+        title = { Text("Đã lưu") },
+        text = { Text("Thông tin của bạn đã được lưu thành công.") },
+        confirmButton = {
+            TextButton(onClick = { showInfo = false }) {
+                Text("OK", color = colors.primary)
+            }
+        },
+        containerColor = colors.surface,
+        titleContentColor = colors.text,
+        textContentColor = colors.text,
+    )
+}</code></pre>
+  <h3>Số 2: Xác nhận 2 nút</h3>
+  <p>Chính là Bài 10 Bước 3 ("Đăng xuất?"). Tự viết lại, không cần code mẫu.</p>
+
+  <h2>4. Mức Vừa</h2>
+  <h3>Số 3: Có icon + nút nguy hiểm</h3>
+  <p>Lấy <code>Dialog</code> "Xoá ảnh này?" của Bài 10 Bước 2, thêm 2 thứ: <code>Column</code> căn giữa
+  (<code>horizontalAlignment = Alignment.CenterHorizontally</code>) và một vòng tròn icon ở trên cùng. Vòng tròn là
+  <code>Box</code> bo tròn hẳn, giống <code>border-radius: 50%</code>:</p>
+  <pre><code>Box(
+    contentAlignment = Alignment.Center, // icon nằm giữa vòng tròn
+    modifier = Modifier
+        .size(56.dp)
+        .background(colors.danger.copy(alpha = 0.15f), CircleShape) // đỏ nhạt 15%
+) {
+    Icon(
+        imageVector = Icons.Default.Warning,
+        contentDescription = null, // icon trang trí, không cần đọc cho người khiếm thị
+        tint = colors.danger
+    )
+}
+Spacer(modifier = Modifier.height(12.dp))
+Text("Xoá ảnh này?", style = titleMedium, color = colors.text)
+// ... phần còn lại như Bài 10 Bước 2</code></pre>
+  <p><code>.copy(alpha = 0.15f)</code> bạn đã gặp ở Bài 8, giống <code>rgba(..., 0.15)</code>. Nếu đã làm
+  <code>AppDialog</code> (Bài 10 Bước 5), thử thêm tham số <code>icon: ImageVector? = null</code>: có icon thì vẽ
+  vòng tròn, <code>null</code> thì không.</p>
+
+  <h3>Số 4: Bắt buộc bấm nút</h3>
+  <p>Dùng cho trường hợp người dùng <strong>phải</strong> chọn, ví dụ app bắt cập nhật. Tắt cả 2 cách đóng tự động:</p>
+  <pre><code>Dialog(
+    onDismissRequest = { }, // để trống: không làm gì khi bấm ra ngoài
+    properties = DialogProperties(
+        dismissOnClickOutside = false, // bấm vùng tối: không đóng
+        dismissOnBackPress = false     // bấm Back: không đóng
+    )
+) {
+    // Column: tiêu đề, câu giải thích, 1 AppButton "Cập nhật ngay"
+    // nút này mới là chỗ duy nhất đặt showUpdate = false
+}</code></pre>
+
+  <h3>Số 5: Chọn 1 trong danh sách</h3>
+  <p>Đây là điểm mới quan trọng nhất của bài: <strong>State tạm</strong>. Nếu bấm radio mà đổi
+  <code>language</code> ngay, thì bấm Huỷ cũng không quay lại được. Vì vậy trong hộp thoại có một State riêng
+  <code>selected</code>, chỉ khi bấm <strong>Chọn</strong> mới chép nó vào <code>language</code>. Giống form Ionic: sửa
+  trên bản sao, bấm Save mới ghi vào dữ liệu thật.</p>
+  <pre><code>if (showLanguage) {
+    val languages = listOf("Tiếng Việt", "English", "日本語")
+    // State tạm: khai báo BÊN TRONG if, nên mỗi lần mở lại bắt đầu từ language hiện tại
+    var selected by remember { mutableStateOf(language) }
+
+    Dialog(onDismissRequest = { showLanguage = false }) {
+        Column(/* nền surface, bo 16.dp, padding 24.dp như số 3 */) {
+            Text("Chọn ngôn ngữ", style = titleMedium, color = colors.text)
+
+            languages.forEach { item ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { selected = item } // bấm cả dòng, không chỉ bấm chấm tròn
+                ) {
+                    RadioButton(
+                        selected = selected == item,
+                        onClick = { selected = item },
+                        colors = RadioButtonDefaults.colors(selectedColor = colors.primary)
+                    )
+                    Text(item, color = colors.text)
+                }
+            }
+
+            Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
+                TextButton(onClick = { showLanguage = false }) { Text("Huỷ", color = colors.primary) }
+                TextButton(onClick = {
+                    language = selected   // lúc này mới ghi vào State thật
+                    showLanguage = false
+                }) { Text("Chọn", color = colors.primary) }
+            }
+        }
+    }
+}</code></pre>
+  <p><code>forEach</code> bạn đã tự dùng khi vẽ danh sách, giống <code>*ngFor</code>.
+  <code>RadioButton</code> giống <code>&lt;ion-radio&gt;</code>: nó không tự nhớ mình được chọn, bạn phải nói cho nó biết
+  qua <code>selected = ...</code>.</p>
+
+  <h2>5. Mức Khó</h2>
+  <h3>Số 6: Form nhập liệu</h3>
+  <p>Kết hợp số 5 (State tạm) với cách bạn đã làm báo lỗi ở SignUpPage. Dùng lại <code>AppFormField</code>:</p>
+  <pre><code>if (showRename) {
+    var newName by remember { mutableStateOf(name) } // State tạm
+    var isError by remember { mutableStateOf(false) }
+
+    Dialog(onDismissRequest = { showRename = false }) {
+        Column(/* như số 3 */) {
+            Text("Đổi tên", style = titleMedium, color = colors.text)
+            Spacer(modifier = Modifier.height(12.dp))
+            AppFormField(
+                label = "Tên hiển thị",
+                value = newName,
+                onValueChange = {
+                    newName = it
+                    isError = false // gõ lại thì tắt báo lỗi
+                },
+                placeholder = "Nhập tên...",
+                isError = isError,
+                errorMessage = "Tên không được để trống"
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            // Row 2 nút Huỷ / Lưu như Bài 10 Bước 2. Nút Lưu:
+            AppButton(
+                text = "Lưu",
+                onClick = {
+                    if (newName.isBlank()) {
+                        isError = true        // không đóng, hiện lỗi
+                    } else {
+                        name = newName        // ghi vào State thật
+                        showRename = false
+                    }
+                }
+            )
+        }
+    }
+}</code></pre>
+  <p><code>isBlank()</code> đúng khi chuỗi rỗng hoặc chỉ toàn dấu cách, giống <code>!value.trim()</code> trên web.</p>
+
+  <h3>Số 7: Bottom Sheet</h3>
+  <p>Chính là Bài 10 Bước 4. Nhớ: phần này nằm <strong>trong</strong> <code>Box</code>, sau <code>AppPage</code>, không
+  nằm cùng chỗ với các <code>if (showX)</code> khác.</p>
+
+  <h3>Số 8: Toàn màn hình</h3>
+  <p>Mặc định <code>Dialog</code> giới hạn chiều rộng (như <code>max-width</code> của modal). Tắt giới hạn đó rồi cho
+  <code>Column</code> <code>fillMaxSize()</code>. Bố cục 3 phần: thanh trên, nội dung cuộn, nút dưới đáy.</p>
+  <pre><code>if (showTerms) {
+    Dialog(
+        onDismissRequest = { showTerms = false },
+        properties = DialogProperties(usePlatformDefaultWidth = false) // bỏ max-width
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(colors.backgroundBody) // màu nền giống trang, không phải surface
+        ) {
+            // 1. Thanh trên: nút X + tiêu đề
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = { showTerms = false }) {
+                    Icon(Icons.Default.Close, contentDescription = "Đóng", tint = colors.text)
+                }
+                Text("Điều khoản sử dụng", style = titleMedium, color = colors.text)
+            }
+            // 2. Nội dung: chiếm hết chỗ còn lại và cuộn được
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 20.dp)
+            ) {
+                // 8 đoạn Text "Điều 1. ..." (dữ liệu giả)
+            }
+            // 3. Nút dưới đáy
+            AppButton(
+                text = "Tôi đồng ý",
+                onClick = { showTerms = false },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+                    .navigationBarsPadding()
+            )
+        }
+    }
+}</code></pre>
+  <p><code>weight(1f)</code> ở đây giống <code>flex: 1</code>: nội dung giữa "phình ra" lấp chỗ trống, đẩy nút xuống
+  đáy. Nếu thiếu <code>weight(1f)</code>, đoạn chữ dài sẽ đẩy nút ra khỏi màn hình.</p>
+
+  <h2>6. Nhiệm vụ</h2>
+  <p><strong>Bước 1: trang mới.</strong> Tạo <code>DialogPage.kt</code>, route <code>"dialog"</code>, thêm vào
+  <code>MainActivity</code> và thêm link <code>"Dialog"</code> trong <code>TemplatePage</code> (dòng có
+  <code>ToggleButton</code>). Viết khung trang ở mục 2 với 8 nút, chưa cần hộp thoại nào.</p>
+  <p><strong>Bước 2: mức Dễ</strong> (số 1, 2). Chạy thử trước khi làm tiếp.</p>
+  <p><strong>Bước 3: mức Vừa</strong> (số 3, 4, 5). Với số 5: mở, chọn English, bấm Huỷ. Trang phải vẫn ghi
+  "Tiếng Việt". Mở lại, chấm tròn phải nằm ở "Tiếng Việt".</p>
+  <p><strong>Bước 4: mức Khó</strong> (số 6, 7, 8). Với số 6: xoá hết tên, bấm Lưu phải hiện lỗi và
+  <strong>không</strong> đóng.</p>
+  <p><strong>Bước 5: kiểm tra.</strong> Với mỗi hộp thoại: bấm vùng tối, bấm bên trong, bấm Back, đổi Light/Dark.
+  Riêng số 4 thì bấm vùng tối và Back đều không có tác dụng.</p>
+  <p><strong>Import mới</strong> (Android Studio thường tự gợi ý bằng Alt+Enter):
+  <code>androidx.compose.material3.RadioButton</code>, <code>RadioButtonDefaults</code>, <code>IconButton</code>,
+  <code>androidx.compose.material.icons.filled.Warning</code>, <code>...filled.Close</code>,
+  <code>androidx.compose.ui.window.DialogProperties</code>,
+  <code>androidx.compose.foundation.shape.CircleShape</code>.</p>
+
+  <div class="callout ask">
+  <p>Code mẫu trong bài đã được build thử. Gõ xong thì báo agent "check DialogPage" để kiểm tra, hoặc báo
+  "xong bài 10b".</p>
+  </div>
+
+  <h2>7. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Muốn <code>AlertDialog</code> chỉ có 1 nút OK thì làm sao?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: không truyền dismissButton thì Material không vẽ nút đó.">Không truyền <code>dismissButton</code></button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: confirmButton là bắt buộc, không bỏ được.">Không truyền <code>confirmButton</code></button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: alpha chỉ làm mờ, nút vẫn chiếm chỗ và bấm được.">Đặt <code>Modifier.alpha(0f)</code> cho nút Huỷ</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Ở số 5, vì sao không đổi <code>language</code> ngay khi bấm radio?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: đổi State rất nhanh, không phải lý do.">Vì đổi State chậm</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: dùng State tạm selected, chỉ chép vào language khi bấm Chọn.">Để bấm Huỷ thì giá trị cũ vẫn giữ nguyên</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: RadioButton dùng được với bất kỳ State nào.">Vì RadioButton không dùng được State của trang</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. State tạm <code>selected</code> được khai báo bên trong <code>if (showLanguage)</code>. Điều gì xảy ra khi đóng rồi mở lại?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: đóng hộp thoại thì State bên trong if bị bỏ, mở lại thì remember tạo mới từ language.">Nó bắt đầu lại từ giá trị <code>language</code> hiện tại</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: remember chỉ nhớ khi Composable còn trên màn hình.">Nó nhớ lựa chọn chưa lưu lần trước</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: khai báo State trong if là hợp lệ.">App bị lỗi</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. Ở số 8, cái gì giữ nút "Tôi đồng ý" luôn nằm dưới đáy khi nội dung dài?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: thuộc tính này chỉ bỏ giới hạn chiều rộng.">usePlatformDefaultWidth = false</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: phần giữa lấp chỗ trống (flex: 1) và tự cuộn, nút không bị đẩy ra ngoài.">weight(1f) + verticalScroll ở phần nội dung</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: padding này chỉ chừa chỗ cho thanh điều hướng.">navigationBarsPadding()</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/components/dialog">Dialog</a>,
+  <a href="https://developer.android.com/develop/ui/compose/components/radio-button">Radio button</a>.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0010-dialog-modal.html">← Bài 10</a>
+    <a href="0011-app-card.html">Bài 11 →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+<script>
+  // Mockup bấm được: dựng 2 điện thoại từ cùng 1 template, mỗi cái có State riêng
+  var tpl = document.getElementById('dialog-phone');
+  document.querySelectorAll('.phone.demo').forEach(function (phone) {
+    phone.appendChild(tpl.content.cloneNode(true));
+    var state = { language: 'Tiếng Việt', name: 'Hong Diep' };
+    var selected = state.language;
+    var input = phone.querySelector('.m-input');
+    var error = phone.querySelector('.m-error');
+
+    function render() {
+      phone.querySelector('.js-language').textContent = state.language;
+      phone.querySelector('.js-name').textContent = state.name;
+      phone.querySelectorAll('.m-radio').forEach(function (r) {
+        r.classList.toggle('on', r.dataset.value === selected);
+      });
+    }
+    function open(name) {
+      // giống khai báo State tạm trong if: mỗi lần mở là bắt đầu lại từ giá trị thật
+      selected = state.language;
+      input.value = state.name;
+      input.classList.remove('error');
+      error.textContent = '';
+      phone.querySelectorAll('.m-scrim').forEach(function (s) {
+        s.classList.toggle('open', s.dataset.name === name);
+      });
+      render();
+    }
+    phone.querySelectorAll('[data-target]').forEach(function (btn) {
+      btn.addEventListener('click', function () { open(btn.dataset.target); });
+    });
+    phone.querySelectorAll('.m-scrim').forEach(function (scrim) {
+      scrim.addEventListener('click', function (e) {
+        if (e.target.classList.contains('js-close')) return open(null);
+        if (e.target !== scrim) return;
+        if (scrim.dataset.static) { // số 4: bấm ra ngoài không đóng, rung nhẹ để báo
+          var box = scrim.firstElementChild;
+          box.classList.remove('m-shake'); void box.offsetWidth; box.classList.add('m-shake');
+          return;
+        }
+        open(null);
+      });
+    });
+    phone.querySelectorAll('.m-radio').forEach(function (r) {
+      r.addEventListener('click', function () { selected = r.dataset.value; render(); });
+    });
+    phone.querySelector('.js-choose').addEventListener('click', function () {
+      state.language = selected; open(null);
+    });
+    input.addEventListener('input', function () { input.classList.remove('error'); error.textContent = ''; });
+    phone.querySelector('.js-save').addEventListener('click', function () {
+      if (!input.value.trim()) {
+        input.classList.add('error'); error.textContent = 'Tên không được để trống'; return;
+      }
+      state.name = input.value.trim(); open(null);
+    });
+    open(phone.dataset.open);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 10 · Dialog và Modal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 10 / Học sớm theo yêu cầu · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Dialog và Modal: hộp thoại nổi trên lớp nền tối, giống <code>ion-modal</code></h1>
+
+  <div class="callout">
+  <p><strong>Bài 9: xong.</strong> Bạn đã đổi tên tham số của <code>AppToggleBox</code> thành <code>showText</code> /
+  <code>hideText</code>, đọc là hiểu ngay. Theo yêu cầu của bạn, bài này học Modal trước. Card và Badge chuyển sang
+  Bài 11.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Một trang <strong>Modal</strong> có 3 nút, mỗi nút mở một kiểu hộp thoại. Khi mở, một lớp nền đen trong suốt phủ lên
+  nội dung trang. Hình dưới đây <strong>bấm được</strong>: bấm nút để mở, bấm vào vùng tối để đóng.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone has-modal demo" data-open="dialog">
+        <div class="m-title">Modal</div>
+        <div class="m-text">Bài viết: Đà Lạt mùa hoa. Thành phố ngàn hoa nằm trên cao nguyên Lâm Viên, khí hậu mát mẻ quanh năm.</div>
+        <button class="m-btn" data-target="dialog">Mở Dialog</button>
+        <button class="m-btn" data-target="alert">Mở AlertDialog</button>
+        <button class="m-btn" data-target="sheet">Mở Bottom Sheet</button>
+        <div class="m-scrim" data-name="dialog">
+          <div class="m-dialog"><b>Xoá ảnh này?</b><p>Ảnh sẽ bị xoá vĩnh viễn và không khôi phục được.</p>
+            <div class="m-btn-row"><button class="m-btn soft small js-close">Huỷ</button><button class="m-btn danger small js-close">Xoá</button></div></div>
+        </div>
+        <div class="m-scrim" data-name="alert">
+          <div class="m-dialog"><b>Đăng xuất?</b><p>Bạn có chắc muốn đăng xuất không?</p>
+            <div class="m-alert-actions"><span class="js-close">Huỷ</span><span class="js-close">Đăng xuất</span></div></div>
+        </div>
+        <div class="m-scrim sheet" data-name="sheet">
+          <div class="m-sheet"><div class="m-sheet-handle"></div><b>Chọn ảnh</b>
+            <div class="m-sheet-item">Chụp ảnh mới</div><div class="m-sheet-item">Chọn từ thư viện</div>
+            <button class="m-btn js-close">Đóng</button></div>
+        </div>
+      </div>
+      <figcaption>Light Mode (đang mở Dialog)</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone has-modal demo" data-open="sheet">
+        <div class="m-title">Modal</div>
+        <div class="m-text">Bài viết: Đà Lạt mùa hoa. Thành phố ngàn hoa nằm trên cao nguyên Lâm Viên, khí hậu mát mẻ quanh năm.</div>
+        <button class="m-btn" data-target="dialog">Mở Dialog</button>
+        <button class="m-btn" data-target="alert">Mở AlertDialog</button>
+        <button class="m-btn" data-target="sheet">Mở Bottom Sheet</button>
+        <div class="m-scrim" data-name="dialog">
+          <div class="m-dialog"><b>Xoá ảnh này?</b><p>Ảnh sẽ bị xoá vĩnh viễn và không khôi phục được.</p>
+            <div class="m-btn-row"><button class="m-btn soft small js-close">Huỷ</button><button class="m-btn danger small js-close">Xoá</button></div></div>
+        </div>
+        <div class="m-scrim" data-name="alert">
+          <div class="m-dialog"><b>Đăng xuất?</b><p>Bạn có chắc muốn đăng xuất không?</p>
+            <div class="m-alert-actions"><span class="js-close">Huỷ</span><span class="js-close">Đăng xuất</span></div></div>
+        </div>
+        <div class="m-scrim sheet" data-name="sheet">
+          <div class="m-sheet"><div class="m-sheet-handle"></div><b>Chọn ảnh</b>
+            <div class="m-sheet-item">Chụp ảnh mới</div><div class="m-sheet-item">Chọn từ thư viện</div>
+            <button class="m-btn js-close">Đóng</button></div>
+        </div>
+      </div>
+      <figcaption>Dark Mode (đang mở Bottom Sheet)</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: lớp nền đen mờ 50% phủ <strong>toàn màn hình</strong>, chữ bên dưới vẫn thấy
+  lờ mờ. Hộp thoại dùng nền <code>colors.surface</code>, nên ở Dark Mode là xám tối chứ không phải trắng. Dialog nằm giữa
+  màn hình. Bottom Sheet trượt từ đáy lên, chỉ bo 2 góc trên. Bấm vào vùng tối hoặc bấm nút Back của điện thoại thì hộp
+  thoại đóng. Bấm vào bên trong hộp thoại thì <strong>không</strong> đóng.</p>
+
+  <h2>1. Ý tưởng chính: modal = State + <code>if</code></h2>
+  <div class="compare">
+    <div>
+      <span class="label">Ionic</span>
+      <pre><code>&lt;ion-button (click)="isOpen = true"&gt;
+  Mở
+&lt;/ion-button&gt;
+
+&lt;ion-modal [isOpen]="isOpen"
+  (didDismiss)="isOpen = false"&gt;
+  ...
+&lt;/ion-modal&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>var isOpen by remember { mutableStateOf(false) }
+
+AppButton(text = "Mở",
+    onClick = { isOpen = true })
+
+if (isOpen) {
+    Dialog(onDismissRequest = { isOpen = false }) {
+        ...
+    }
+}</code></pre>
+    </div>
+  </div>
+  <p>Giống hệt cách bạn đã làm ở Bài 9: một State <code>true/false</code> quyết định hộp thoại có hiện hay không.
+  <code>onDismissRequest</code> giống <code>(didDismiss)</code> của Ionic: nó được gọi khi người dùng
+  <strong>muốn đóng</strong> (bấm vùng tối hoặc nút Back). Bạn phải tự đặt <code>isOpen = false</code> trong đó. Nếu để
+  trống thì hộp thoại không bao giờ đóng được.</p>
+
+  <h2>2. <code>Dialog</code>: hộp thoại tự thiết kế</h2>
+  <p><code>Dialog</code> chỉ lo phần "khung": lớp nền tối, đặt hộp vào giữa màn hình, đóng khi bấm ra ngoài. Bên trong
+  bạn tự vẽ gì cũng được, giống <code>ion-modal</code> chứa component của bạn. Lớp nền tối do Android tự vẽ, bạn
+  <strong>không cần</strong> viết thêm gì.</p>
+  <table>
+    <tr><th>Ionic / CSS</th><th>Compose</th></tr>
+    <tr><td><code>.modal-backdrop</code> (nền tối)</td><td>có sẵn, Android tự vẽ</td></tr>
+    <tr><td><code>backdropDismiss="false"</code></td><td><code>properties = DialogProperties(dismissOnClickOutside = false)</code></td></tr>
+    <tr><td>modal rộng hết màn hình</td><td><code>DialogProperties(usePlatformDefaultWidth = false)</code></td></tr>
+  </table>
+
+  <h2>3. <code>AlertDialog</code>: hộp thoại dựng sẵn</h2>
+  <p>Giống <code>ion-alert</code> hoặc <code>window.confirm()</code>: bạn chỉ điền nội dung vào các "ô" có sẵn, Material
+  lo phần bố cục. Mỗi ô là một Composable nhỏ trong <code>{ }</code>, giống tham số <code>content</code> mà bạn đã dùng
+  trong <code>AppToggleBox</code>.</p>
+  <table>
+    <tr><th>Ô (tham số)</th><th>Chứa gì</th></tr>
+    <tr><td><code>title = { Text(...) }</code></td><td>tiêu đề, ví dụ "Đăng xuất?"</td></tr>
+    <tr><td><code>text = { Text(...) }</code></td><td>câu giải thích</td></tr>
+    <tr><td><code>confirmButton = { TextButton(...) }</code></td><td>nút đồng ý, nằm bên phải</td></tr>
+    <tr><td><code>dismissButton = { TextButton(...) }</code></td><td>nút huỷ, nằm bên trái nút đồng ý</td></tr>
+    <tr><td><code>containerColor</code>, <code>titleContentColor</code>, <code>textContentColor</code></td><td>màu theo theme của app</td></tr>
+  </table>
+  <p><code>TextButton</code> là nút chỉ có chữ, không có nền, giống <code>&lt;ion-button fill="clear"&gt;</code>.</p>
+
+  <h2>4. Bottom Sheet tự làm: tự vẽ lớp nền tối</h2>
+  <p>Muốn tự chọn màu và độ mờ của nền, hoặc muốn hộp trượt từ đáy lên như <code>ion-modal</code> có
+  <code>breakpoints</code>, bạn tự vẽ bằng <code>Box</code>, giống cách làm modal bằng CSS thuần:</p>
+  <div class="compare">
+    <div>
+      <span class="label">CSS</span>
+      <pre><code>.backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.5);
+}
+.sheet {
+  position: absolute; bottom: 0;
+  border-radius: 24px 24px 0 0;
+  transform: translateY(100%);
+}
+.open .sheet { transform: none; }</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Box(Modifier.fillMaxSize()) {   // cả trang
+    AppPage { ... }             // nội dung trang
+    AnimatedVisibility(showSheet) {
+        Box(/* nền tối */) {
+            Column(/* sheet */
+                Modifier.align(
+                    Alignment.BottomCenter)
+                ...
+            )
+        }
+    }
+}</code></pre>
+    </div>
+  </div>
+  <p>Nhớ lại Bài 8: con viết sau trong <code>Box</code> nằm trên. Vì vậy nền tối phải viết <strong>sau</strong>
+  <code>AppPage</code> và nằm <strong>ngoài</strong> <code>AppPage</code>, nếu không nó sẽ bị cuộn theo trang. Có 3 điều
+  <code>Dialog</code> làm sẵn mà khi tự làm bạn phải tự lo:</p>
+  <ul>
+    <li><strong>Bấm vùng tối thì đóng:</strong> thêm <code>clickable</code> vào <code>Box</code> nền tối.</li>
+    <li><strong>Bấm trong sheet thì không đóng:</strong> sheet cũng cần một <code>clickable { }</code> để trống để "chặn"
+    cú bấm, giống <code>event.stopPropagation()</code>.</li>
+    <li><strong>Nút Back của điện thoại:</strong> dùng <code>BackHandler(enabled = showSheet) { showSheet = false }</code>,
+    giống bắt phím <code>Escape</code> trên web.</li>
+  </ul>
+  <p>Một điểm mới: <code>Modifier.animateEnterExit(...)</code> chỉ dùng được bên trong <code>AnimatedVisibility</code>.
+  Nó cho con có hiệu ứng riêng: nền tối chỉ mờ dần (<code>fadeIn</code>), còn sheet thì trượt lên
+  (<code>slideInVertically { it }</code>, bắt đầu thấp hơn đúng bằng chiều cao của nó, giống
+  <code>translateY(100%)</code>).</p>
+
+  <h2>5. Nhiệm vụ</h2>
+  <p><strong>Bước 1: trang mới.</strong> Tạo <code>ModalPage.kt</code>, route <code>"modal"</code>, và thêm link từ
+  <code>TemplatePage</code>. Ở đầu hàm, khai báo 3 State: <code>showDialog</code>, <code>showAlert</code>,
+  <code>showSheet</code>. Trang có một đoạn chữ dài (để thấy nền tối phủ lên chữ) và 3 nút <code>AppButton</code>.</p>
+
+  <p><strong>Bước 2: Dialog.</strong> Code mẫu (đã build thử, chạy được). Đặt <strong>ngoài</strong>
+  <code>AppPage { }</code>, ở cuối hàm:</p>
+  <pre><code>if (showDialog) {
+    Dialog(onDismissRequest = { showDialog = false }) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(colors.surface, RoundedCornerShape(16.dp))
+                .padding(24.dp)
+        ) {
+            Text("Xoá ảnh này?", style = titleMedium, color = colors.text)
+            Spacer(modifier = Modifier.height(8.dp))
+            Text("Ảnh sẽ bị xoá vĩnh viễn và không khôi phục được.", color = colors.text)
+            Spacer(modifier = Modifier.height(20.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                AppButton(
+                    text = "Huỷ",
+                    onClick = { showDialog = false },
+                    backgroundColor = colors.secondary,
+                    modifier = Modifier.weight(1f)
+                )
+                AppButton(
+                    text = "Xoá",
+                    onClick = { showDialog = false },
+                    backgroundColor = colors.danger,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+    }
+}</code></pre>
+  <p>Import: <code>androidx.compose.ui.window.Dialog</code>. Thử thêm
+  <code>properties = DialogProperties(dismissOnClickOutside = false)</code> rồi bấm ra ngoài để thấy khác biệt.</p>
+
+  <p><strong>Bước 3: AlertDialog.</strong> Tự viết theo bảng ở mục 3: tiêu đề "Đăng xuất?", câu "Bạn có chắc muốn
+  đăng xuất không?", nút "Đăng xuất" và "Huỷ". Cả hai nút đều đặt <code>showAlert = false</code>. Nhớ truyền
+  <code>containerColor = colors.surface</code> và 2 màu chữ <code>colors.text</code> để Dark Mode đúng màu.</p>
+
+  <p><strong>Bước 4: Bottom Sheet.</strong> Đổi khung trang thành <code>Box(Modifier.fillMaxSize()) { AppPage {...} ... }</code>
+  như mục 4. Phần sheet (đã build thử):</p>
+  <pre><code>AnimatedVisibility(visible = showSheet, enter = fadeIn(), exit = fadeOut()) {
+    Box( // nền tối
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black.copy(alpha = 0.5f))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null // bỏ hiệu ứng gợn sóng khi bấm
+            ) { showSheet = false }
+    ) {
+        Column( // sheet
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .animateEnterExit(
+                    enter = slideInVertically { it },
+                    exit = slideOutVertically { it }
+                )
+                .fillMaxWidth()
+                .background(colors.surface, RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null
+                ) { } // chặn cú bấm, không cho lọt xuống nền tối
+                .navigationBarsPadding() // chừa chỗ cho thanh điều hướng của điện thoại
+                .padding(24.dp)
+        ) {
+            Text("Chọn ảnh", style = titleMedium, color = colors.text)
+            // tự thêm 2 dòng lựa chọn và nút Đóng
+        }
+    }
+}
+
+BackHandler(enabled = showSheet) { showSheet = false }</code></pre>
+  <p>Bạn đã gặp <code>clickable(interactionSource..., indication = null)</code> trong <code>TemplatePage</code>.
+  Import <code>BackHandler</code> từ <code>androidx.activity.compose.BackHandler</code>.</p>
+
+  <p><strong>Bước 5: tách component <code>AppDialog</code></strong> vào <code>ui/components/dialog/AppDialog.kt</code>.
+  Hộp thoại xác nhận sẽ dùng ở rất nhiều màn hình (xoá, đăng xuất, huỷ đơn), nên đây là component nên có cho team:</p>
+  <pre><code>@Composable
+fun AppDialog(
+    title: String,
+    message: String,
+    confirmText: String,
+    onConfirm: () -&gt; Unit,  // bấm nút đồng ý thì làm gì
+    onDismiss: () -&gt; Unit,  // bấm Huỷ, vùng tối hoặc Back
+    dismissText: String = "Huỷ",
+    confirmColor: Color = colors.primary, // truyền colors.danger cho hành động nguy hiểm
+) {
+    // Dialog + Column như Bước 2
+}</code></pre>
+  <p><code>() -&gt; Unit</code> nghĩa là "một đoạn code sẽ chạy khi bấm", giống truyền một hàm vào
+  <code>onclick</code>. <code>AppButton</code> của bạn cũng có <code>onClick: () -&gt; Unit</code>. Lưu ý:
+  <code>AppDialog</code> <strong>không</strong> tự chứa <code>if (show)</code>, trang nào dùng thì tự viết
+  <code>if</code> bên ngoài. Sau đó thay Bước 2 bằng <code>AppDialog</code>.</p>
+
+  <p><strong>Bước 6: kiểm tra.</strong> Với cả 3 hộp thoại, thử: bấm vào vùng tối, bấm vào bên trong hộp, bấm nút Back
+  của điện thoại, và chuyển Light/Dark.</p>
+
+  <div class="callout ask">
+  <p>Material còn có <code>ModalBottomSheet</code> dựng sẵn, có thể kéo bằng tay để đóng như <code>ion-modal</code>.
+  Component này vẫn đang ở dạng thử nghiệm (cần thêm <code>@OptIn</code>). Muốn thử thì hãy hỏi agent. Toast
+  (<code>Snackbar</code>) sẽ học ở Bài 19. Báo "xong bài 10" khi xong.</p>
+  </div>
+
+  <h2>6. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Bạn viết <code>Dialog(onDismissRequest = { })</code> để trống. Chuyện gì xảy ra khi bấm vùng tối?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Dialog chỉ báo 'người dùng muốn đóng', không tự đổi State giúp bạn.">Dialog tự đóng</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: phải tự đặt showDialog = false trong onDismissRequest thì Dialog mới biến mất.">Không có gì xảy ra, Dialog vẫn hiện</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: lambda trống chỉ đơn giản là không làm gì cả.">App bị lỗi</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Muốn người dùng <strong>bắt buộc</strong> bấm nút, bấm ra ngoài không đóng (giống <code>backdropDismiss="false"</code>)?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: tắt việc đóng khi bấm ra ngoài.">DialogProperties(dismissOnClickOutside = false)</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: thuộc tính này đổi chiều rộng hộp thoại.">DialogProperties(usePlatformDefaultWidth = false)</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: alpha chỉ làm mờ, không liên quan việc đóng.">Modifier.alpha(0f)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. Trong Bottom Sheet tự làm, vì sao sheet cần một <code>clickable { }</code> để trống?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: clickable không tạo bóng đổ.">Để sheet có bóng đổ</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: chặn cú bấm lọt xuống nền tối, giống stopPropagation().">Để bấm trong sheet không làm sheet đóng</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: trượt lên là nhờ animateEnterExit.">Để sheet trượt lên</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. Nút Back của điện thoại tương đương phím nào trên web khi đang mở modal?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Enter thường dùng để xác nhận.">Enter</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: Escape đóng modal; trong Compose tự làm thì dùng BackHandler.">Escape</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Tab dùng để chuyển ô nhập.">Tab</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. (Ôn bài 9) Nền tối mờ dần, còn sheet trượt lên. Cái gì cho phép con có hiệu ứng riêng?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: animateColorAsState chỉ chuyển màu.">animateColorAsState</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: LaunchedEffect chạy code một lần khi hiện ra.">LaunchedEffect</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: dùng bên trong AnimatedVisibility để con có enter/exit riêng.">Modifier.animateEnterExit</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/components/dialog">Dialog</a>: có ví dụ cả
+  <code>AlertDialog</code> và <code>Dialog</code> tự thiết kế.
+  <a href="https://developer.android.com/develop/ui/compose/components/bottom-sheets">Bottom sheets</a>: về
+  <code>ModalBottomSheet</code> dựng sẵn.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0009-animation-hien-an.html">← Bài 9</a>
+    <a href="0010b-trang-dialog-tu-de-den-kho.html">Bài 10b: 8 kiểu Dialog →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+<script>
+  // Mockup bấm được: nút mở hộp thoại, bấm vùng tối hoặc nút đóng thì đóng
+  document.querySelectorAll('.phone.demo').forEach(function (phone) {
+    function open(name) {
+      phone.querySelectorAll('.m-scrim').forEach(function (s) {
+        s.classList.toggle('open', s.dataset.name === name);
+      });
+    }
+    phone.querySelectorAll('[data-target]').forEach(function (btn) {
+      btn.addEventListener('click', function () { open(btn.dataset.target); });
+    });
+    phone.querySelectorAll('.m-scrim').forEach(function (scrim) {
+      scrim.addEventListener('click', function (e) {
+        if (e.target === scrim || e.target.classList.contains('js-close')) open(null);
+      });
+    });
+    open(phone.dataset.open);
+  });
+</script>
+</body>
+</html>

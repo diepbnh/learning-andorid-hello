@@ -47,8 +47,14 @@ class MainActivity : ComponentActivity() {
                     composable(route = "profile") {
                         ProfilePage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
-                    composable(route = "effect") {
-                        EffectPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    composable(route = "card") {
+                        CardPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
+                    composable(route = "toggle_button") {
+                        ToggleButtonPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
+                    composable(route = "dialog") {
+                        DialogPage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
 
                 }

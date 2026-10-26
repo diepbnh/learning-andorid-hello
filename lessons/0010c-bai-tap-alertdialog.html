@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài tập 10c · AlertDialog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài tập 10c / Mức Dễ của Bài 10b · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>5 bài tập <code>AlertDialog</code>, từ dễ đến khó</h1>
+
+  <div class="callout">
+  <p>Bạn đã có <code>DialogPage</code> với tiêu đề, link "Template" và route <code>"dialog"</code>. Giờ thêm lần lượt
+  5 nút vào trang, mỗi nút mở một <code>AlertDialog</code>. Làm theo thứ tự, <strong>chạy thử sau mỗi bài</strong>.
+  Bài 1 có code mẫu đầy đủ, các bài sau chỉ có gợi ý để bạn tự gõ.</p>
+  </div>
+
+  <h2>Kết quả mong đợi (sau cả 5 bài)</h2>
+  <p>Hình dưới <strong>bấm được</strong>. Thử bài 3: bấm "Đăng xuất" trong hộp thoại thì dòng trạng thái đổi. Thử bài 5:
+  bấm ra ngoài hộp thoại sẽ không đóng được.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone has-modal demo" data-open="ex1"></div>
+      <figcaption>Light Mode (đang mở Bài 1)</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone has-modal demo" data-open="ex4"></div>
+      <figcaption>Dark Mode (đang mở Bài 4)</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: nút của <code>AlertDialog</code> chỉ có chữ, không có nền, và nằm bên
+  <strong>phải</strong>. Khi có 2 nút, "Huỷ" ở bên trái nút đồng ý. Bài 4 có icon cảnh báo màu đỏ ở trên và tiêu đề căn
+  giữa: Material tự căn giữa khi có icon. Nút "Xoá" chữ đỏ. Ở Dark Mode, nền hộp là xám tối.</p>
+
+  <template id="ex-phone">
+    <div class="m-title">Dialog</div>
+    <div class="m-info m-status">Trạng thái: <b class="js-status">Đã đăng nhập</b></div>
+    <div class="m-level">AlertDialog</div>
+    <button class="m-btn small" data-target="ex1">Bài 1: Thông báo</button>
+    <button class="m-btn small" data-target="ex2">Bài 2: Xác nhận</button>
+    <button class="m-btn small" data-target="ex3">Bài 3: Đăng xuất thật</button>
+    <button class="m-btn small" data-target="ex4">Bài 4: Có icon</button>
+    <button class="m-btn small" data-target="ex5">Bài 5: Bắt buộc</button>
+
+    <div class="m-scrim" data-name="ex1">
+      <div class="m-dialog"><b>Đã lưu</b><p>Thông tin của bạn đã được lưu thành công.</p>
+        <div class="m-alert-actions"><span class="js-close">OK</span></div></div>
+    </div>
+    <div class="m-scrim" data-name="ex2">
+      <div class="m-dialog"><b>Thoát trang?</b><p>Những thay đổi chưa lưu sẽ bị mất.</p>
+        <div class="m-alert-actions"><span class="js-close">Ở lại</span><span class="js-close">Thoát</span></div></div>
+    </div>
+    <div class="m-scrim" data-name="ex3">
+      <div class="m-dialog"><b>Đăng xuất?</b><p>Bạn có chắc muốn đăng xuất không?</p>
+        <div class="m-alert-actions"><span class="js-close">Huỷ</span><span class="js-logout">Đăng xuất</span></div></div>
+    </div>
+    <div class="m-scrim" data-name="ex4">
+      <div class="m-dialog center"><div class="m-alert-icon">⚠</div><b>Xoá ảnh này?</b>
+        <p>Ảnh sẽ bị xoá vĩnh viễn và không khôi phục được.</p>
+        <div class="m-alert-actions"><span class="js-close">Huỷ</span><span class="js-close danger">Xoá</span></div></div>
+    </div>
+    <div class="m-scrim" data-name="ex5" data-static="true">
+      <div class="m-dialog"><b>Điều khoản mới</b><p>Chúng tôi đã cập nhật điều khoản sử dụng. Bạn cần đồng ý để tiếp tục.</p>
+        <div class="m-alert-actions"><span class="js-close">Tôi đồng ý</span></div></div>
+    </div>
+  </template>
+
+  <h2>Bài 1: Thông báo 1 nút <span class="m-sub">(chép theo mẫu)</span></h2>
+  <p>Thêm State <code>showInfo</code> ở đầu hàm, thêm nút <code>"Bài 1: Thông báo"</code> sau <code>Spacer</code>, rồi
+  viết hộp thoại <strong>ngoài</strong> <code>AppPage { }</code>:</p>
+  <pre><code>@Composable
+fun DialogPage(modifier: Modifier = Modifier, navController: NavController) {
+    var showInfo by remember { mutableStateOf(false) }
+
+    AppPage(modifier = modifier) {
+        // ... Box tiêu đề của bạn ...
+        AppButton(
+            text = "Bài 1: Thông báo",
+            onClick = { showInfo = true },
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+
+    if (showInfo) {
+        AlertDialog(
+            onDismissRequest = { showInfo = false },
+            title = { Text("Đã lưu") },
+            text = { Text("Thông tin của bạn đã được lưu thành công.") },
+            confirmButton = {
+                TextButton(onClick = { showInfo = false }) {
+                    Text("OK", color = colors.primary)
+                }
+            },
+            containerColor = colors.surface,
+            titleContentColor = colors.text,
+            textContentColor = colors.text,
+        )
+    }
+}</code></pre>
+  <p>Import mới: <code>AlertDialog</code>, <code>TextButton</code> (trong <code>androidx.compose.material3</code>),
+  <code>getValue</code>, <code>setValue</code>, <code>mutableStateOf</code> (trong <code>androidx.compose.runtime</code>).</p>
+  <ul class="checklist">
+    <li>Bấm OK, bấm vùng tối, bấm Back: cả 3 đều đóng.</li>
+    <li>Bấm vào bên trong hộp: không đóng.</li>
+  </ul>
+
+  <h2>Bài 2: Xác nhận 2 nút <span class="m-sub">(tự gõ)</span></h2>
+  <p>State <code>showLeave</code>, nút <code>"Bài 2: Xác nhận"</code>. Tiêu đề <strong>"Thoát trang?"</strong>, nội dung
+  <strong>"Những thay đổi chưa lưu sẽ bị mất."</strong>, nút phải <strong>"Thoát"</strong>, nút trái <strong>"Ở lại"</strong>.</p>
+  <p><strong>Gợi ý:</strong> nút trái nằm trong ô <code>dismissButton = { ... }</code>, viết giống hệt
+  <code>confirmButton</code>. Lúc này cả 2 nút chỉ cần đóng hộp thoại.</p>
+  <ul class="checklist">
+    <li>"Ở lại" bên trái, "Thoát" bên phải.</li>
+  </ul>
+
+  <h2>Bài 3: Nút làm 2 việc <span class="m-sub">(tự gõ)</span></h2>
+  <p>Ở 2 bài trước, bấm nút chỉ để đóng. Bài này bấm nút <strong>vừa đổi dữ liệu, vừa đóng</strong>.</p>
+  <ol>
+    <li>Thêm State <code>isLoggedIn</code>, mặc định <code>true</code>.</li>
+    <li>Dưới tiêu đề trang, thêm một <code>Text</code> hiện <strong>"Trạng thái: Đã đăng nhập"</strong> hoặc
+    <strong>"Trạng thái: Đã đăng xuất"</strong> tuỳ theo <code>isLoggedIn</code>.</li>
+    <li>State <code>showLogout</code>, nút <code>"Bài 3: Đăng xuất thật"</code>. Hộp thoại "Đăng xuất?" / "Bạn có chắc
+    muốn đăng xuất không?", 2 nút "Huỷ" và "Đăng xuất".</li>
+    <li>Nút "Đăng xuất" đặt <code>isLoggedIn = false</code> <strong>và</strong> đóng hộp thoại. Nút "Huỷ" chỉ đóng.</li>
+  </ol>
+  <p><strong>Gợi ý:</strong> trong <code>{ }</code> viết được nhiều dòng, mỗi dòng là một việc, giống thân hàm
+  <code>onclick</code> trên web. Chữ đổi theo State thì dùng <code>if ... else</code> ngay trong <code>text = </code>,
+  giống toán tử <code>? :</code> của JavaScript:</p>
+  <pre><code>text = if (isLoggedIn) "..." else "..."</code></pre>
+  <ul class="checklist">
+    <li>Bấm Huỷ: trạng thái giữ nguyên.</li>
+    <li>Bấm Đăng xuất: trạng thái đổi thành "Đã đăng xuất".</li>
+    <li>Thử thêm: khi đã đăng xuất thì nút Bài 3 bị mờ, không bấm được. <code>AppButton</code> có sẵn tham số
+    <code>enabled</code>.</li>
+  </ul>
+
+  <h2>Bài 4: Có icon, nút nguy hiểm <span class="m-sub">(tự gõ, tham số mới)</span></h2>
+  <p><code>AlertDialog</code> còn một ô bạn chưa dùng: <strong><code>icon</code></strong>. Có icon thì Material tự đặt
+  icon lên trên và căn giữa tiêu đề.</p>
+  <table>
+    <tr><th>Tham số mới</th><th>Ý nghĩa</th></tr>
+    <tr><td><code>icon = { Icon(Icons.Default.Warning, contentDescription = null) }</code></td><td>ô icon, nằm trên tiêu đề</td></tr>
+    <tr><td><code>iconContentColor = colors.danger</code></td><td>màu icon, giống <code>titleContentColor</code></td></tr>
+  </table>
+  <p>Nội dung: "Xoá ảnh này?" / "Ảnh sẽ bị xoá vĩnh viễn và không khôi phục được.", nút "Huỷ" và nút
+  <strong>"Xoá" chữ màu <code>colors.danger</code></strong>.</p>
+  <p>Import: <code>androidx.compose.material3.Icon</code>, <code>androidx.compose.material.icons.Icons</code>,
+  <code>androidx.compose.material.icons.filled.Warning</code>.</p>
+  <ul class="checklist">
+    <li>Icon đỏ ở trên, tiêu đề căn giữa.</li>
+    <li>Chữ "Xoá" màu đỏ, chữ "Huỷ" màu primary.</li>
+  </ul>
+
+  <h2>Bài 5: Bắt buộc bấm nút <span class="m-sub">(thử thách)</span></h2>
+  <p>Hộp "Điều khoản mới" / "Chúng tôi đã cập nhật điều khoản sử dụng. Bạn cần đồng ý để tiếp tục.", chỉ có 1 nút
+  "Tôi đồng ý". Người dùng <strong>không được</strong> đóng bằng cách bấm ra ngoài hay bấm Back.</p>
+  <p><strong>Gợi ý:</strong> <code>AlertDialog</code> cũng nhận tham số <code>properties = DialogProperties(...)</code>
+  giống <code>Dialog</code> ở Bài 10 mục 2. Bạn cần tắt 2 thứ. Tự đoán tên thuộc tính thứ hai nhé: thuộc tính thứ
+  nhất là <code>dismissOnClickOutside</code>.</p>
+  <ul class="checklist">
+    <li>Bấm vùng tối: không đóng.</li>
+    <li>Bấm Back: không đóng.</li>
+    <li>Bấm "Tôi đồng ý": đóng.</li>
+  </ul>
+
+  <div class="callout ask">
+  <p>Làm xong bài nào thì nhắn "check bài 1", "check bài 2"... để agent xem code, hoặc làm hết rồi nhắn "check
+  DialogPage". Code của 2 tham số mới (<code>icon</code>, <code>properties</code>) đã được build thử, chạy được.
+  Xong 5 bài thì chuyển sang <code>Dialog</code> tự thiết kế (Bài 10b, số 3).</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0010b-trang-dialog-tu-de-den-kho.html">← Bài 10b</a>
+    <a href="../reference/lo-trinh-ui.html">Lộ trình →</a>
+  </div>
+</div>
+<script>
+  // Mockup bấm được: 2 điện thoại dựng từ cùng 1 template, mỗi cái có State riêng
+  var tpl = document.getElementById('ex-phone');
+  document.querySelectorAll('.phone.demo').forEach(function (phone) {
+    phone.appendChild(tpl.content.cloneNode(true));
+    var status = phone.querySelector('.js-status');
+    function open(name) {
+      phone.querySelectorAll('.m-scrim').forEach(function (s) {
+        s.classList.toggle('open', s.dataset.name === name);
+      });
+    }
+    phone.querySelectorAll('[data-target]').forEach(function (btn) {
+      btn.addEventListener('click', function () { open(btn.dataset.target); });
+    });
+    phone.querySelectorAll('.m-scrim').forEach(function (scrim) {
+      scrim.addEventListener('click', function (e) {
+        if (e.target.classList.contains('js-close')) return open(null);
+        if (e.target !== scrim) return;
+        if (scrim.dataset.static) { // bài 5: bấm ra ngoài không đóng, rung nhẹ để báo
+          var box = scrim.firstElementChild;
+          box.classList.remove('m-shake'); void box.offsetWidth; box.classList.add('m-shake');
+          return;
+        }
+        open(null);
+      });
+    });
+    phone.querySelector('.js-logout').addEventListener('click', function () {
+      status.textContent = 'Đã đăng xuất';
+      open(null);
+    });
+    open(phone.dataset.open);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 11 · AppCard dùng chung</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 11 / Nhóm 1: Trang trí · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>AppCard: một component, 3 kiểu <code>Filled</code> / <code>Elevated</code> / <code>Outlined</code></h1>
+
+  <div class="callout">
+  <p><strong>Ý tưởng của bạn:</strong> 3 kiểu card <strong>giống nhau</strong> ở padding, góc bo và nền
+  <code>surface</code>, chỉ <strong>khác nhau</strong> ở chỗ có bóng đổ hay không và có viền hay không. Đây chính là cách
+  thiết kế component đúng: phần giống nhau viết một lần, phần khác nhau thì chọn bằng tham số. Bạn đã làm việc này ở
+  Bài 2 với biến thể của <code>AppButton</code>, giờ áp dụng cho card.</p>
+  <p>Hiện bạn đang viết <code>Card(...)</code> ở 4 chỗ (3 chỗ trong <code>CardPage</code>, 1 chỗ trong
+  <code>ToggleButtonPage</code>), chỗ nào cũng lặp lại <code>shape</code>, <code>shadow</code> và
+  <code>CardDefaults.cardColors(...)</code>. Sau bài này, mỗi chỗ chỉ còn một dòng <code>AppCard(...)</code>.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Trang <strong>Card</strong> có 3 card xếp dọc, mỗi card một kiểu, cùng padding 16dp, bo góc 16dp và nền
+  <code>surface</code>.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone">
+        <div class="m-title">Card</div>
+        <div class="m-acard"><span class="m-tag">FILLED</span><b>Đà Lạt mùa hoa</b><small>Không bóng, không viền. Dùng khi card nằm trên nền khác màu.</small></div>
+        <div class="m-acard elevated"><span class="m-tag">ELEVATED</span><b>Hội An về đêm</b><small>Có bóng đổ. Dùng cho card cần nổi bật, ví dụ card bấm được.</small></div>
+        <div class="m-acard outlined"><span class="m-tag">OUTLINED</span><b>Sapa mùa lúa chín</b><small>Có viền mảnh. Dùng cho danh sách, form, khi không muốn nhiều bóng.</small></div>
+        <div class="m-link">Back</div>
+      </div>
+      <figcaption>Light Mode</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone">
+        <div class="m-title">Card</div>
+        <div class="m-acard"><span class="m-tag">FILLED</span><b>Đà Lạt mùa hoa</b><small>Không bóng, không viền. Dùng khi card nằm trên nền khác màu.</small></div>
+        <div class="m-acard elevated"><span class="m-tag">ELEVATED</span><b>Hội An về đêm</b><small>Có bóng đổ. Dùng cho card cần nổi bật, ví dụ card bấm được.</small></div>
+        <div class="m-acard outlined"><span class="m-tag">OUTLINED</span><b>Sapa mùa lúa chín</b><small>Có viền mảnh. Dùng cho danh sách, form, khi không muốn nhiều bóng.</small></div>
+        <div class="m-link">Back</div>
+      </div>
+      <figcaption>Dark Mode</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: cả 3 card có cùng kích thước chữ, padding và góc bo. Chỉ card thứ 2 có bóng,
+  chỉ card thứ 3 có viền. Ở Dark Mode, viền phải <strong>thấy được</strong> (sáng hơn nền card). Vì vậy bài này thêm màu
+  <code>border</code> vào theme, vì <code>colors.light</code> ở Dark Mode gần trùng màu với <code>surface</code>.</p>
+
+  <h2>1. Giống ở đâu, khác ở đâu</h2>
+  <table>
+    <tr><th></th><th>Filled</th><th>Elevated</th><th>Outlined</th></tr>
+    <tr><td>padding 16dp, bo góc 16dp, nền <code>surface</code>, chữ <code>text</code></td><td colspan="3">giống nhau, viết <strong>một lần</strong> trong <code>AppCard</code></td></tr>
+    <tr><td>bóng đổ</td><td>không</td><td>có</td><td>không</td></tr>
+    <tr><td>viền</td><td>không</td><td>không</td><td>có</td></tr>
+  </table>
+  <div class="compare">
+    <div>
+      <span class="label">CSS</span>
+      <pre><code>.card {            /* phần giống */
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--surface);
+}
+.card--elevated { box-shadow: ...; }
+.card--outlined { border: 1px solid
+                    var(--border); }</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>enum class AppCardVariant {
+    Filled, Elevated, Outlined
+}
+
+AppCard(variant = AppCardVariant.Outlined) {
+    Text("Sapa mùa lúa chín")
+}</code></pre>
+    </div>
+  </div>
+  <p><code>enum class</code> giống danh sách các class modifier <code>--filled</code>, <code>--elevated</code>,
+  <code>--outlined</code>. Bạn chỉ được chọn một trong số đó, gõ sai tên thì build báo lỗi ngay.</p>
+
+  <h2>2. Chọn bóng và viền bằng <code>when</code></h2>
+  <pre><code>val shadowModifier = when (variant) {
+    AppCardVariant.Elevated -&gt; Modifier.shadow(elevation = 6.dp, shape = shape)
+    AppCardVariant.Filled, AppCardVariant.Outlined -&gt; Modifier // không thêm gì
+}
+val border = when (variant) {
+    AppCardVariant.Outlined -&gt; BorderStroke(1.dp, colors.border)
+    AppCardVariant.Filled, AppCardVariant.Elevated -&gt; null    // không có viền
+}</code></pre>
+  <ul>
+    <li><code>when</code> bạn đã học ở Bài 2. Dấu phẩy <code>Filled, Outlined -&gt;</code> nghĩa là "Filled
+    <strong>hoặc</strong> Outlined thì làm giống nhau".</li>
+    <li><code>Modifier</code> đứng một mình là "Modifier rỗng", không làm gì cả. Bạn đã dùng nó trong
+    <code>.then(if ... else Modifier)</code> ở <code>AppAvatar</code> và <code>AppPage</code>.</li>
+    <li><code>null</code> nghĩa là "không có gì", giống <code>border: none</code>. Tham số <code>border</code> của
+    <code>Card</code> nhận <code>null</code> để hiểu là không vẽ viền.</li>
+    <li><code>BorderStroke(1.dp, màu)</code> giống <code>1px solid màu</code>.</li>
+  </ul>
+
+  <h2>3. Phần nội dung: slot <code>content</code></h2>
+  <p>Giống <code>AppDialog</code> của bạn, <code>AppCard</code> nhận nội dung từ bên ngoài. Điểm mới là
+  <code>ColumnScope.()</code>: nội dung được đặt sẵn trong một <code>Column</code> có padding, nên trang dùng card chỉ cần
+  viết các dòng con, và vẫn dùng được <code>Modifier.align(...)</code> như khi viết trong <code>Column</code>.</p>
+  <pre><code>content: @Composable ColumnScope.() -&gt; Unit
+...
+Column(modifier = Modifier.padding(contentPadding)) {
+    content() // vẽ nội dung mà trang truyền vào, giống &lt;slot&gt;
+}</code></pre>
+
+  <h2>4. Nhiệm vụ</h2>
+  <p><strong>Bước 1: thêm màu <code>border</code> vào theme.</strong> Đây là màu viền dùng chung cho cả app (card, ô
+  nhập, đường kẻ). Thêm vào đủ 4 chỗ trong <code>Color.kt</code> như bạn đã làm với <code>surface</code>: Light
+  <code>0xFFDFE4E8</code>, Dark <code>0xFF3A3F47</code>.</p>
+
+  <p><strong>Bước 2: tạo <code>ui/components/card/AppCardVariant.kt</code>:</strong></p>
+  <pre><code>enum class AppCardVariant {
+    Filled,   // không bóng, không viền
+    Elevated, // có bóng đổ
+    Outlined, // có viền
+}</code></pre>
+
+  <p><strong>Bước 3: tạo <code>ui/components/card/AppCard.kt</code>.</strong> Code mẫu (đã build thử, chạy được):</p>
+  <pre><code>@Composable
+fun AppCard(
+    modifier: Modifier = Modifier,
+    variant: AppCardVariant = AppCardVariant.Elevated, // kiểu mặc định
+    cornerRadius: Dp = 16.dp,   // border-radius
+    contentPadding: Dp = 16.dp, // padding bên trong
+    content: @Composable ColumnScope.() -&gt; Unit
+) {
+    val shape = RoundedCornerShape(cornerRadius)
+
+    // phần KHÁC nhau
+    val shadowModifier = when (variant) {
+        AppCardVariant.Elevated -&gt; Modifier.shadow(elevation = 6.dp, shape = shape)
+        AppCardVariant.Filled, AppCardVariant.Outlined -&gt; Modifier
+    }
+    val border = when (variant) {
+        AppCardVariant.Outlined -&gt; BorderStroke(1.dp, colors.border)
+        AppCardVariant.Filled, AppCardVariant.Elevated -&gt; null
+    }
+
+    // phần GIỐNG nhau
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .then(shadowModifier), // bóng phải đứng trước nền (Card tự vẽ nền bên trong)
+        shape = shape,
+        border = border,
+        colors = CardDefaults.cardColors(
+            containerColor = colors.surface,
+            contentColor = colors.text
+        )
+    ) {
+        Column(modifier = Modifier.padding(contentPadding)) {
+            content()
+        }
+    }
+}</code></pre>
+  <p>Muốn card Elevated dùng bóng kiểu Figma của bạn? Thay <code>Modifier.shadow(...)</code> bằng
+  <code>Modifier.boxShadow(...)</code> trong <code>Shadow.kt</code>. Chỉ cần sửa một chỗ này, mọi card trong app sẽ đổi
+  theo.</p>
+
+  <p><strong>Bước 4: trưng bày.</strong> Trong <code>CardPage</code>, thêm 3 <code>AppCard</code> như hình kết quả,
+  mỗi card có một tiêu đề in đậm (<code>fontWeight = FontWeight.Bold</code>) và một dòng mô tả. Theo quy ước của project,
+  thêm một <code>AppCard</code> nhỏ vào <code>TemplatePage</code>.</p>
+
+  <p><strong>Bước 5: thay code cũ.</strong> Đổi 4 chỗ <code>Card(...)</code> cũ (<code>ShadowCard</code>,
+  <code>ShadowCard2</code>, <code>ShadowCard3</code> và card trong <code>ToggleButtonPage</code>) sang
+  <code>AppCard</code>. <code>ShadowCard2</code> (bóng màu xanh) và <code>ShadowCard3</code> (bóng custom màu đỏ) có kiểu
+  riêng: hãy dùng <code>variant = AppCardVariant.Filled</code> rồi tự thêm bóng qua <code>modifier</code>, ví dụ
+  <code>AppCard(variant = AppCardVariant.Filled, modifier = Modifier.boxShadow(...)) { ... }</code>. Đây là lý do mọi
+  component nên có tham số <code>modifier</code>: cho phép "ghi đè" từ bên ngoài, giống thêm một class riêng bên cạnh
+  <code>.card</code>.</p>
+
+  <p><strong>Bước 6: kiểm tra.</strong> Build, chạy, chuyển Light/Dark. Viền của card Outlined phải thấy được ở cả hai
+  mode.</p>
+
+  <div class="callout ask">
+  <p>Muốn card bấm được (giống <code>&lt;ion-card button&gt;</code>, có hiệu ứng gợn sóng khi chạm)? Có thể thêm tham số
+  <code>onClick</code>. Cách này cần một khái niệm mới là kiểu "có thể rỗng" (<code>(() -&gt; Unit)?</code>), hãy hỏi
+  agent khi bạn muốn thử. Badge và đường kẻ <code>&lt;hr&gt;</code> sẽ học cùng thanh menu dưới ở Bài 16. Báo "xong bài
+  11" khi xong.</p>
+  </div>
+
+  <h2>5. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Trong <code>when</code>, dòng <code>AppCardVariant.Filled, AppCardVariant.Outlined -&gt; Modifier</code> nghĩa là gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: dấu phẩy nghĩa là 'hoặc', cả hai kiểu đều không có bóng.">Filled hoặc Outlined thì không thêm bóng</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: một card chỉ có một variant, dấu phẩy ở đây là 'hoặc'.">Card vừa Filled vừa Outlined</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Modifier rỗng không làm gì, không gây lỗi.">Hai kiểu này bị lỗi</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Truyền <code>border = null</code> cho <code>Card</code> giống CSS nào?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: border 0 vẫn là một viền (độ dày 0), null là không có viền.">border: 0 solid red</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: null là 'không có gì', không vẽ viền.">border: none</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: inherit lấy từ cha, null thì không có viền.">border: inherit</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. Muốn mọi card Elevated trong app đổi sang bóng kiểu Figma, bạn sửa ở đâu?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: đó chính là việc lặp lại mà AppCard giúp tránh.">Từng trang có dùng card</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: chỉ sửa nhánh Elevated trong when của AppCard.">Một chỗ trong AppCard.kt</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Color.kt chỉ chứa màu.">Color.kt</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. Vì sao nên thêm token <code>border</code> mà không dùng <code>colors.light</code> làm màu viền?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: light ở Dark Mode (#22262c) gần trùng surface (#1E2228), viền gần như biến mất.">Vì ở Dark Mode, colors.light gần trùng màu nền card nên viền không thấy</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: colors.light dùng được, chỉ là không đủ tương phản ở Dark Mode.">Vì BorderStroke không nhận colors.light</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: số lượng token không ảnh hưởng tốc độ.">Vì nhiều token giúp app chạy nhanh hơn</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. (Ôn bài 10) <code>Dialog(onDismissRequest = { })</code> để trống thì bấm vùng tối có đóng không?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Dialog chỉ báo, bạn phải tự đổi State.">Có, tự đóng</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: phải đặt State về false trong onDismissRequest.">Không, phải tự đặt State về false</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/components/card">Card</a>: hình minh họa 3 kiểu
+  <code>Card</code>, <code>ElevatedCard</code>, <code>OutlinedCard</code>.
+  <a href="https://m3.material.io/components/cards/guidelines">Material 3: Cards guidelines</a>: khi nào nên dùng kiểu
+  nào.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0010-dialog-modal.html">← Bài 10</a>
+    <a href="../reference/lo-trinh-ui.html">Lộ trình →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

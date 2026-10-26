@@ -5,36 +5,38 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.runtime.Composable
 
 
-
 // ============================================================
 // 1. COLOR SCHEME
 // ============================================================
 //set for color LIGHT MODE
-private object LightMode{
+private object LightMode {
     val primary = Color(0xFF1a75cf)
     val secondary = Color(0xFF4b9cdf)
     val light = Color(0xFFdfe4e8)
-    val danger= Color(0xFFec5b5b)
-    val text= Color(0xFF2f3134)//màu text
-    val backgroundBody= Color(0xFFeff5ff) // màu nền body
-    val white= Color(0xFFFFFFFF)
-   val backgroundTextField= Color(0xFFFFFFFF)//// màu nền TextField
-   val surface= Color(0xFFFFFFFF) // nền card trắng
+    val danger = Color(0xFFec5b5b)
+    val text = Color(0xFF2f3134)//màu text
+    val backgroundBody = Color(0xFFeff5ff) // màu nền body
+    val white = Color(0xFFFFFFFF)
+    val backgroundTextField = Color(0xFFFFFFFF)//// màu nền TextField
+    val backgroundCard = Color(0xFFFFFFFF) // nền card trắng
+    val backgroundDialog = Color(0xFF000000).copy(alpha = 0.6f) //lớp nền dialog
 
 }
 
 //set for color DARK MODE
-private object DarkMode{
+private object DarkMode {
     val primary = Color(0xFF6b74f5)
     val secondary = Color(0xFF79b8ea)
     val light = Color(0xFF22262c)
-    val danger= Color(0xFFf28b8b)
-    val text= Color(0xFFffffff)//màu text
-    val backgroundBody= Color(0xFF12141A) // màu nền body
-    val white= Color(0xFF000000)
-    val backgroundTextField= Color(0xFF000000)
-    val surface= Color(0xFF1E2228) // nền card xám tô
+    val danger = Color(0xFFf28b8b)
+    val text = Color(0xFFffffff)//màu text
+    val backgroundBody = Color(0xFF12141A) // màu nền body
+    val white = Color(0xFF000000)
+    val backgroundTextField = Color(0xFF000000)
+    val backgroundCard = Color(0xFF1E2228) // nền card xám tô
+    val backgroundDialog = Color(0xFF000000).copy(alpha = 0.3f) //lớp nền dialog
 }
+
 // ============================================================
 // 2. APP COLORS
 // ============================================================
@@ -47,32 +49,36 @@ data class AppColors(
     val backgroundBody: Color,
     val white: Color,
     val backgroundTextField: Color,
-    val surface: Color,
+    val backgroundCard: Color,
+    val backgroundDialog: Color,
 )
+
 // ============================================================
 // 3. LIGHT AND DARK APP COLORs
 // ============================================================
-val LightAppColors=AppColors(
+val LightAppColors = AppColors(
     primary = LightMode.primary,
     secondary = LightMode.secondary,
     light = LightMode.light,
     danger = LightMode.danger,
     text = LightMode.text,
     backgroundBody = LightMode.backgroundBody,
-    white= LightMode.white,
+    white = LightMode.white,
     backgroundTextField = LightMode.backgroundTextField,
-    surface= LightMode.surface,
+    backgroundCard = LightMode.backgroundCard,
+    backgroundDialog = LightMode.backgroundDialog,
 )
-val DarkAppColors=AppColors(
+val DarkAppColors = AppColors(
     primary = DarkMode.primary,
     secondary = DarkMode.secondary,
     light = DarkMode.light,
     danger = DarkMode.danger,
     text = DarkMode.text,
     backgroundBody = DarkMode.backgroundBody,
-    white= DarkMode.white,
+    white = DarkMode.white,
     backgroundTextField = DarkMode.backgroundTextField,
-    surface= DarkMode.surface,
+    backgroundCard = DarkMode.backgroundCard,
+    backgroundDialog = DarkMode.backgroundDialog
 )
 
 // ============================================================
@@ -81,6 +87,7 @@ val DarkAppColors=AppColors(
 val LocalAppColors = staticCompositionLocalOf {
     LightAppColors
 }
+
 // ============================================================
 // 5. EXTENSION — chỉ cần 1 dòng duy nhất, thay vì viết riêng từng màu
 // qua trang UI chỉ cần gọi nó ra sử dụng: color=colors.primary

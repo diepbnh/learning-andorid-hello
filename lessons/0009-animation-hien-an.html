@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 9 · Animation: hiện, ẩn, đổi trạng thái</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 9 / Học sớm theo yêu cầu · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Animation: chữ hiện dần, bấm nút để hiện/ẩn, <code>toggleClass</code> có <code>transition</code></h1>
+
+  <div class="callout">
+  <p><strong>Bài 8: xong.</strong> Bạn đã thêm <code>surface</code> vào theme. Nếu chưa sửa <code>ColorAlPhaBox</code>
+  (nền mờ, chữ rõ) thì sửa luôn nhé. Theo yêu cầu của bạn, bài này học animation trước. Card và Badge chuyển sang
+  Bài 11.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Một trang <strong>Animation</strong> có 3 phần. Hình dưới đây <strong>bấm được</strong>: bạn thử bấm nút và bấm vào
+  ô để thấy chuyển động mà app cần đạt được.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone demo">
+        <div class="m-title">Animation</div>
+        <div class="m-hello m-appear">Xin chào, Hong Diep!</div>
+        <div class="m-hello-sub m-appear d1">Chúc bạn một ngày học vui vẻ.</div>
+        <button class="m-btn js-open">Xem nội dung</button>
+        <div class="m-collapse"><div><div class="m-collapse-box">Đây là nội dung ẩn. Bấm nút lần nữa để ẩn đi.</div></div></div>
+        <div class="m-toggle">Đang tắt · bấm vào tôi</div>
+        <div class="m-link js-replay">Chạy lại hiệu ứng chữ</div>
+      </div>
+      <figcaption>Light Mode</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone demo">
+        <div class="m-title">Animation</div>
+        <div class="m-hello m-appear">Xin chào, Hong Diep!</div>
+        <div class="m-hello-sub m-appear d1">Chúc bạn một ngày học vui vẻ.</div>
+        <button class="m-btn js-open">Xem nội dung</button>
+        <div class="m-collapse"><div><div class="m-collapse-box">Đây là nội dung ẩn. Bấm nút lần nữa để ẩn đi.</div></div></div>
+        <div class="m-toggle">Đang tắt · bấm vào tôi</div>
+        <div class="m-link js-replay">Chạy lại hiệu ứng chữ</div>
+      </div>
+      <figcaption>Dark Mode</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: (1) Khi mở trang, dòng chào trượt từ dưới lên và hiện dần trong 0.8 giây,
+  dòng thứ hai chạy chậm hơn 0.3 giây. (2) Bấm nút thì ô nội dung mở ra mượt, các phần bên dưới bị đẩy xuống từ từ, và
+  chữ trên nút đổi thành "Ẩn nội dung". (3) Bấm vào ô cuối thì nền đổi dần sang <code>colors.primary</code>, chữ thành
+  trắng và góc bo tròn hơn. Bấm lần nữa thì trở về như cũ.</p>
+
+  <h2>1. Ý tưởng chính: animation chạy khi State đổi</h2>
+  <div class="compare">
+    <div>
+      <span class="label">Web</span>
+      <pre><code>.box { transition: background .3s; }
+.box.active { background: blue; }
+
+// JS: đổi class → CSS tự chạy transition
+box.classList.toggle('active');</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>var isActive by remember {
+    mutableStateOf(false)
+}
+
+// đổi State → Compose vẽ lại,
+// animate...AsState tự chạy chuyển động
+isActive = !isActive</code></pre>
+    </div>
+  </div>
+  <p>Bạn đã dùng <code>remember { mutableStateOf(...) }</code> ở Bài 3 và Bài 5 để nhớ chữ người dùng gõ. Nó giống một
+  biến JS có thêm "phép thuật": mỗi lần đổi giá trị, màn hình tự vẽ lại. Trong Compose, <strong>State đóng vai trò của
+  class</strong>. Bạn không đi "thêm/bớt class" mà chỉ đổi <code>true</code> ↔ <code>false</code>, rồi viết giao diện
+  theo giá trị đó.</p>
+  <p><code>!isActive</code> nghĩa là "ngược lại của isActive": đang <code>true</code> thành <code>false</code> và ngược
+  lại. Đây chính là <code>toggle</code>.</p>
+
+  <h2>2. Hiện/ẩn có transition → <code>AnimatedVisibility</code></h2>
+  <div class="compare">
+    <div>
+      <span class="label">Web (jQuery)</span>
+      <pre><code>$('.btn').click(() =&gt; {
+  $('.content').slideToggle(300);
+});</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>AnimatedVisibility(
+    visible = isOpen,
+    enter = fadeIn() + expandVertically(),
+    exit = fadeOut() + shrinkVertically()
+) {
+    // nội dung bị ẩn/hiện
+}</code></pre>
+    </div>
+  </div>
+  <p><code>visible = true</code> thì nội dung chạy hiệu ứng <code>enter</code> để hiện ra. <code>false</code> thì chạy
+  <code>exit</code> rồi biến mất hẳn (giống <code>display: none</code>, không chiếm chỗ). Dấu <code>+</code> ghép nhiều
+  hiệu ứng chạy cùng lúc, giống khai báo nhiều thuộc tính trong một <code>transition</code>.</p>
+  <table>
+    <tr><th>CSS</th><th>Hiện (enter)</th><th>Ẩn (exit)</th></tr>
+    <tr><td><code>opacity</code> 0 ↔ 1</td><td><code>fadeIn()</code></td><td><code>fadeOut()</code></td></tr>
+    <tr><td><code>height</code> 0 ↔ auto</td><td><code>expandVertically()</code></td><td><code>shrinkVertically()</code></td></tr>
+    <tr><td><code>transform: translateY(...)</code></td><td><code>slideInVertically()</code></td><td><code>slideOutVertically()</code></td></tr>
+    <tr><td><code>transform: scale(...)</code></td><td><code>scaleIn()</code></td><td><code>scaleOut()</code></td></tr>
+  </table>
+  <p>Một điểm hay hơn CSS: trên web, <code>height: auto</code> không chạy transition được. Trong Compose,
+  <code>expandVertically</code> tự đo chiều cao nội dung, bạn không cần làm gì thêm.</p>
+
+  <h2>3. <code>toggleClass</code> + <code>transition</code> → <code>animate...AsState</code></h2>
+  <pre><code>val bgColor by animateColorAsState(
+    targetValue = if (isActive) colors.primary else colors.surface,
+    animationSpec = tween(durationMillis = 300), // transition-duration: 300ms
+    label = "bgColor"
+)</code></pre>
+  <p>Đọc là: "màu nền <strong>muốn tới</strong> (<code>targetValue</code>) là primary khi active, là surface khi không".
+  Khi <code>isActive</code> đổi, <code>bgColor</code> không nhảy ngay sang màu mới mà <strong>chuyển dần</strong> trong
+  300ms. Sau đó bạn dùng <code>bgColor</code> như một màu bình thường: <code>.background(bgColor)</code>.
+  <code>label</code> chỉ là tên để công cụ debug của Android Studio hiển thị.</p>
+  <table>
+    <tr><th>Muốn transition thuộc tính</th><th>Dùng</th></tr>
+    <tr><td>màu: <code>background-color</code>, <code>color</code></td><td><code>animateColorAsState</code></td></tr>
+    <tr><td>kích thước: <code>border-radius</code>, <code>width</code>, <code>padding</code></td><td><code>animateDpAsState</code></td></tr>
+    <tr><td>số thường: <code>opacity</code>, <code>scale</code>, <code>rotate</code></td><td><code>animateFloatAsState</code></td></tr>
+  </table>
+  <table>
+    <tr><th>CSS</th><th>Compose <code>animationSpec</code></th></tr>
+    <tr><td><code>transition: 300ms ease</code></td><td><code>tween(durationMillis = 300)</code></td></tr>
+    <tr><td><code>transition-delay: 300ms</code></td><td><code>tween(300, delayMillis = 300)</code></td></tr>
+    <tr><td>hiệu ứng nảy (bounce)</td><td><code>spring(dampingRatio = Spring.DampingRatioMediumBouncy)</code></td></tr>
+  </table>
+
+  <h2>4. Chữ hiện dần khi mở trang → <code>LaunchedEffect</code></h2>
+  <div class="compare">
+    <div>
+      <span class="label">CSS</span>
+      <pre><code>.hello {
+  animation: fadeUp .8s;
+}
+.hello-sub {
+  animation: fadeUp .8s .3s both;
+}</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>var showTitle by remember { mutableStateOf(false) }
+LaunchedEffect(Unit) { showTitle = true }
+
+AnimatedVisibility(
+    visible = showTitle,
+    enter = fadeIn(tween(800)) +
+        slideInVertically(tween(800)) { it / 2 }
+) { Text("Xin chào, Hong Diep!") }</code></pre>
+    </div>
+  </div>
+  <p>Mẹo: bắt đầu với <code>showTitle = false</code> (đang ẩn), rồi <strong>ngay khi trang hiện ra</strong> thì đổi
+  thành <code>true</code>. <code>AnimatedVisibility</code> thấy State đổi nên chạy hiệu ứng hiện.</p>
+  <p><code>LaunchedEffect(Unit) { ... }</code> giống <code>window.onload</code>: đoạn code trong ngoặc chạy
+  <strong>một lần</strong> khi Composable xuất hiện lần đầu. Chữ <code>Unit</code> nghĩa là "không phụ thuộc gì, chỉ chạy
+  một lần". Đừng đổi State trực tiếp trong thân Composable, vì làm vậy sẽ vẽ lại mãi không dừng.</p>
+  <p><code>{ it / 2 }</code> là "bắt đầu từ vị trí thấp hơn nửa chiều cao của chữ", giống
+  <code>translateY(50%)</code>. <code>it</code> là chiều cao mà Compose đưa vào cho bạn.</p>
+
+  <h2>5. Nhiệm vụ</h2>
+  <p><strong>Bước 1: trang mới.</strong> Tạo <code>AnimationPage.kt</code>, route <code>"animation"</code>, dùng
+  <code>AppPage</code>, và thêm link từ <code>TemplatePage</code>.</p>
+
+  <p><strong>Bước 2: chữ hiện dần.</strong> Làm 2 dòng như mục 4. Dòng thứ hai dùng
+  <code>fadeIn(tween(800, delayMillis = 300))</code> để chạy chậm hơn. Cả hai dòng dùng chung một
+  <code>showTitle</code>.</p>
+
+  <p><strong>Bước 3: nút hiện/ẩn.</strong> Code mẫu (đã build thử, chạy được):</p>
+  <pre><code>var isOpen by remember { mutableStateOf(false) }
+
+AppButton(
+    text = if (isOpen) "Ẩn nội dung" else "Xem nội dung",
+    onClick = { isOpen = !isOpen } // toggle
+)
+AnimatedVisibility(
+    visible = isOpen,
+    enter = fadeIn() + expandVertically(),
+    exit = fadeOut() + shrinkVertically()
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+            .background(colors.surface, RoundedCornerShape(12.dp))
+            .padding(16.dp)
+    ) {
+        Text("Đây là nội dung ẩn. Bấm nút lần nữa để ẩn đi.", color = colors.text)
+    }
+}</code></pre>
+  <p>Thử thay <code>expandVertically()</code> bằng <code>scaleIn()</code> hoặc <code>slideInVertically()</code> để thấy
+  khác biệt.</p>
+
+  <p><strong>Bước 4: ô toggle.</strong> Tự viết theo mục 3. Ô có <code>isActive</code> riêng, 3 giá trị chuyển động:
+  <code>bgColor</code> (surface ↔ primary), <code>textColor</code> (text ↔ white), <code>radius</code> (8dp ↔ 28dp,
+  dùng <code>animateDpAsState</code>). Thứ tự Modifier gợi ý:
+  <code>.clip(RoundedCornerShape(radius)).background(bgColor).clickable { isActive = !isActive }.padding(16.dp)</code>.
+  Chữ trong ô đổi theo trạng thái: <code>if (isActive) "Đang bật" else "Đang tắt"</code>.</p>
+
+  <p><strong>Bước 5: kiểm tra.</strong> Build, chạy, thử cả Light và Dark. Muốn xem lại hiệu ứng chữ thì bấm Back rồi vào
+  lại trang. Thử đổi <code>tween(300)</code> thành <code>tween(2000)</code> để quan sát chậm, rồi thử
+  <code>spring(dampingRatio = Spring.DampingRatioMediumBouncy)</code> để thấy hiệu ứng nảy.</p>
+
+  <div class="callout ask">
+  <p>Khi viết, Android Studio sẽ hỏi import. Các import cần có nằm trong <code>androidx.compose.animation</code>
+  (ví dụ <code>AnimatedVisibility</code>, <code>fadeIn</code>, <code>animateColorAsState</code>) và
+  <code>androidx.compose.animation.core</code> (<code>tween</code>, <code>animateDpAsState</code>). Muốn làm chữ hiện
+  từng ký tự (typewriter) hoặc icon xoay khi bấm? Hãy hỏi agent. Báo "xong bài 9" khi xong.</p>
+  </div>
+
+  <h2>6. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Trong Compose, cái gì đóng vai trò giống "class" trong <code>classList.toggle('active')</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Modifier giống style, nó không tự nhớ trạng thái bật/tắt.">Modifier</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: đổi State thì Compose vẽ lại, animation chạy theo.">State: remember { mutableStateOf(false) }</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: tween chỉ mô tả thời gian chạy, giống transition-duration.">tween(300)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Muốn ô nội dung mở ra bằng cách kéo dài chiều cao (giống <code>slideDown</code>), dùng gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: fadeIn chỉ đổi độ mờ, chiều cao nhảy ngay.">fadeIn()</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: scaleIn phóng to từ tâm, giống transform: scale.">scaleIn()</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: expandVertically tự đo chiều cao nội dung rồi mở dần.">expandVertically()</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. Thuộc tính nào cần <code>animateDpAsState</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: màu dùng animateColorAsState.">background-color</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: góc bo tính bằng dp.">border-radius</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: opacity là số 0f–1f, dùng animateFloatAsState.">opacity</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. <code>LaunchedEffect(Unit) { showTitle = true }</code> giống gì trên web?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: chạy một lần khi trang (Composable) hiện ra lần đầu.">window.onload</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: setInterval chạy lặp lại mãi, LaunchedEffect(Unit) chỉ chạy một lần.">setInterval</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: onclick cần người dùng bấm, LaunchedEffect tự chạy.">onclick</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. (Ôn bài 8) Vì sao nền card dùng <code>colors.surface</code> chứ không phải <code>colors.white</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: màu trắng hiển thị bình thường, vấn đề nằm ở Dark Mode.">Vì white không hiển thị được trên Android</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: surface đổi theo mode, white thì luôn trắng nên chữ trắng ở Dark Mode bị chìm.">Vì surface đổi màu theo Light/Dark, white thì luôn trắng</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: cả hai đều là Color, tốc độ như nhau.">Vì surface vẽ nhanh hơn</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/animation/quick-guide">Quick guide to Animations in
+  Compose</a>: mỗi mục có ảnh động minh họa, rất hợp để chọn hiệu ứng như chọn trong Figma Prototype.
+  <a href="https://developer.android.com/develop/ui/compose/animation/composables-modifiers">AnimatedVisibility</a>: danh
+  sách đầy đủ các kiểu enter/exit.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0008-shadow-gradient-opacity.html">← Bài 8</a>
+    <a href="0010-dialog-modal.html">Bài 10 →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+<script>
+  // Mockup bấm được: mỗi điện thoại tự quản lý trạng thái của nó
+  document.querySelectorAll('.phone.demo').forEach(function (phone) {
+    var btn = phone.querySelector('.js-open');
+    var box = phone.querySelector('.m-collapse');
+    btn.addEventListener('click', function () {
+      var open = box.classList.toggle('open');
+      btn.textContent = open ? 'Ẩn nội dung' : 'Xem nội dung';
+    });
+    var toggle = phone.querySelector('.m-toggle');
+    toggle.addEventListener('click', function () {
+      var on = toggle.classList.toggle('active');
+      toggle.textContent = on ? 'Đang bật · bấm lần nữa' : 'Đang tắt · bấm vào tôi';
+    });
+    phone.querySelector('.js-replay').addEventListener('click', function () {
+      phone.querySelectorAll('.m-appear').forEach(function (el) {
+        el.style.animation = 'none';
+        void el.offsetWidth; // ép trình duyệt chạy lại animation
+        el.style.animation = '';
+      });
+    });
+  });
+</script>
+</body>
+</html>

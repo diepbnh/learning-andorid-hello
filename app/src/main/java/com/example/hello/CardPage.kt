@@ -21,30 +21,52 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.IconButton
 import androidx.compose.ui.draw.alpha
-
 import androidx.compose.ui.graphics.Brush
-import  androidx.compose.ui.unit.sp
-import  androidx.compose.ui.text.font.FontWeight
-import  androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import com.example.hello.ui.theme.boxShadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.material3.Icon
+
 
 @Composable
-fun EffectPage(modifier: Modifier = Modifier, navController: NavController) {
+fun CardPage(modifier: Modifier = Modifier, navController: NavController) {
     AppPage(modifier = modifier, scrollable = true) {
-        Text(
-            text = "Effect Page",
-            color = colors.primary,
-            style = titleXLarge,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-        )
+
+        Box(
+            modifier = Modifier.fillMaxWidth()
+
+        ) {
+            IconButton(
+                onClick = {
+                    navController.popBackStack()//về trước đó
+                },
+                modifier = Modifier.align(Alignment.CenterStart)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = colors.primary
+                )
+            }
+            Text(
+                text = "Card Page",
+                color = colors.primary,
+                style = titleXLarge,
+                modifier = Modifier.align(Alignment.Center),
+            )
+        }
+
         Spacer(modifier = Modifier.height(15.dp))
         Column(
             modifier = Modifier
@@ -113,7 +135,7 @@ private fun ShadowCard() {
             ),
         shape = cardShape,
         colors = CardDefaults.cardColors(
-            containerColor = colors.surface,//màu nền
+            containerColor = colors.backgroundCard,//màu nền
             contentColor = colors.text // màu chữ
         ),
     )
@@ -143,7 +165,7 @@ private fun ShadowCard2() {
             ),
         shape = cardShape,
         colors = CardDefaults.cardColors(
-            containerColor = colors.surface,//màu nền
+            containerColor = colors.backgroundCard,//màu nền
             contentColor = colors.text // màu chữ
         ),
     )
@@ -172,7 +194,7 @@ private fun ShadowCard3() {
             ),
         shape = cardShape,
         colors = CardDefaults.cardColors(
-            containerColor = colors.surface,//màu nền
+            containerColor = colors.backgroundCard,//màu nền
             contentColor = colors.text // màu chữ
         ),
     )
@@ -278,9 +300,9 @@ private fun AlphaCopyText() {
             horizontalArrangement = Arrangement.spacedBy(10.dp), //khoảng cách giữa các box
         ) {
             //gọi lại AlphaBox, tự truyền text + alpha
-            ColorAlPhaBox(text = "100%", textAlPha = 1f, modifier = Modifier.weight(1f))
-            ColorAlPhaBox(text = "60%", textAlPha = 0.6f, modifier = Modifier.weight(1f))
-            ColorAlPhaBox(text = "30%", textAlPha = 0.3f, modifier = Modifier.weight(1f))
+            ColorAlPhaBox(text = "100%", backgroundAlpha = 1f, modifier = Modifier.weight(1f))
+            ColorAlPhaBox(text = "60%", backgroundAlpha = 0.6f, modifier = Modifier.weight(1f))
+            ColorAlPhaBox(text = "30%", backgroundAlpha = 0.2f, modifier = Modifier.weight(1f))
         }
     }
 }
@@ -297,7 +319,7 @@ private fun ColorAlPhaBox(
         modifier = modifier
             .height(40.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(colors.primary.copy(alpha = backgroundAlpha)),
+            .background(colors.danger.copy(alpha = backgroundAlpha)),
         contentAlignment = Alignment.Center
     ) {
         Text(
