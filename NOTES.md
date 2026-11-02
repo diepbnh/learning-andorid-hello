@@ -15,3 +15,4 @@
 - **Đổi thứ tự lần 2 (2026-10-26)**: người học xin học Dialog/Modal (so sánh `ion-modal`) → Bài 10 = `Dialog`, `AlertDialog`, bottom sheet tự làm (scrim + `animateEnterExit` + `BackHandler`), component `AppDialog`. Card/Badge → Bài 11; Snackbar tách thành Bài 19; các bài sau +1. Người học biết Ionic: dùng phép so sánh Ionic khi phù hợp.
 - `DarkMode.white = 0xFF000000` là **cố ý** (người học xác nhận 2026-10-26): ở Dark Mode `colors.white` là đen. Không báo là lỗi khi review; khi viết bài/mockup Dark Mode, chữ dùng `colors.white` hiển thị màu đen.
 - Bài 11 = `AppCard` (enum `AppCardVariant` Filled/Elevated/Outlined, token `border`), theo ý người học (2026-10-26). Badge + HorizontalDivider dời sang Bài 16 (cùng NavigationBar). Có thêm bài 10b/10c (Dialog) do phiên khác tạo.
+- Token nền card hiện tên là `backgroundCard` (người học đổi từ `surface`, 2026-10-30); có thêm token `black`. Dùng đúng tên này trong bài mới.

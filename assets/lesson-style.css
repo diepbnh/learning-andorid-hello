@@ -366,3 +366,23 @@ pre code { background: none; padding: 0; }
 .m-acard.outlined { border-color: var(--app-border); }
 .m-acard .m-tag { float: right; font-size: 9px; font-weight: 700; color: var(--app-primary); }
 .mockup.dark .m-acard.elevated { box-shadow: 0 3px 8px rgba(0,0,0,0.5); }
+
+/* Mockup blocks cho Checkbox / Switch (Bài 12+). colors.white ở Dark Mode của app là màu đen (người học cố ý). */
+.mockup { --app-on-primary: #ffffff; }
+.mockup.dark { --app-on-primary: #000000; }
+.m-group { background: var(--app-surface); border-radius: 16px; padding: 4px 14px; margin-top: 10px; }
+.m-row { display: flex; align-items: center; gap: 8px; padding: 9px 0; cursor: pointer; user-select: none; }
+.m-row + .m-row { border-top: 1px solid var(--app-light); }
+.m-row .grow { flex: 1; }
+.m-sw { width: 36px; height: 20px; border-radius: 10px; position: relative; flex: none;
+  background: var(--app-light); border: 2px solid var(--app-secondary); transition: background 0.2s, border-color 0.2s; }
+.m-sw::after { content: ""; position: absolute; top: 3px; left: 3px; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--app-secondary); transition: transform 0.2s, width 0.2s, height 0.2s, top 0.2s, background 0.2s; }
+.m-row.on .m-sw { background: var(--app-primary); border-color: var(--app-primary); }
+.m-row.on .m-sw::after { transform: translateX(15px); top: 1px; width: 14px; height: 14px; background: var(--app-on-primary); }
+.m-cb { width: 16px; height: 16px; border-radius: 3px; border: 2px solid var(--app-secondary); flex: none;
+  display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; color: transparent;
+  transition: background 0.15s, border-color 0.15s; }
+.m-row.on .m-cb { background: var(--app-primary); border-color: var(--app-primary); color: var(--app-on-primary); }
+.m-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.m-group-title { font-size: 11px; font-weight: 600; margin: 14px 0 0; opacity: 0.8; }

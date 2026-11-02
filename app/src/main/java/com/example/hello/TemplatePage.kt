@@ -145,6 +145,34 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                             navController.navigate("dialog")
                         }
                 )
+                Spacer(modifier = Modifier.width(15.dp))
+                Text(
+                    text = "Card 2",
+                    textDecoration = TextDecoration.Underline,
+                    style = titleMedium,
+                    color = colors.primary,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("card2")
+                        }
+                )
+            }
+            Spacer(
+                modifier = Modifier.height(25.dp)
+            )
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ){
+                Text(
+                    text = "Setting",
+                    textDecoration = TextDecoration.Underline,
+                    style = titleMedium,
+                    color = colors.primary,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("setting")
+                        }
+                )
             }
 
 

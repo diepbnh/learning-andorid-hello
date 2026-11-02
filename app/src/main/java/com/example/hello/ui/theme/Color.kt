@@ -20,6 +20,8 @@ private object LightMode {
     val backgroundTextField = Color(0xFFFFFFFF)//// màu nền TextField
     val backgroundCard = Color(0xFFFFFFFF) // nền card trắng
     val backgroundDialog = Color(0xFF000000).copy(alpha = 0.6f) //lớp nền dialog
+    val black = Color(0xFF000000)
+
 
 }
 
@@ -35,6 +37,7 @@ private object DarkMode {
     val backgroundTextField = Color(0xFF000000)
     val backgroundCard = Color(0xFF1E2228) // nền card xám tô
     val backgroundDialog = Color(0xFF000000).copy(alpha = 0.3f) //lớp nền dialog
+    val black = Color(0xFF000000)
 }
 
 // ============================================================
@@ -51,6 +54,7 @@ data class AppColors(
     val backgroundTextField: Color,
     val backgroundCard: Color,
     val backgroundDialog: Color,
+    val black: Color,
 )
 
 // ============================================================
@@ -67,6 +71,7 @@ val LightAppColors = AppColors(
     backgroundTextField = LightMode.backgroundTextField,
     backgroundCard = LightMode.backgroundCard,
     backgroundDialog = LightMode.backgroundDialog,
+    black = LightMode.black,
 )
 val DarkAppColors = AppColors(
     primary = DarkMode.primary,
@@ -78,7 +83,8 @@ val DarkAppColors = AppColors(
     white = DarkMode.white,
     backgroundTextField = DarkMode.backgroundTextField,
     backgroundCard = DarkMode.backgroundCard,
-    backgroundDialog = DarkMode.backgroundDialog
+    backgroundDialog = DarkMode.backgroundDialog,
+    black = DarkMode.black,
 )
 
 // ============================================================

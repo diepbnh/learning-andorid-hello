@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 12 · Checkbox và Switch</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 12 / Nhóm 2: Form · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Checkbox và Switch: <code>type="checkbox"</code> và <code>ion-toggle</code></h1>
+
+  <div class="callout">
+  <p><strong>Bài 11: xong.</strong> <code>AppCard</code> dùng 2 công tắc <code>hasShadow</code> / <code>hasBorder</code>
+  nên kết hợp được cả bóng lẫn viền. Đây là thiết kế riêng của bạn và có lý do rõ ràng. Bài này mở đầu
+  <strong>Nhóm 2: Form</strong>. Bạn sẽ dùng lại State <code>true/false</code> đã rất quen, cộng thêm một ý tưởng mới
+  quan trọng cho mọi ô nhập liệu: <strong>component không tự giữ State</strong>.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Một trang <strong>Cài đặt</strong>. Switch "Chế độ tối" <strong>đổi theme thật</strong> của app. Nút "Lưu cài đặt"
+  chỉ bấm được khi đã tích "Tôi đồng ý". Hình dưới đây <strong>bấm được</strong>, bạn thử bấm vào cả dòng chữ, không chỉ
+  vào công tắc.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone demo">
+        <div class="m-title">Cài đặt</div>
+        <div class="m-group-title">Chung</div>
+        <div class="m-group">
+          <div class="m-row on"><span class="grow">Thông báo</span><span class="m-sw"></span></div>
+          <div class="m-row js-dark"><span class="grow">Chế độ tối</span><span class="m-sw"></span></div>
+          <div class="m-row"><span class="grow">Tự phát video</span><span class="m-sw"></span></div>
+        </div>
+        <div class="m-group-title">Sở thích</div>
+        <div class="m-group">
+          <div class="m-row on"><span class="m-cb">✓</span><span>Du lịch</span></div>
+          <div class="m-row"><span class="m-cb">✓</span><span>Ẩm thực</span></div>
+          <div class="m-row on"><span class="m-cb">✓</span><span>Nhiếp ảnh</span></div>
+        </div>
+        <div class="m-row js-agree" style="margin-top:8px"><span class="m-cb">✓</span><span>Tôi đồng ý với điều khoản</span></div>
+        <button class="m-btn js-save" disabled>Lưu cài đặt</button>
+      </div>
+      <figcaption>Light Mode (bấm "Chế độ tối" để đổi)</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone demo">
+        <div class="m-title">Cài đặt</div>
+        <div class="m-group-title">Chung</div>
+        <div class="m-group">
+          <div class="m-row on"><span class="grow">Thông báo</span><span class="m-sw"></span></div>
+          <div class="m-row js-dark on"><span class="grow">Chế độ tối</span><span class="m-sw"></span></div>
+          <div class="m-row"><span class="grow">Tự phát video</span><span class="m-sw"></span></div>
+        </div>
+        <div class="m-group-title">Sở thích</div>
+        <div class="m-group">
+          <div class="m-row on"><span class="m-cb">✓</span><span>Du lịch</span></div>
+          <div class="m-row"><span class="m-cb">✓</span><span>Ẩm thực</span></div>
+          <div class="m-row on"><span class="m-cb">✓</span><span>Nhiếp ảnh</span></div>
+        </div>
+        <div class="m-row js-agree on" style="margin-top:8px"><span class="m-cb">✓</span><span>Tôi đồng ý với điều khoản</span></div>
+        <button class="m-btn js-save">Lưu cài đặt</button>
+      </div>
+      <figcaption>Dark Mode (đã tích đồng ý)</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: các nhóm nằm trong <code>AppCard</code> của bạn. Switch bật có rãnh màu
+  <code>colors.primary</code>, nút tròn to hơn và chạy sang phải. Switch tắt có rãnh nhạt và nút tròn nhỏ. Checkbox tích
+  có nền <code>colors.primary</code>. Dấu tích và nút tròn của Switch dùng <code>colors.white</code>, nên ở Dark Mode chúng
+  có màu đen (đúng với theme của bạn). Bấm vào <strong>chữ</strong> cũng bật/tắt được, giống <code>&lt;label&gt;</code>.
+  Nút "Lưu cài đặt" mờ đi và không bấm được khi chưa tích "Tôi đồng ý".</p>
+
+  <h2>1. Checkbox và Switch cơ bản</h2>
+  <div class="compare">
+    <div>
+      <span class="label">Ionic</span>
+      <pre><code>&lt;ion-checkbox
+  [checked]="agreed"
+  (ionChange)="agreed = $event.detail.checked"&gt;
+&lt;/ion-checkbox&gt;
+
+&lt;ion-toggle
+  [checked]="notify"
+  (ionChange)="notify = $event.detail.checked"&gt;
+&lt;/ion-toggle&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>var agreed by remember { mutableStateOf(false) }
+var notify by remember { mutableStateOf(true) }
+
+Checkbox(
+    checked = agreed,
+    onCheckedChange = { agreed = it }
+)
+
+Switch(
+    checked = notify,
+    onCheckedChange = { notify = it }
+)</code></pre>
+    </div>
+  </div>
+  <p>Hai việc tách riêng, giống <code>[checked]</code> và <code>(ionChange)</code>:</p>
+  <ul>
+    <li><code>checked = agreed</code>: hiển thị theo State (đang tích hay không).</li>
+    <li><code>onCheckedChange = { agreed = it }</code>: khi người dùng bấm, Compose đưa vào giá trị mới
+    (<code>it</code>, là <code>true</code> hoặc <code>false</code>), và <strong>bạn</strong> lưu nó vào State.
+    <code>it</code> ở đây giống <code>$event.detail.checked</code>.</li>
+  </ul>
+  <p>Nếu quên dòng <code>agreed = it</code>, bấm vào checkbox sẽ không có gì xảy ra. Checkbox không tự tích được, nó chỉ
+  vẽ theo <code>checked</code>. Bạn đã gặp đúng chuyện này với <code>onDismissRequest</code> của Dialog ở Bài 10.</p>
+
+  <h2>2. Ý tưởng mới: component không tự giữ State</h2>
+  <p>So sánh với <code>AppToggleButton</code> bạn làm ở Bài 9:</p>
+  <table>
+    <tr><th></th><th><code>AppToggleButton</code> (Bài 9)</th><th><code>AppSwitch</code> (bài này)</th></tr>
+    <tr><td>State nằm ở đâu</td><td><strong>bên trong</strong> component (<code>remember</code> trong component)</td><td><strong>bên ngoài</strong>, ở trang dùng nó</td></tr>
+    <tr><td>Trang có biết đang bật hay tắt không</td><td>không</td><td>có</td></tr>
+    <tr><td>Hợp với</td><td>hiệu ứng trang trí</td><td>form: cần lấy giá trị để lưu hoặc gửi đi</td></tr>
+  </table>
+  <p>Trong form, trang cần <strong>đọc được</strong> giá trị (ví dụ nút "Lưu" cần biết đã tích "Tôi đồng ý" chưa). Vì vậy
+  component form nhận 2 tham số <code>checked</code> và <code>onCheckedChange</code>, còn State do trang giữ. Cách này
+  gọi là <strong>state hoisting</strong> ("kéo State lên trên"), giống <code>[(ngModel)]</code> của Angular/Ionic:
+  component chỉ hiển thị và báo thay đổi. <code>AppTextField</code> có sẵn của bạn cũng làm đúng như vậy với
+  <code>value</code> và <code>onValueChange</code>.</p>
+  <p><code>onCheckedChange: (Boolean) -&gt; Unit</code> nghĩa là "một đoạn code nhận vào một giá trị
+  <code>true/false</code>". So với <code>onClick: () -&gt; Unit</code> của <code>AppButton</code>, chỉ khác là có thêm
+  giá trị được đưa vào.</p>
+
+  <h2>3. Bấm vào chữ cũng được → <code>Modifier.toggleable</code></h2>
+  <div class="compare">
+    <div>
+      <span class="label">HTML</span>
+      <pre><code>&lt;label&gt;
+  &lt;input type="checkbox"&gt;
+  Tôi đồng ý
+&lt;/label&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Row(
+    modifier = Modifier.toggleable(
+        value = checked,
+        role = Role.Checkbox,
+        onValueChange = onCheckedChange
+    )
+) {
+    Checkbox(checked = checked,
+        onCheckedChange = null)
+    Text("Tôi đồng ý")
+}</code></pre>
+    </div>
+  </div>
+  <p><code>toggleable</code> biến cả <code>Row</code> thành vùng bấm, giống <code>&lt;label&gt;</code> bao quanh
+  <code>&lt;input&gt;</code>. Lúc này <code>Checkbox</code> nhận <code>onCheckedChange = null</code> ("không tự xử lý
+  bấm") để không có hai chỗ cùng nhận cú bấm. <code>role = Role.Checkbox</code> báo cho trình đọc màn hình biết đây là
+  checkbox, giống thuộc tính <code>role</code> trong HTML.</p>
+
+  <h2>4. Màu theo theme</h2>
+  <table>
+    <tr><th>Component</th><th>Tham số màu</th><th>Giống CSS</th></tr>
+    <tr><td><code>Checkbox</code></td><td><code>CheckboxDefaults.colors(checkedColor, uncheckedColor, checkmarkColor)</code></td><td><code>accent-color</code>, màu viền, màu dấu tích</td></tr>
+    <tr><td><code>Switch</code></td><td><code>SwitchDefaults.colors(checkedTrackColor, checkedThumbColor, uncheckedTrackColor, uncheckedThumbColor, uncheckedBorderColor)</code></td><td>màu rãnh (track) và màu nút tròn (thumb) theo từng trạng thái</td></tr>
+  </table>
+
+  <h2>5. Nhiệm vụ</h2>
+  <p><strong>Bước 1: trang mới.</strong> Tạo <code>SettingPage.kt</code>, route <code>"setting"</code>, và thêm link từ
+  <code>TemplatePage</code>. Thử trước <code>Checkbox</code> và <code>Switch</code> thô như mục 1 để thấy chúng chạy.</p>
+
+  <p><strong>Bước 2: tạo <code>ui/components/form/AppSwitch.kt</code>.</strong> Code mẫu (đã build thử, chạy được):</p>
+  <pre><code>@Composable
+fun AppSwitch(
+    label: String,
+    checked: Boolean,                    // trang đưa vào: đang bật hay tắt
+    onCheckedChange: (Boolean) -&gt; Unit,  // báo cho trang biết giá trị mới
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .toggleable( // cả dòng bấm được, giống &lt;label&gt;
+                value = checked,
+                role = Role.Switch,
+                onValueChange = onCheckedChange
+            )
+            .padding(vertical = 8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(text = label, color = colors.text, modifier = Modifier.weight(1f)) // chữ bên trái, đẩy switch sang phải
+        Switch(
+            checked = checked,
+            onCheckedChange = null, // Row đã lo việc bấm
+            colors = SwitchDefaults.colors(
+                checkedTrackColor = colors.primary,
+                checkedThumbColor = colors.white,
+                uncheckedTrackColor = colors.light,
+                uncheckedThumbColor = colors.secondary,
+                uncheckedBorderColor = colors.secondary,
+            )
+        )
+    }
+}</code></pre>
+
+  <p><strong>Bước 3: tự viết <code>AppCheckbox</code></strong> trong cùng thư mục, theo mẫu <code>AppSwitch</code>. Khác
+  biệt: <code>Checkbox</code> đứng <strong>trước</strong> chữ, cách nhau 8dp, <code>role = Role.Checkbox</code>, và dùng
+  <code>CheckboxDefaults.colors(...)</code> như bảng ở mục 4.</p>
+
+  <p><strong>Bước 4: dựng trang theo hình kết quả.</strong></p>
+  <ul>
+    <li>Nhóm "Chung" và "Sở thích" là 2 <code>AppCard</code> của bạn.</li>
+    <li>Mỗi switch/checkbox có một State riêng ở đầu <code>SettingPage</code>, ví dụ
+    <code>var notify by remember { mutableStateOf(true) }</code>.</li>
+    <li>Riêng "Chế độ tối" thì <strong>không</strong> cần State mới. Dùng luôn <code>ThemeManager</code> có sẵn của app
+    (cũng là một State, nhưng dùng chung cho cả app):
+    <pre><code>AppSwitch(
+    label = "Chế độ tối",
+    checked = ThemeManager.isDarkMode.value,
+    onCheckedChange = { ThemeManager.setDarkMode(it) }
+)</code></pre></li>
+    <li>Nút "Lưu cài đặt": <code>AppButton(..., enabled = agreed)</code>. <code>AppButton</code> của bạn đã có tham số
+    <code>enabled</code>, giống thuộc tính <code>disabled</code> của <code>&lt;button&gt;</code>, chỉ là ngược nghĩa.</li>
+  </ul>
+
+  <p><strong>Bước 5: kiểm tra.</strong> Bấm vào chữ và vào công tắc đều phải bật/tắt được. Bật "Chế độ tối" thì cả app
+  đổi theme. Sau đó vào lại <code>LoginPage</code>, ở đó theme cũng đã đổi, vì <code>ThemeManager</code> dùng chung.</p>
+
+  <div class="callout ask">
+  <p>Muốn có checkbox "Chọn tất cả" với trạng thái "chọn một phần" (dấu gạch ngang, giống
+  <code>indeterminate</code> trong HTML)? Compose có <code>TriStateCheckbox</code>, hãy hỏi agent. Lưu ý: tắt app rồi mở
+  lại thì các lựa chọn sẽ mất, vì lưu lâu dài cần kiến thức ngoài phạm vi UI. Báo "xong bài 12" khi xong.</p>
+  </div>
+
+  <h2>6. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Bạn viết <code>Checkbox(checked = agreed, onCheckedChange = { })</code>. Bấm vào thì sao?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Checkbox chỉ vẽ theo checked, không tự đổi.">Checkbox tự tích</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: phải viết agreed = it thì State mới đổi và checkbox mới vẽ lại.">Không có gì xảy ra</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: lambda trống không gây lỗi.">App bị lỗi</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Trong <code>onCheckedChange = { notify = it }</code>, <code>it</code> là gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: it là giá trị mới, không phải component.">Chính cái Switch</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: giá trị mới (true/false) mà Compose đưa vào, giống $event.detail.checked.">Giá trị mới true/false sau khi bấm</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: giá trị cũ vẫn nằm trong notify, it là giá trị mới.">Giá trị cũ trước khi bấm</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. Vì sao <code>AppSwitch</code> nhận <code>checked</code> từ bên ngoài thay vì tự <code>remember</code> bên trong như <code>AppToggleButton</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: state hoisting, trang giữ State nên đọc được để lưu, gửi hoặc bật/tắt nút khác.">Để trang đọc được giá trị, ví dụ để bật/tắt nút Lưu</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: tốc độ như nhau, lý do là ai cần đọc giá trị.">Để chạy nhanh hơn</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Switch vẫn có animation bật/tắt sẵn.">Vì Switch không có animation</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. Khi dùng <code>Modifier.toggleable</code> trên <code>Row</code>, vì sao <code>Checkbox</code> bên trong để <code>onCheckedChange = null</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: checkbox vẫn hiện bình thường.">Để ẩn checkbox</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: chỉ Row nhận cú bấm, tránh hai chỗ cùng xử lý.">Để chỉ Row xử lý cú bấm, không bị xử lý 2 lần</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: màu do CheckboxDefaults.colors quyết định.">Để đổi màu checkbox</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. (Ôn bài 11) <code>AppCard</code> của bạn muốn có cả bóng lẫn viền thì viết thế nào?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: hai công tắc độc lập nên bật cùng lúc được.">AppCard(hasShadow = true, hasBorder = true) { ... }</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: AppCard của bạn dùng 2 cờ Boolean, không dùng variant.">AppCard(variant = AppCardVariant.Outlined) { ... }</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/components/checkbox">Checkbox</a> và
+  <a href="https://developer.android.com/develop/ui/compose/components/switch">Switch</a>: có hình từng trạng thái và cách
+  đổi màu. <a href="https://developer.android.com/develop/ui/compose/state-hoisting">Where to hoist state</a>: giải
+  thích sâu hơn về state hoisting.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0011-app-card.html">← Bài 11</a>
+    <a href="../reference/lo-trinh-ui.html">Lộ trình →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+<script>
+  // Mockup bấm được: bấm cả dòng để bật/tắt; "Chế độ tối" đổi theme của khung; "Tôi đồng ý" mở khoá nút Lưu
+  document.querySelectorAll('.phone.demo').forEach(function (phone) {
+    var save = phone.querySelector('.js-save');
+    phone.querySelectorAll('.m-row').forEach(function (row) {
+      row.addEventListener('click', function () {
+        var on = row.classList.toggle('on');
+        if (row.classList.contains('js-dark')) phone.closest('.mockup').classList.toggle('dark', on);
+        if (row.classList.contains('js-agree')) save.disabled = !on;
+      });
+    });
+  });
+</script>
+</body>
+</html>

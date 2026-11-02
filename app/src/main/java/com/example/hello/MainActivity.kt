@@ -56,6 +56,12 @@ class MainActivity : ComponentActivity() {
                     composable(route = "dialog") {
                         DialogPage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
+                    composable(route = "card2") {
+                        Card2Page(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
+                    composable(route = "setting") {
+                        SettingPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
 
                 }
             }

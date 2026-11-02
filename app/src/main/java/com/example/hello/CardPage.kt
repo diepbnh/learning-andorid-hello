@@ -246,7 +246,7 @@ private fun ImageWithTextCard() {
 
 @Composable
 private fun AlphaModifyText() {
-    Column() {
+    Column{
         Text(
             text = "Modifier.alpha (mờ cả chữ)",
             fontWeight = FontWeight.Bold
@@ -267,9 +267,9 @@ private fun AlphaModifyText() {
 //box dùng chung cho AlphaDemoRow
 @Composable
 private fun AlphaBox(
+    modifier: Modifier = Modifier, //weight truyền từ Row vào
     text: String, //chữ hiển thị
     alpha: Float = 1f, //độ mờ, mặc định không mờ
-    modifier: Modifier = Modifier, //weight truyền từ Row vào
 ) {
     Box(
         modifier = modifier
@@ -289,7 +289,7 @@ private fun AlphaBox(
 
 @Composable
 private fun AlphaCopyText() {
-    Column() {
+    Column{
         Text(
             text = "color.copy (alpha) (chữ vẫn rõ)",
             fontWeight = FontWeight.Bold
@@ -310,10 +310,11 @@ private fun AlphaCopyText() {
 //Box chữ mờ nhưng nền rõ dung copy(alpha)
 @Composable
 private fun ColorAlPhaBox(
+    modifier: Modifier = Modifier,
     text: String, // chữ truyền vào
     textAlPha: Float = 1f, // độ mờ của chữ
     backgroundAlpha: Float = 1f, // độ mờ của nền
-    modifier: Modifier = Modifier
+
 ) {
     Box(
         modifier = modifier

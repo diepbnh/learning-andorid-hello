@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 // Dưới Android 9  -> tự lùi về shadow() có sẵn (bóng đen, gần đúng)
 // ============================================================
 fun Modifier.boxShadow(
-    color: Color = Color.Black.copy(alpha = 0.25f),// màu bóng
+    color: Color, // màu bóng, bắt buộc truyền (vd: colors.black.copy(alpha = 0.25f))
     x: Dp = 0.dp, // lệch ngang
     y: Dp = 0.dp, // lệch dọc
     blur: Dp = 0.dp,// độ nhòe
