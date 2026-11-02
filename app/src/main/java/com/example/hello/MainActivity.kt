@@ -59,9 +59,13 @@ class MainActivity : ComponentActivity() {
                     composable(route = "card2") {
                         Card2Page(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
-                    composable(route = "setting") {
-                        SettingPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    composable(route = "checkbox") {
+                        CheckboxPage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
+                    composable(route = "radio") {
+                        RadioPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
+
 
                 }
             }

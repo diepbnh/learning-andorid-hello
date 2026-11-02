@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 13 · RadioButton</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 13 / Nhóm 2: Form · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>RadioButton: <code>type="radio"</code> và <code>ion-radio-group</code>, chọn 1 trong nhiều</h1>
+
+  <div class="callout">
+  <p><strong>Bài 12: xong.</strong> <code>AppCheckbox</code> và <code>AppSwitch</code> đều giữ State ở trang
+  (state hoisting), bấm được cả dòng, và Switch "Dark Mode" đổi theme thật. Nhớ thêm
+  <code>enabled = acceptTerms</code> cho nút Save nếu bạn chưa thêm. Bài sau (Bài 14) sẽ làm <strong>header cho
+  trang</strong> theo yêu cầu của bạn.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Thêm 2 nhóm radio vào <code>SettingPage</code>, mỗi nhóm trong một <code>AppCard</code>. Chọn cỡ chữ thì đoạn chữ
+  mẫu đổi cỡ ngay. Chọn ngôn ngữ thì câu chào đổi ngôn ngữ. Hình dưới đây <strong>bấm được</strong>.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone demo">
+        <div class="m-title">Setting Page</div>
+        <div class="m-group-title">Cỡ chữ</div>
+        <div class="m-group" data-group="size">
+          <div class="m-row" data-value="14"><span class="m-radio"></span><span>Nhỏ</span></div>
+          <div class="m-row on" data-value="18"><span class="m-radio"></span><span>Vừa</span></div>
+          <div class="m-row" data-value="22"><span class="m-radio"></span><span>Lớn</span></div>
+        </div>
+        <div class="m-group-title">Ngôn ngữ</div>
+        <div class="m-group" data-group="lang">
+          <div class="m-row on" data-value="Xin chào, Hong Diep!"><span class="m-radio"></span><span>Tiếng Việt</span></div>
+          <div class="m-row" data-value="Hello, Hong Diep!"><span class="m-radio"></span><span>English</span></div>
+        </div>
+        <div class="m-preview" style="font-size:18px"><small>Xem trước</small><span class="js-hello">Xin chào, Hong Diep!</span></div>
+      </div>
+      <figcaption>Light Mode (đang chọn: Vừa, Tiếng Việt)</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone demo">
+        <div class="m-title">Setting Page</div>
+        <div class="m-group-title">Cỡ chữ</div>
+        <div class="m-group" data-group="size">
+          <div class="m-row" data-value="14"><span class="m-radio"></span><span>Nhỏ</span></div>
+          <div class="m-row" data-value="18"><span class="m-radio"></span><span>Vừa</span></div>
+          <div class="m-row on" data-value="22"><span class="m-radio"></span><span>Lớn</span></div>
+        </div>
+        <div class="m-group-title">Ngôn ngữ</div>
+        <div class="m-group" data-group="lang">
+          <div class="m-row" data-value="Xin chào, Hong Diep!"><span class="m-radio"></span><span>Tiếng Việt</span></div>
+          <div class="m-row on" data-value="Hello, Hong Diep!"><span class="m-radio"></span><span>English</span></div>
+        </div>
+        <div class="m-preview" style="font-size:22px"><small>Xem trước</small><span class="js-hello">Hello, Hong Diep!</span></div>
+      </div>
+      <figcaption>Dark Mode (đang chọn: Lớn, English)</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: trong mỗi nhóm luôn có <strong>đúng một</strong> ô được chọn. Chọn ô khác thì
+  ô cũ tự bỏ chọn. Ô được chọn có vòng và chấm màu <code>colors.primary</code>, ô chưa chọn có vòng
+  <code>colors.secondary</code>. Bấm vào chữ cũng chọn được. Cỡ chữ mẫu: Nhỏ 14sp, Vừa 18sp, Lớn 22sp.</p>
+
+  <h2>1. Điểm khác Checkbox: cả nhóm chung một State</h2>
+  <div class="compare">
+    <div>
+      <span class="label">Ionic</span>
+      <pre><code>&lt;ion-radio-group [value]="fontSize"
+  (ionChange)="fontSize = $event.detail.value"&gt;
+  &lt;ion-radio value="Nhỏ"&gt;Nhỏ&lt;/ion-radio&gt;
+  &lt;ion-radio value="Vừa"&gt;Vừa&lt;/ion-radio&gt;
+  &lt;ion-radio value="Lớn"&gt;Lớn&lt;/ion-radio&gt;
+&lt;/ion-radio-group&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>var fontSize by remember { mutableStateOf("Vừa") }
+
+RadioButton(
+    selected = fontSize == "Nhỏ",
+    onClick = { fontSize = "Nhỏ" }
+)
+RadioButton(
+    selected = fontSize == "Vừa",
+    onClick = { fontSize = "Vừa" }
+)
+// ... "Lớn" tương tự</code></pre>
+    </div>
+  </div>
+  <table>
+    <tr><th></th><th>Checkbox (Bài 12)</th><th>Radio (bài này)</th></tr>
+    <tr><td>State</td><td>mỗi ô một biến <code>true/false</code></td><td><strong>cả nhóm một biến</strong>, lưu "đang chọn cái nào"</td></tr>
+    <tr><td>Ví dụ</td><td><code>var agreed = false</code></td><td><code>var fontSize = "Vừa"</code></td></tr>
+    <tr><td>Bấm vào thì</td><td>đảo <code>true ↔ false</code></td><td>gán giá trị của ô đó cho cả nhóm</td></tr>
+  </table>
+  <p><code>fontSize == "Nhỏ"</code> là một <strong>phép so sánh</strong>: kết quả là <code>true</code> nếu hai bên bằng
+  nhau, ngược lại là <code>false</code>. Nó giống <code>===</code> trong JS. Mỗi <code>RadioButton</code> tự hỏi "giá trị
+  của nhóm có phải là mình không?". Vì chỉ một giá trị khớp, nên luôn chỉ có một ô được chọn. Bạn không cần tự viết code
+  "bỏ chọn ô cũ".</p>
+  <p>Cẩn thận: <code>=</code> (một dấu) là <strong>gán</strong> (<code>fontSize = "Nhỏ"</code>), còn <code>==</code>
+  (hai dấu) là <strong>so sánh</strong>. Giống JS.</p>
+
+  <h2>2. Vẽ nhiều dòng bằng <code>forEach</code></h2>
+  <p>Viết tay 3 <code>RadioButton</code> thì được, nhưng 10 lựa chọn thì sao? Bạn đã dùng <code>forEachIndexed</code> ở
+  Bài 6 để vẽ các hàng của bảng. Ở đây chỉ cần <code>forEach</code> (không cần số thứ tự):</p>
+  <div class="compare">
+    <div>
+      <span class="label">JS</span>
+      <pre><code>['Nhỏ', 'Vừa', 'Lớn'].forEach(option =&gt; {
+  // vẽ một dòng cho option
+});</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>listOf("Nhỏ", "Vừa", "Lớn").forEach { option -&gt;
+    // vẽ một dòng cho option
+}</code></pre>
+    </div>
+  </div>
+  <p><code>listOf(...)</code> là mảng (array). <code>option -&gt;</code> đặt tên cho từng phần tử, giống
+  <code>option =&gt;</code> trong JS.</p>
+
+  <h2>3. Bấm cả dòng: <code>Modifier.selectable</code></h2>
+  <p>Giống <code>toggleable</code> ở Bài 12, nhưng dành cho "chọn" thay vì "bật/tắt":</p>
+  <pre><code>Row(
+    modifier = Modifier.selectable(
+        selected = option == selected,
+        role = Role.RadioButton,
+        onClick = { onSelectedChange(option) }
+    )
+) {
+    RadioButton(selected = option == selected, onClick = null) // Row đã lo việc bấm
+    Text(option)
+}</code></pre>
+  <p>Thêm <code>Modifier.selectableGroup()</code> vào <code>Column</code> bao ngoài để trình đọc màn hình biết các dòng
+  này là <strong>một nhóm</strong>, giống <code>role="radiogroup"</code> trong HTML.</p>
+
+  <h2>4. Dùng giá trị đã chọn: <code>when</code> có <code>else</code></h2>
+  <pre><code>val previewSize = when (fontSize) {
+    "Nhỏ" -&gt; 14.sp
+    "Lớn" -&gt; 22.sp
+    else -&gt; 18.sp   // mọi trường hợp còn lại, gồm "Vừa"
+}
+
+Text(text = "Xin chào, Hong Diep!", fontSize = previewSize)</code></pre>
+  <p><code>else</code> giống <code>default:</code> trong <code>switch</code> của JS. Khi <code>when</code> so với chuỗi
+  chữ, Kotlin bắt buộc có <code>else</code>, vì chuỗi có vô số giá trị có thể xảy ra. Ở Bài 2, <code>when</code> với
+  <code>enum</code> thì không cần <code>else</code>, vì Kotlin biết hết các giá trị của enum.</p>
+
+  <h2>5. Nhiệm vụ</h2>
+  <p><strong>Bước 1: thử radio thô.</strong> Trong <code>SettingPage</code>, viết 3 <code>RadioButton</code> cho cỡ chữ
+  như mục 1 để thấy chúng chạy.</p>
+
+  <p><strong>Bước 2: tạo <code>ui/components/radio/AppRadioGroup.kt</code>.</strong> Code mẫu (đã build thử, chạy được).
+  Bạn có thể thêm <code>enabled</code>, tham số màu và <code>indication = null</code> cho giống <code>AppCheckbox</code>:</p>
+  <pre><code>@Composable
+fun AppRadioGroup(
+    options: List&lt;String&gt;,              // danh sách lựa chọn, ví dụ listOf("Nhỏ", "Vừa", "Lớn")
+    selected: String,                    // trang đưa vào: đang chọn cái nào
+    onSelectedChange: (String) -&gt; Unit,  // báo cho trang biết lựa chọn mới
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier.selectableGroup()) {
+        options.forEach { option -&gt;
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .selectable(
+                        selected = option == selected,
+                        role = Role.RadioButton,
+                        onClick = { onSelectedChange(option) }
+                    )
+                    .padding(vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = option == selected,
+                    onClick = null, // Row đã lo việc bấm
+                    colors = RadioButtonDefaults.colors(
+                        selectedColor = colors.primary,
+                        unselectedColor = colors.secondary
+                    )
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(text = option, color = colors.text)
+            }
+        }
+    }
+}</code></pre>
+  <p><code>List&lt;String&gt;</code> nghĩa là "danh sách các chuỗi chữ". Phần trong <code>&lt; &gt;</code> cho biết mỗi
+  phần tử là kiểu gì.</p>
+
+  <p><strong>Bước 3: dựng 2 nhóm theo hình kết quả.</strong></p>
+  <ul>
+    <li>Thêm 2 State ở đầu <code>SettingPage</code>: <code>fontSize</code> (mặc định <code>"Vừa"</code>) và
+    <code>language</code> (mặc định <code>"Tiếng Việt"</code>).</li>
+    <li>Mỗi nhóm là một <code>AppCard</code> chứa một <code>AppRadioGroup</code>.</li>
+    <li>Ô "Xem trước": tự viết <code>when</code> cho cỡ chữ như mục 4, và thêm một <code>when</code> nữa cho câu chào:
+    <code>"English" -&gt; "Hello, Hong Diep!"</code>, còn lại là <code>"Xin chào, Hong Diep!"</code>.</li>
+  </ul>
+
+  <p><strong>Bước 4: kiểm tra.</strong> Mỗi nhóm luôn chỉ có một ô được chọn. Bấm vào chữ cũng chọn được. Chữ xem trước
+  đổi cỡ và đổi ngôn ngữ ngay khi chọn. Kiểm tra cả Light và Dark Mode.</p>
+
+  <div class="callout ask">
+  <p>Dùng chuỗi <code>"Nhỏ"</code>, <code>"Vừa"</code> thì gõ sai một chữ (ví dụ <code>"Nho"</code>) sẽ không bị báo
+  lỗi, chỉ chạy sai. Muốn an toàn hơn thì dùng <code>enum class FontSizeOption { Small, Medium, Large }</code> như Bài 2.
+  Đây là thử thách tuỳ chọn, hãy hỏi agent nếu muốn làm. Báo "xong bài 13" khi xong. Bài 14: header cho trang
+  (<code>TopAppBar</code>, giống <code>ion-header</code> + <code>ion-toolbar</code>).</p>
+  </div>
+
+  <h2>6. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Nhóm radio Nhỏ/Vừa/Lớn cần bao nhiêu biến State?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: đó là cách của checkbox, mỗi ô độc lập.">3, mỗi ô một biến true/false</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: một biến lưu 'đang chọn cái nào' cho cả nhóm.">1, lưu giá trị đang được chọn</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: RadioButton không tự nhớ, nó vẽ theo selected.">0, RadioButton tự nhớ</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. <code>fontSize == "Lớn"</code> và <code>fontSize = "Lớn"</code> khác nhau thế nào?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: == so sánh (ra true/false), = gán giá trị mới.">== là so sánh, = là gán giá trị</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Kotlin phân biệt rõ hai dấu này, giống JS.">Giống nhau, viết kiểu nào cũng được</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: ngược lại.">= là so sánh, == là gán giá trị</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. Vì sao <code>when (fontSize)</code> với chuỗi chữ bắt buộc có <code>else</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: không liên quan tốc độ.">Để chạy nhanh hơn</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: chuỗi có vô số giá trị nên phải có nhánh mặc định, giống default: trong JS.">Vì chuỗi có thể là bất kỳ giá trị nào, cần nhánh mặc định</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: với enum thì Kotlin biết hết giá trị nên không cần else.">Vì when lúc nào cũng cần else</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. <code>Modifier.selectable</code> giống modifier nào của Bài 12?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: cả hai biến cả dòng thành vùng bấm; selectable dành cho chọn, toggleable dành cho bật/tắt.">Modifier.toggleable</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: scale chỉ phóng to/thu nhỏ.">Modifier.scale</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: weight chia chỗ trong Row/Column.">Modifier.weight</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. (Ôn bài 12) Muốn nút Save chỉ bấm được khi đã tích "I accept…", viết gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: State ở trang nên nút đọc được.">AppButton(..., enabled = acceptTerms)</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: alpha chỉ làm mờ, nút vẫn bấm được.">AppButton(..., modifier = Modifier.alpha(0.4f))</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/components/radio-button">Radio button</a>: có ví dụ đúng
+  kiểu <code>selectable</code> + <code>selectableGroup</code> như bài này.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0012-checkbox-switch.html">← Bài 12</a>
+    <a href="0014-header-top-app-bar.html">Bài 14 →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+<script>
+  // Mockup bấm được: mỗi nhóm chỉ chọn một; nhóm cỡ chữ đổi font-size, nhóm ngôn ngữ đổi câu chào
+  document.querySelectorAll('.phone.demo').forEach(function (phone) {
+    var preview = phone.querySelector('.m-preview');
+    var hello = phone.querySelector('.js-hello');
+    phone.querySelectorAll('[data-group]').forEach(function (group) {
+      group.querySelectorAll('.m-row').forEach(function (row) {
+        row.addEventListener('click', function () {
+          group.querySelectorAll('.m-row').forEach(function (r) { r.classList.toggle('on', r === row); });
+          if (group.dataset.group === 'size') preview.style.fontSize = row.dataset.value + 'px';
+          else hello.textContent = row.dataset.value;
+        });
+      });
+    });
+  });
+</script>
+</body>
+</html>

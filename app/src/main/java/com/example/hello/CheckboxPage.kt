@@ -27,14 +27,18 @@ import com.example.hello.ui.theme.colors
 import com.example.hello.ui.theme.titleLarge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import  androidx.compose.ui.unit.dp
-import com.example.hello.ui.components.checbox.AppCheckbox
+import androidx.compose.ui.unit.dp
+import com.example.hello.ui.components.checkbox.AppCheckbox
 import androidx.compose.material3.Switch
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
+import com.example.hello.ui.components.button.AppButton
+import com.example.hello.ui.components.card.AppCard
+import com.example.hello.ui.components.toggle.AppSwitch
+import com.example.hello.ui.theme.ThemeManager
 
 @Composable
-fun SettingPage(modifier: Modifier = Modifier, navController: NavController) {
+fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
     AppPage(modifier = modifier, scrollable = true) {
 
         var checked1 by remember { mutableStateOf(false) }
@@ -43,6 +47,10 @@ fun SettingPage(modifier: Modifier = Modifier, navController: NavController) {
         var checked4 by remember { mutableStateOf(false) }
         var checked5 by remember { mutableStateOf(false) }
         var notify by remember { mutableStateOf(true) }
+
+        var notification by remember { mutableStateOf(false) }
+        var autoPlay by remember { mutableStateOf(false) }
+        var acceptTerms by remember { mutableStateOf(false) }
 
         Box(
             modifier = Modifier.fillMaxWidth()
@@ -61,7 +69,7 @@ fun SettingPage(modifier: Modifier = Modifier, navController: NavController) {
             )
 
             Text(
-                text = "Setting Page",
+                text = "Checkbox Page",
                 color = colors.primary,
                 style = titleLarge,
                 modifier = Modifier.align(Alignment.Center)
@@ -147,6 +155,40 @@ fun SettingPage(modifier: Modifier = Modifier, navController: NavController) {
             )
 
         }
+        Spacer(modifier= Modifier.height(25.dp))
+        AppCard(hasShadow = true) {
+
+            AppSwitch(
+                label = "Dark Mode",
+                checked = ThemeManager.isDarkMode.value,//đọc theme hiên tại
+                onCheckedChange = { ThemeManager.setDarkMode(it) },//đổi theme cả app
+            )
+
+            AppSwitch(
+                label = "Notification",
+                checked = notification,
+                onCheckedChange = { notification = it},
+            )
+            AppSwitch(
+                label = "Auto play video Auto play video Aut",
+                checked = autoPlay,
+                onCheckedChange = { autoPlay = it },
+            )
+        }
+        Spacer(modifier= Modifier.height(25.dp))
+
+        AppCheckbox(
+            label = "I accept the terms and conditions",
+            checked = acceptTerms,
+            onCheckedChange = {acceptTerms=it},
+            textColor = colors.primary
+        )
+        Spacer(modifier= Modifier.height(25.dp))
+        AppButton(
+            text = "Save",
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {}
+        )
 
     }
 }

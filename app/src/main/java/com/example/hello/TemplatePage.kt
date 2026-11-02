@@ -164,13 +164,24 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                 modifier = Modifier.fillMaxWidth()
             ){
                 Text(
-                    text = "Setting",
+                    text = "Checkbox and Switch",
                     textDecoration = TextDecoration.Underline,
                     style = titleMedium,
                     color = colors.primary,
                     modifier = Modifier
                         .clickable {
-                            navController.navigate("setting")
+                            navController.navigate("checkbox")
+                        }
+                )
+                Spacer(modifier = Modifier.width(15.dp))
+                Text(
+                    text = "Radio",
+                    textDecoration = TextDecoration.Underline,
+                    style = titleMedium,
+                    color = colors.primary,
+                    modifier = Modifier
+                        .clickable {
+                            navController.navigate("radio")
                         }
                 )
             }
