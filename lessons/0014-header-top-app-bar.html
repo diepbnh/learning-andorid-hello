@@ -16,18 +16,19 @@
   và có thêm <code>radioScale</code>. Nhớ thêm <code>verticalAlignment = Alignment.CenterVertically</code> vào
   <code>Row</code> để chữ nằm giữa với nút radio.</p>
   <p><strong>Vì sao cần bài này:</strong> trang nào của bạn cũng tự dựng header bằng <code>Box</code> + link "Template" +
-  <code>Text</code> tiêu đề, và chép lại ở mỗi trang. Bài này thay chúng bằng một header chuẩn dùng chung.</p>
+  <code>Text</code> tiêu đề, và chép lại ở mỗi trang. Bài này thay chúng bằng <strong>một</strong> component dùng chung
+  <code>AppTopBar</code>, với 3 quy tắc: tiêu đề canh giữa, có nút Back, cố định khi cuộn. Phần duy nhất mỗi trang tự
+  quyết định là icon bên phải.</p>
   </div>
 
   <h2>Kết quả mong đợi</h2>
-  <p>Hai kiểu header. Trái: tiêu đề <strong>ở giữa</strong>, có nút Back và 2 nút bên phải. Phải: tiêu đề <strong>bên
-  trái</strong>, chỉ có nút Back. Cả hai đều <strong>cố định khi cuộn</strong>: nội dung trôi bên dưới, header đứng yên.
-  Hình <strong>cuộn được</strong>: ở khung bên trái, khi bắt đầu cuộn thì nền header đổi từ màu nền trang sang màu card để
-  tách khỏi nội dung (phần thử thách, giống iOS và Ionic).</p>
+  <p>Ba trang, <strong>cùng một header</strong> <code>AppTopBar</code>, chỉ khác nhau phần icon bên phải. Điểm chung:
+  tiêu đề luôn <strong>ở giữa</strong>, nút Back bên trái, header <strong>cố định khi cuộn</strong>. Khung đầu tiên
+  <strong>cuộn được</strong>: thử cuộn để thấy header đứng yên, nội dung trôi bên dưới.</p>
   <div class="mockup-row">
     <figure class="mockup">
-      <div class="phone has-header demo">
-        <div class="m-topbar soft">
+      <div class="phone has-header">
+        <div class="m-topbar">
           <span class="m-ib"><svg viewBox="0 0 24 24"><path d="M20 11H7.8l5.6-5.6L12 4l-8 8 8 8 1.4-1.4L7.8 13H20z"/></svg></span>
           <span class="t">Profile</span>
           <span class="m-ib"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.8l-.3-.3A6.5 6.5 0 1 0 9.5 16a6.5 6.5 0 0 0 4.2-1.6l.3.3v.8l5 5 1.5-1.5zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg></span>
@@ -46,13 +47,14 @@
           <p>Hết nội dung.</p>
         </div>
       </div>
-      <figcaption>Light Mode: CenterAlignedTopAppBar, cố định + đổi màu khi cuộn</figcaption>
+      <figcaption>Profile: 2 icon bên phải (Search, Notifications)</figcaption>
     </figure>
     <figure class="mockup dark">
       <div class="phone has-header">
-        <div class="m-topbar left">
+        <div class="m-topbar">
           <span class="m-ib"><svg viewBox="0 0 24 24"><path d="M20 11H7.8l5.6-5.6L12 4l-8 8 8 8 1.4-1.4L7.8 13H20z"/></svg></span>
           <span class="t">Radio Page</span>
+          <span class="m-ib"><svg viewBox="0 0 24 24"><path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg></span>
         </div>
         <div class="m-scroll">
           <div class="m-group">
@@ -62,16 +64,29 @@
           </div>
         </div>
       </div>
-      <figcaption>Dark Mode: TopAppBar (tiêu đề bên trái)</figcaption>
+      <figcaption>Radio (Dark Mode): 1 icon bên phải (Lưu)</figcaption>
+    </figure>
+    <figure class="mockup">
+      <div class="phone has-header">
+        <div class="m-topbar">
+          <span class="m-ib"><svg viewBox="0 0 24 24"><path d="M20 11H7.8l5.6-5.6L12 4l-8 8 8 8 1.4-1.4L7.8 13H20z"/></svg></span>
+          <span class="t">Checkbox</span>
+          <span class="m-ib" style="visibility:hidden"></span>
+        </div>
+        <div class="m-scroll">
+          <p>☑ Nhận thông báo</p>
+          <p>☐ Chế độ tối</p>
+          <p>☑ Tôi đồng ý điều khoản</p>
+        </div>
+      </div>
+      <figcaption>Checkbox: không có icon bên phải</figcaption>
     </figure>
   </div>
-  <p class="mockup-note">Chú ý khi so sánh: header rộng <strong>sát hai mép</strong> màn hình (không có padding 20dp của
-  trang) và <strong>không trôi theo</strong> khi cuộn. Khung bên phải (Bước 3–4): nền <code>colors.primary</code>, chữ và
-  icon dùng <code>colors.white</code> (ở Dark Mode của bạn là màu đen). Khung bên trái (Bước 5): nền
-  <code>colors.backgroundBody</code>, chữ và icon <code>colors.primary</code>, cuộn thì nền đổi sang
-  <code>colors.backgroundCard</code>.
-  Nội dung trang bắt đầu <strong>bên dưới</strong> header, không bị header che. Không còn link "Template" chữ gạch chân,
-  thay bằng nút mũi tên Back.</p>
+  <p class="mockup-note">Chú ý khi so sánh: tiêu đề nằm <strong>chính giữa màn hình</strong> ở cả 3 trang, kể cả trang
+  Checkbox chỉ có nút Back bên trái (<code>CenterAlignedTopAppBar</code> tự canh giữa, bạn không cần thêm khoảng trống
+  bên phải). Header nền <code>colors.primary</code>, chữ và icon <code>colors.white</code> (ở Dark Mode của bạn là màu
+  đen), rộng <strong>sát hai mép</strong> màn hình và <strong>không trôi theo</strong> khi cuộn. Nội dung bắt đầu
+  <strong>bên dưới</strong> header. Không còn link "Template" chữ gạch chân, thay bằng nút mũi tên Back.</p>
 
   <h2>1. <code>AppPage</code> của bạn đã có sẵn chỗ cho header</h2>
   <div class="compare">
@@ -122,7 +137,8 @@
     <tr><td><code>color="primary"</code></td><td><code>colors = TopAppBarDefaults.topAppBarColors(...)</code></td><td>màu nền, màu chữ, màu icon</td></tr>
   </table>
   <p>Có 2 loại hay dùng: <code>TopAppBar</code> (tiêu đề bên trái, kiểu Android) và <code>CenterAlignedTopAppBar</code>
-  (tiêu đề ở giữa, kiểu iOS, giống Ionic mặc định trên iPhone). Cách dùng giống hệt nhau.</p>
+  (tiêu đề ở giữa, kiểu iOS, giống Ionic mặc định trên iPhone). Cách dùng giống hệt nhau. App của bạn muốn tiêu đề ở
+  giữa, nên bài này dùng <code>CenterAlignedTopAppBar</code>.</p>
   <p><code>IconButton</code> là nút chỉ có icon, có sẵn vùng bấm 48dp và hiệu ứng gợn sóng, giống
   <code>&lt;ion-button fill="clear"&gt;&lt;ion-icon&gt;</code>. Bạn đã dùng nó cho nút Back trong <code>CardPage</code>.</p>
 
@@ -153,11 +169,83 @@ fun AppTopBar(...) { ... }</code></pre>
   không có nút nào.</p>
 
   <h2>5. Nhiệm vụ</h2>
-  <p><strong>Bước 1: thử <code>TopAppBar</code> thô</strong> trong <code>RadioPage</code>: bỏ <code>Box</code> header
-  cũ, truyền <code>topBar = { TopAppBar(title = { Text("Radio Page") }) }</code> vào <code>AppPage</code>. Build để thấy
-  lỗi experimental, rồi thêm <code>@OptIn(ExperimentalMaterial3Api::class)</code> phía trên <code>fun RadioPage</code>.</p>
+  <p>Chia làm 2 phần. <strong>Phần A (hôm nay):</strong> chèn một header bình thường thẳng vào <code>ProfilePage</code>,
+  chưa làm component. <strong>Phần B (buổi sau):</strong> khi đã quen, gom nó thành component <code>AppTopBar</code> dùng
+  chung.</p>
 
-  <p><strong>Bước 2: tạo <code>ui/components/layout/AppTopBar.kt</code></strong> (cạnh <code>AppPage.kt</code>). Code
+  <h3>Phần A: chèn header bình thường vào <code>ProfilePage</code></h3>
+  <p><strong>Bước A1: xoá header cũ.</strong> Trong <code>ProfilePage</code>, xoá cả khối <code>Box</code> đầu tiên
+  (chứa <code>IconButton</code> Back và <code>Text("Profile Page")</code>) và <code>Spacer</code> 15dp ngay sau nó.</p>
+
+  <p><strong>Bước A2: truyền header vào <code>topBar</code> của <code>AppPage</code>.</strong> Bắt đầu đơn giản nhất,
+  chỉ có tiêu đề:</p>
+  <pre><code>AppPage(
+    modifier = modifier,
+    topBar = {
+        CenterAlignedTopAppBar(
+            title = { Text("Profile") }
+        )
+    }
+) {
+    // nội dung cũ giữ nguyên (banner, avatar, ...)
+}</code></pre>
+  <p>Build: sẽ báo lỗi <em>experimental</em> (mục 3). Thêm <code>@OptIn(ExperimentalMaterial3Api::class)</code> phía
+  trên <code>@Composable fun ProfilePage</code>. Build lại, chạy app, cuộn trang Profile: tiêu đề đứng yên.</p>
+
+  <p><strong>Bước A3: thêm nút Back bên trái</strong> (đây chính là <code>IconButton</code> bạn vừa xoá ở bước A1,
+  chỉ chuyển chỗ):</p>
+  <pre><code>CenterAlignedTopAppBar(
+    title = { Text("Profile") },
+    navigationIcon = {
+        IconButton(onClick = { navController.popBackStack() }) {
+            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+        }
+    }
+)</code></pre>
+
+  <p><strong>Bước A4: thêm 2 icon bên phải</strong> vào <code>actions</code> (chưa cần làm gì khi bấm, để
+  <code>onClick = { }</code>):</p>
+  <pre><code>    actions = {
+        IconButton(onClick = { }) {
+            Icon(Icons.Default.Search, contentDescription = "Search")
+        }
+        IconButton(onClick = { }) {
+            Icon(Icons.Default.Notifications, contentDescription = "Notifications")
+        }
+    }</code></pre>
+
+  <p><strong>Bước A5: tô màu theo theme.</strong> Mặc định header dùng màu Material, không phải màu app bạn. Thêm
+  <code>colors</code>:</p>
+  <pre><code>    colors = TopAppBarDefaults.topAppBarColors(
+        containerColor = colors.primary,           // nền header
+        titleContentColor = colors.white,          // chữ tiêu đề
+        navigationIconContentColor = colors.white, // nút Back
+        actionIconContentColor = colors.white,     // icon bên phải
+    )</code></pre>
+
+  <p><strong>Import cần thêm</strong> (Android Studio tự gợi ý bằng Alt+Enter, đây là danh sách để đối chiếu):</p>
+  <pre><code>import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Notifications</code></pre>
+  <p><code>Icon</code>, <code>IconButton</code>, <code>Icons</code>, <code>ArrowBack</code> và <code>colors</code> thì
+  <code>ProfilePage</code> đã import sẵn.</p>
+
+  <p><strong>Bước A6: kiểm tra</strong> so với khung "Profile" ở hình kết quả: tiêu đề ở giữa, Back bên trái, 2 icon bên
+  phải, header sát mép, cuộn thì header đứng yên. Nếu nội dung cách header quá xa, truyền thêm
+  <code>contentPadding = PaddingValues(20.dp)</code> cho <code>AppPage</code> (mặc định top là 40dp).</p>
+
+  <p>Muốn thử thêm: chép nguyên khối <code>CenterAlignedTopAppBar</code> sang <code>RadioPage</code>, đổi tiêu đề và
+  icon bên phải. Bạn sẽ thấy mỗi trang phải chép lại ~25 dòng giống hệt nhau, chỉ khác tiêu đề và icon. Đó là lý do có
+  Phần B.</p>
+
+  <div class="callout ask">
+  <p>Làm xong Phần A thì báo "xong phần A bài 14" để agent xem code, rồi học tiếp Phần B.</p>
+  </div>
+
+  <h3>Phần B (buổi sau): gom thành component <code>AppTopBar</code></h3>
+  <p><strong>Bước B1: tạo <code>ui/components/layout/AppTopBar.kt</code></strong> (cạnh <code>AppPage.kt</code>). Code
   mẫu (đã build thử, chạy được):</p>
   <pre><code>@OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -179,7 +267,7 @@ fun AppTopBar(
             }
         },
         actions = actions,
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colors.primary,
             titleContentColor = colors.white,
             navigationIconContentColor = colors.white,
@@ -187,11 +275,11 @@ fun AppTopBar(
         )
     )
 }</code></pre>
-  <p>Giống các component trước, bạn có thể thêm tham số màu và một tham số chọn tiêu đề ở giữa hay bên trái (ví dụ
-  <code>centerTitle: Boolean = true</code>, rồi dùng <code>if</code> để chọn <code>CenterAlignedTopAppBar</code> hay
-  <code>TopAppBar</code>).</p>
+  <p>Để ý: tiêu đề ở giữa và màu sắc được <strong>khoá cứng bên trong</strong> component, trang không đổi được. Đó là
+  điều bạn muốn: mọi trang giống nhau. Trang chỉ truyền 3 thứ: <code>title</code>, <code>onBack</code> và
+  <code>actions</code> (icon bên phải).</p>
 
-  <p><strong>Bước 3: dùng ở <code>ProfilePage</code></strong> theo hình kết quả:</p>
+  <p><strong>Bước B2: thay header ở <code>ProfilePage</code></strong> (khối <code>CenterAlignedTopAppBar</code> dài ở Phần A) bằng <code>AppTopBar</code> ngắn gọn:</p>
   <pre><code>AppPage(
     modifier = modifier,
     topBar = {
@@ -205,15 +293,16 @@ fun AppTopBar(
         )
     }
 ) { ... }</code></pre>
-  <p>Xoá header tự làm cũ trong trang (<code>Box</code> có nút Back và tiêu đề). Nếu muốn giữ một trang kiểu cũ để so
-  sánh như bạn hay làm thì giữ ở một trang khác, ví dụ <code>CardPage</code>.</p>
+  <p>~25 dòng ở Phần A rút còn ~10 dòng, và trang nào dùng <code>AppTopBar</code> cũng có cùng màu, cùng tiêu đề ở giữa.
+  Nếu muốn giữ một trang kiểu cũ để so sánh như bạn hay làm thì giữ ở <code>CardPage</code>.</p>
 
-  <p><strong>Bước 4: dùng ở thêm 2 trang</strong> (ví dụ <code>RadioPage</code>, <code>CheckboxPage</code>). Kiểm tra
-  Light/Dark. <code>AppPage</code> có <code>contentPadding</code> top 40dp. Khi đã có header, khoảng này có thể quá lớn,
+  <p><strong>Bước B3: dùng ở thêm 2 trang</strong> theo hình: <code>RadioPage</code> có 1 icon Lưu
+  (<code>Icons.Default.Check</code>), <code>CheckboxPage</code> không truyền <code>actions</code>. Kiểm tra tiêu đề vẫn ở
+  giữa ở cả 3 trang, và kiểm tra Light/Dark. <code>AppPage</code> có <code>contentPadding</code> top 40dp. Khi đã có header, khoảng này có thể quá lớn,
   bạn thử truyền <code>contentPadding = PaddingValues(20.dp)</code> cho đẹp.</p>
 
-  <p><strong>Bước 5 (thử thách): header cố định, đổi màu khi cuộn</strong>, giống khung bên trái của hình kết quả.
-  Header vẫn đứng yên, nhưng "biết" trang đang cuộn để đổi màu nền (đã build thử, chạy được):</p>
+  <p><strong>Bước B4 (thử thách, không bắt buộc): header cố định, đổi màu khi cuộn</strong>, giống iOS: chưa cuộn thì
+  header cùng màu nền trang, cuộn thì đổi sang màu card. Header vẫn đứng yên, nhưng "biết" trang đang cuộn để đổi màu nền (đã build thử, chạy được):</p>
   <pre><code>val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior() // pinned = ghim cố định
 
 AppPage(
@@ -222,7 +311,7 @@ AppPage(
         CenterAlignedTopAppBar(
             title = { Text("Profile") },
             scrollBehavior = scrollBehavior,
-            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+            colors = TopAppBarDefaults.topAppBarColors(
                 containerColor = colors.backgroundBody,         // chưa cuộn: hoà vào nền trang
                 scrolledContainerColor = colors.backgroundCard, // đang cuộn: tách khỏi nội dung
                 titleContentColor = colors.primary,
@@ -316,15 +405,5 @@ AppPage(
   </div>
 </div>
 <script src="../assets/quiz.js"></script>
-<script>
-  // Mockup cuộn được: header cố định, đổi màu nền khi nội dung trôi bên dưới (giống pinnedScrollBehavior)
-  document.querySelectorAll('.phone.demo').forEach(function (phone) {
-    var bar = phone.querySelector('.m-topbar');
-    var scroller = phone.querySelector('.m-scroll');
-    scroller.addEventListener('scroll', function () {
-      bar.classList.toggle('scrolled', scroller.scrollTop > 0);
-    });
-  });
-</script>
 </body>
 </html>

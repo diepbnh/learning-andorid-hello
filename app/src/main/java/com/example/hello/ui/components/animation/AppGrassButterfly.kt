@@ -22,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.hello.R
+import androidx.compose.foundation.layout.requiredHeight
 
 @Composable
 fun AppGrassButterfly(
@@ -87,7 +88,7 @@ fun AppGrassButterfly(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(height)
+            .requiredHeight(height)
             .clipToBounds()// Cắt bỏ các phần hình ảnh thừa tràn ra ngoài khung
 
     ) {

@@ -24,10 +24,10 @@ fun AppPage(
     modifier: Modifier = Modifier,
     scrollable: Boolean=true,
     contentPadding: PaddingValues= PaddingValues(
-        start = 20.dp,
-        top = 40.dp,
-        end = 20.dp,
-        bottom = 20.dp
+        start = 24.dp,
+        top = 28.dp,
+        end = 24.dp,
+        bottom = 24.dp
     ),//padding common 20px
     horizontalAlignment: Alignment.Horizontal=Alignment.Start,
     topBar: @Composable () -> Unit = {},// top bar
@@ -46,15 +46,15 @@ fun AppPage(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(contentPadding)
                 .then(
                     if(scrollable)
                         Modifier.verticalScroll(rememberScrollState())
                     else
                         Modifier
-                ) ,
-
+                )
+                .padding(innerPadding)
+                .padding(contentPadding)
+            ,
             verticalArrangement = Arrangement.Top,
             horizontalAlignment=horizontalAlignment
         )

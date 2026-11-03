@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,7 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import com.example.hello.ui.theme.colors
-import com.example.hello.ui.theme.titleXLarge
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
@@ -28,54 +30,87 @@ import androidx.compose.ui.unit.sp
 import com.example.hello.ui.components.avatar.AppAvatar
 import com.example.hello.ui.theme.titleMedium
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
-
+import androidx.compose.material3.TopAppBarDefaults
+//import androidx.compose.ui.layout.layout
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+//import androidx.compose.ui.unit.offset
 import com.example.hello.ui.components.animation.AppGrassButterfly
+import com.example.hello.ui.theme.boxShadow
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
 
-    AppPage(modifier = modifier) {
-        Box(
-            modifier = Modifier.fillMaxWidth()
-                //.background(colors.danger)
-        ) {
-            IconButton(
-                onClick = {
-                    navController.popBackStack()//về trước đó
-                },
-                modifier = Modifier.align(Alignment.CenterStart)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = colors.primary
-                )
-            }
+    AppPage(
+        modifier = modifier,
+        scrollable = true,
+        topBar = {
 
-            Text(
-                text = "Profile Page",
-                color = colors.primary,
-                style = titleXLarge,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth()//width 100%
-                    .align(Alignment.Center) // text center middle
+            CenterAlignedTopAppBar(  // androidx.compose.material3
+                modifier = Modifier.boxShadow(
+                    color = colors.black.copy(alpha = 0.15f),
+                    y = 6.dp,
+                    blur = 8.dp
+                ),
+                windowInsets = TopAppBarDefaults.windowInsets.add(
+                    WindowInsets(left = 5.dp, right = 5.dp)
+                ),
+                title = { Text(text = "Profile") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.Default.Home,
+                            contentDescription = "Home"
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowForward,
+                            contentDescription = "Next"
+                        )
+                    }
+                },
+
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = colors.primary.copy(alpha = 0.95f),
+                    titleContentColor = colors.white,
+                    navigationIconContentColor = colors.white,
+                    actionIconContentColor = colors.white
+                )
+
+
             )
-        }
-        Spacer(modifier = Modifier.height(15.dp))
+        },
+
+
+        )
+
+
+    {
+
 
         //banner <div> bao ảnh lại
         Box(
             modifier = Modifier
+//                .layout { measurable, constraints ->
+//                    val bleed = 24.dp.roundToPx()
+//                    val placeable = measurable.measure(constraints.offset(horizontal = bleed * 2))
+//                    layout(constraints.maxWidth, placeable.height) {
+//                        placeable.placeRelative(-bleed, 0)
+//                    }
+//                }
                 .fillMaxWidth()
                 .height(100.dp)
                 .clip(RoundedCornerShape(10.dp))
@@ -193,6 +228,7 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
                     append("Hồng Điệp")
                 }
                 append(" Mình đang học lập trình Android với Jetpack Compose")
+
                 append(
                     ". Mục tiêu cuối là dựng được giao diện người dùng trên thiết bị di động. " +
                             "Nhiêu đó thôi cũng đã đủ mệt roài.......ahihi..."
@@ -201,6 +237,7 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
 
             )
         Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.weight(1f)) // khoản cách đẩy xuôống margin-top: auto
         //component grass butterfly
         AppGrassButterfly()
 
