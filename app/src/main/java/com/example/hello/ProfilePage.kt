@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import com.example.hello.ui.components.avatar.AppAvatar
 import com.example.hello.ui.theme.titleMedium
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
@@ -77,7 +77,7 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
                 actions = {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
-                            imageVector = Icons.Default.ArrowForward,
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = "Next"
                         )
                     }
