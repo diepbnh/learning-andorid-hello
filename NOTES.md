@@ -17,3 +17,4 @@
 - Bài 11 = `AppCard` (enum `AppCardVariant` Filled/Elevated/Outlined, token `border`), theo ý người học (2026-10-26). Badge + HorizontalDivider dời sang Bài 16 (cùng NavigationBar). Có thêm bài 10b/10c (Dialog) do phiên khác tạo.
 - Token nền card hiện tên là `backgroundCard` (người học đổi từ `surface`, 2026-10-30); có thêm token `black`. Dùng đúng tên này trong bài mới.
 - Đổi thứ tự lần 3 (2026-11-02): người học xin học header sau Radio → Bài 14 = header (`TopAppBar`, so sánh `ion-header`/`ion-toolbar`); select 15, range 16, footer menu + Badge + Divider 17, side menu 18, tabs 19, toast 20, LazyColumn 21, link 22, Coil 23, video 24.
+- Đổi thứ tự lần 4 (2026-11-06): người học xin học menu hamburger sau header → Bài 15 = side menu (`ModalNavigationDrawer`, `drawerState` + `rememberCoroutineScope`/`launch`, `NavigationDrawerItem`, `data class MenuItem`). select 16, range 17, footer menu + Badge + Divider 18; tabs 19 trở đi giữ nguyên.

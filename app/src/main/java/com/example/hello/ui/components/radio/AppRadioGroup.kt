@@ -4,7 +4,6 @@ package com.example.hello.ui.components.radio
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -41,7 +40,8 @@ fun AppRadioGroup(
         options.forEach { option ->
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
+
+                   // .fillMaxWidth() // bỏ này ra thì wwidth của radio + text ngắn vừa đủ nên không nhan ngoài vùng trắng dc
                     .selectable(
                         selected = option == selected,
                         enabled = enabled,
@@ -50,7 +50,7 @@ fun AppRadioGroup(
                         interactionSource = remember {
                             MutableInteractionSource()
                         },
-                        indication = null // tắt nền xám khi nhấn
+                       indication = null // tắt nền xám khi nhấn
                     )
                     .padding(vertical = 5.dp),
                 horizontalArrangement = Arrangement.spacedBy(gap),

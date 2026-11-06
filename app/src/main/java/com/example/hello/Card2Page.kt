@@ -1,54 +1,55 @@
 package com.example.hello
 
-import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.hello.ui.components.layout.AppPage
 import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.style.TextDecoration
 import com.example.hello.ui.theme.colors
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import com.example.hello.ui.theme.titleXLarge
-import androidx.compose.runtime.remember
 import com.example.hello.ui.components.card.AppCard
 import androidx.compose.ui.unit.dp
+import com.example.hello.ui.components.layout.AppTopBar
+import androidx.compose.material3.TextButton
 
 @Composable
 fun Card2Page(modifier: Modifier = Modifier, navController: NavController) {
-    AppPage(modifier = modifier, scrollable = true) {
-
-        Box(
-            modifier = Modifier.fillMaxWidth()
-
-        ) {
-            Text(
-                text = "Template",
-                color = colors.primary,
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
+    AppPage(
+        modifier = modifier,
+        scrollable = true,
+        topBar = {
+            AppTopBar(
+                title = "Card",
+                navigationIcon = {
+                    TextButton(
+                        onClick = { navController.navigate("login") },
                     )
-                    { navController.navigate("template") }
+                    {
+                        Text(
+                            text = "Logout",
+                            color = colors.white
+                        )
+                    }
+                },
+                actions = {
+                    TextButton(
+                        onClick = { navController.navigate("template") },
+                    ) {
+                        Text(
+                            text = "Template",
+                            color = colors.white,
+                        )
+                    }
+                }
             )
-            Text(
-                text = "Card 2 Page",
-                color = colors.primary,
-                style = titleXLarge,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-        Spacer(modifier = Modifier.height(25.dp))
 
-        AppCard() {
+        }
+
+    ) {
+
+
+        AppCard {
             Text(
                 text = "Card 01 ",
             )

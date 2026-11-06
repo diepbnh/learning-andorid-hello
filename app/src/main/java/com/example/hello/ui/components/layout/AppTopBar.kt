@@ -44,6 +44,7 @@ fun AppTopBar(
         },
         navigationIcon = navigationIcon,//navi trái
         actions = actions,//navi phải
+        //màu background header
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colors.primary.copy(alpha = 0.95f),
             titleContentColor = colors.white,

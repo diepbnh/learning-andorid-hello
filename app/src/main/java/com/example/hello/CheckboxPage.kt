@@ -1,9 +1,6 @@
 package com.example.hello
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,20 +8,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.hello.ui.components.layout.AppPage
-
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavController
 import com.example.hello.ui.theme.colors
-import com.example.hello.ui.theme.titleLarge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
@@ -34,12 +32,31 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import com.example.hello.ui.components.button.AppButton
 import com.example.hello.ui.components.card.AppCard
+import com.example.hello.ui.components.layout.AppTopBar
 import com.example.hello.ui.components.toggle.AppSwitch
 import com.example.hello.ui.theme.ThemeManager
 
 @Composable
 fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
-    AppPage(modifier = modifier, scrollable = true) {
+    AppPage(
+        modifier = modifier,
+        scrollable = true,
+        topBar = {
+            AppTopBar(
+                title = "Checkbox",
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
+            )
+        }
+    )
+
+    {
 
         var checked1 by remember { mutableStateOf(false) }
         var checked2 by remember { mutableStateOf(false) }
@@ -52,35 +69,10 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
         var autoPlay by remember { mutableStateOf(false) }
         var acceptTerms by remember { mutableStateOf(false) }
 
-        Box(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "Template",
-                color = colors.primary,
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    ) { navController.navigate("template") }
-
-            )
-
-            Text(
-                text = "Checkbox Page",
-                color = colors.primary,
-                style = titleLarge,
-                modifier = Modifier.align(Alignment.Center)
-            )
-        }
-        Spacer(modifier = Modifier.height(35.dp))
 
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp)//gap cac dong
         ) {
-
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -120,7 +112,7 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
                     Text(text = "Check Trong Compose")
                 }
             }
-            Row() {
+            Row {
                 Switch(
                     checked = notify,
                     onCheckedChange = { notify = it },
@@ -134,7 +126,7 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
             Spacer(modifier = Modifier.height(35.dp))
             Text(
                 text = "Component Checkbox trong composable",
-                fontWeight= FontWeight.Bold
+                fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(35.dp))
 
@@ -155,7 +147,7 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
             )
 
         }
-        Spacer(modifier= Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(25.dp))
         AppCard(hasShadow = true) {
 
             AppSwitch(
@@ -167,7 +159,7 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
             AppSwitch(
                 label = "Notification",
                 checked = notification,
-                onCheckedChange = { notification = it},
+                onCheckedChange = { notification = it },
             )
             AppSwitch(
                 label = "Auto play video Auto play video Aut",
@@ -175,15 +167,15 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
                 onCheckedChange = { autoPlay = it },
             )
         }
-        Spacer(modifier= Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(25.dp))
 
         AppCheckbox(
             label = "I accept the terms and conditions",
             checked = acceptTerms,
-            onCheckedChange = {acceptTerms=it},
+            onCheckedChange = { acceptTerms = it },
             textColor = colors.primary
         )
-        Spacer(modifier= Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(25.dp))
         AppButton(
             text = "Save",
             modifier = Modifier.fillMaxWidth(),

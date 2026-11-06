@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 15 · Menu trượt bên trái</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 15 / Khung app (học sớm theo yêu cầu) · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Menu trượt bên trái: nút hamburger ☰ và <code>ModalNavigationDrawer</code>, giống <code>ion-menu</code></h1>
+
+  <div class="callout">
+  <p><strong>Bài 14: xong.</strong> <code>AppTopBar</code> của bạn dùng 2 slot <code>navigationIcon</code> và
+  <code>actions</code> thay cho tham số <code>onBack</code> của bài. Chính nhờ thiết kế đó mà bài này đặt được nút
+  hamburger vào header <strong>mà không phải sửa <code>AppTopBar</code></strong>.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Trang <strong>Menu</strong> có nút ☰ ở góc trái header. Bấm vào thì menu trượt ra từ bên trái, có phần đầu (avatar,
+  tên) và danh sách các trang. Mục của trang hiện tại được tô nền. Vùng còn lại phủ nền tối, bấm vào đó thì menu đóng.
+  Hình <strong>bấm được</strong>.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone has-header demo" data-open="1">
+        <div class="m-topbar">
+          <span class="m-ib js-burger" style="cursor:pointer"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3zm0-5h18v-2H3zm0-7v2h18V6z"/></svg></span>
+          <span class="t">Menu</span><span class="m-ib"></span>
+        </div>
+        <div class="m-scroll">
+          <p>Đây là nội dung trang Menu.</p>
+          <p>Bấm nút ☰ ở góc trái header để mở menu. Bấm vào vùng tối hoặc chọn một mục để đóng.</p>
+          <p>Trên điện thoại thật, vuốt từ mép trái màn hình vào cũng mở được menu.</p>
+        </div>
+        <div class="m-drawer-scrim"></div>
+        <div class="m-drawer">
+          <div class="m-drawer-head"><span class="av"></span><span><b>Hong Diep</b><small>Product Designer</small></span></div>
+          <div class="m-ditem on"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3zm0-5h18v-2H3zm0-7v2h18V6z"/></svg>Menu</div>
+          <div class="m-ditem"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4 0-8 2-8 5v2h16v-2c0-3-4-5-8-5z"/></svg>Profile</div>
+          <div class="m-ditem"><svg viewBox="0 0 24 24"><path d="M4 4h16v6H4zm0 10h16v6H4z"/></svg>Card</div>
+          <div class="m-ditem"><svg viewBox="0 0 24 24"><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.4-2.5 1a7 7 0 0 0-1.7-1L15 3h-4l-.4 2.6a7 7 0 0 0-1.7 1l-2.5-1-2 3.4L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.4 2.5-1a7 7 0 0 0 1.7 1L11 21h4l.4-2.6a7 7 0 0 0 1.7-1l2.5 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>Setting</div>
+          <div class="m-ditem"><svg viewBox="0 0 24 24"><path d="M4 21V9l8-6 8 6v12h-6v-7h-4v7z"/></svg>Template</div>
+        </div>
+      </div>
+      <figcaption>Light Mode (menu đang mở)</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone has-header demo">
+        <div class="m-topbar">
+          <span class="m-ib js-burger" style="cursor:pointer"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3zm0-5h18v-2H3zm0-7v2h18V6z"/></svg></span>
+          <span class="t">Menu</span><span class="m-ib"></span>
+        </div>
+        <div class="m-scroll">
+          <p>Đây là nội dung trang Menu.</p>
+          <p>Bấm nút ☰ ở góc trái header để mở menu. Bấm vào vùng tối hoặc chọn một mục để đóng.</p>
+          <p>Trên điện thoại thật, vuốt từ mép trái màn hình vào cũng mở được menu.</p>
+        </div>
+        <div class="m-drawer-scrim"></div>
+        <div class="m-drawer">
+          <div class="m-drawer-head"><span class="av"></span><span><b>Hong Diep</b><small>Product Designer</small></span></div>
+          <div class="m-ditem on"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3zm0-5h18v-2H3zm0-7v2h18V6z"/></svg>Menu</div>
+          <div class="m-ditem"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4 0-8 2-8 5v2h16v-2c0-3-4-5-8-5z"/></svg>Profile</div>
+          <div class="m-ditem"><svg viewBox="0 0 24 24"><path d="M4 4h16v6H4zm0 10h16v6H4z"/></svg>Card</div>
+          <div class="m-ditem"><svg viewBox="0 0 24 24"><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.4-2.5 1a7 7 0 0 0-1.7-1L15 3h-4l-.4 2.6a7 7 0 0 0-1.7 1l-2.5-1-2 3.4L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.4 2.5-1a7 7 0 0 0 1.7 1L11 21h4l.4-2.6a7 7 0 0 0 1.7-1l2.5 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg>Setting</div>
+          <div class="m-ditem"><svg viewBox="0 0 24 24"><path d="M4 21V9l8-6 8 6v12h-6v-7h-4v7z"/></svg>Template</div>
+        </div>
+      </div>
+      <figcaption>Dark Mode (bấm ☰ để mở)</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: menu rộng khoảng 280dp, <strong>che lên trên</strong> cả header, nền
+  <code>colors.backgroundCard</code>, bo 2 góc bên phải. Nền tối phía sau dùng token <code>colors.backgroundDialog</code>
+  của bạn. Mục đang chọn có nền <code>colors.primary</code> mờ 15% và chữ/icon <code>colors.primary</code>. Các mục còn
+  lại chữ <code>colors.text</code>. Chọn một mục thì menu đóng lại rồi chuyển trang.</p>
+
+  <h2>1. Cấu trúc: menu bọc ngoài trang</h2>
+  <div class="compare">
+    <div>
+      <span class="label">Ionic</span>
+      <pre><code>&lt;ion-menu contentId="main"&gt;
+  &lt;ion-content&gt;
+    &lt;ion-list&gt; ...các mục... &lt;/ion-list&gt;
+  &lt;/ion-content&gt;
+&lt;/ion-menu&gt;
+
+&lt;div id="main"&gt;
+  &lt;ion-header&gt;&lt;ion-toolbar&gt;
+    &lt;ion-menu-button&gt;&lt;/ion-menu-button&gt;
+  &lt;/ion-toolbar&gt;&lt;/ion-header&gt;
+  ...
+&lt;/div&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>ModalNavigationDrawer(
+    drawerState = drawerState,
+    drawerContent = {          // ion-menu
+        ModalDrawerSheet {
+            // ...các mục...
+        }
+    }
+) {                            // #main
+    AppPage(
+        topBar = {
+            AppTopBar(navigationIcon = {
+                // nút ☰ (ion-menu-button)
+            })
+        }
+    ) { ... }
+}</code></pre>
+    </div>
+  </div>
+  <p><code>ModalNavigationDrawer</code> có 2 phần: <code>drawerContent</code> là cái menu (lúc đầu ẩn bên trái), còn phần
+  trong <code>{ }</code> cuối là trang bình thường. Vì menu <strong>bọc ngoài</strong> <code>AppPage</code>, nên khi mở
+  nó che được cả header. <code>ModalDrawerSheet</code> là "tấm" menu có sẵn nền, bo góc và chiều rộng chuẩn, giống
+  <code>ion-content</code> bên trong <code>ion-menu</code>.</p>
+
+  <h2>2. Mở menu: <code>drawerState</code> và <code>scope.launch</code></h2>
+  <div class="compare">
+    <div>
+      <span class="label">Ionic (JS)</span>
+      <pre><code>async openMenu() {
+  await this.menuCtrl.open();
+}</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>val drawerState = rememberDrawerState(DrawerValue.Closed)
+val scope = rememberCoroutineScope()
+
+IconButton(onClick = {
+    scope.launch { drawerState.open() }
+}) {
+    Icon(Icons.Default.Menu, contentDescription = "Mở menu")
+}</code></pre>
+    </div>
+  </div>
+  <ul>
+    <li><code>drawerState</code> là State của menu (đang mở hay đóng), giống <code>isOpen</code> bạn dùng cho Dialog.
+    Khác ở chỗ bạn không tự gán <code>true/false</code>, mà gọi <code>open()</code> / <code>close()</code>.</li>
+    <li><code>open()</code> chạy một animation trượt, cần <strong>thời gian</strong> mới xong. Giống
+    <code>menuCtrl.open()</code> của Ionic trả về Promise và phải <code>await</code>. Trong Kotlin, việc "tốn thời gian"
+    phải chạy trong <code>scope.launch { ... }</code>.</li>
+    <li><code>rememberCoroutineScope()</code> tạo ra <code>scope</code> đó, gắn với trang: rời trang thì việc đang chạy tự
+    dừng. Bạn chỉ cần nhớ công thức: <strong>muốn gọi <code>open()</code> / <code>close()</code> trong
+    <code>onClick</code> thì bọc bằng <code>scope.launch { }</code></strong>.</li>
+  </ul>
+  <p>Bấm vào nền tối, bấm nút Back của điện thoại, hoặc vuốt menu sang trái đều đóng menu. Bạn không cần viết thêm gì cho
+  các thao tác này.</p>
+
+  <h2>3. Danh sách mục: <code>data class</code> + <code>forEach</code></h2>
+  <p>Ở Bài 6 bạn đã dùng <code>data class</code> cho các hàng của bảng. Mỗi mục menu cũng có 3 thông tin giống nhau:
+  chữ, route và icon.</p>
+  <pre><code>data class MenuItem(
+    val label: String,       // chữ hiển thị
+    val route: String,       // route để navigate
+    val icon: ImageVector,   // icon, ví dụ Icons.Default.Person
+)
+
+val menuItems = listOf(
+    MenuItem("Profile", "profile", Icons.Default.Person),
+    MenuItem("Setting", "checkbox", Icons.Default.Settings),
+    // ...
+)</code></pre>
+  <p>Giống một mảng object trong JS: <code>[{ label: 'Profile', route: 'profile', icon: ... }, ...]</code>.
+  <code>ImageVector</code> là kiểu của các icon <code>Icons.Default...</code>.</p>
+
+  <h2>4. Một mục menu: <code>NavigationDrawerItem</code></h2>
+  <table>
+    <tr><th>Ionic</th><th>Compose</th></tr>
+    <tr><td><code>&lt;ion-item&gt;</code> trong menu</td><td><code>NavigationDrawerItem(...)</code></td></tr>
+    <tr><td><code>&lt;ion-label&gt;</code></td><td><code>label = { Text(item.label) }</code></td></tr>
+    <tr><td><code>&lt;ion-icon slot="start"&gt;</code></td><td><code>icon = { Icon(item.icon, contentDescription = null) }</code></td></tr>
+    <tr><td>class <code>.selected</code> cho trang hiện tại</td><td><code>selected = item.route == currentRoute</code></td></tr>
+    <tr><td><code>(click)</code></td><td><code>onClick = { ... }</code></td></tr>
+  </table>
+  <p><code>selected</code> dùng đúng phép so sánh <code>==</code> của Bài 13: mục nào có route trùng trang hiện tại thì
+  được tô. Icon để <code>contentDescription = null</code> vì chữ bên cạnh đã mô tả rồi (giống <code>alt=""</code> cho
+  ảnh trang trí).</p>
+
+  <h2>5. Nhiệm vụ</h2>
+  <p><strong>Bước 1: trang mới.</strong> Tạo <code>MenuPage.kt</code>, route <code>"menu"</code>, link từ
+  <code>TemplatePage</code>. Trang dùng <code>AppPage</code> + <code>AppTopBar(title = "Menu")</code>, trong
+  <code>navigationIcon</code> đặt nút ☰ (<code>Icons.Default.Menu</code>). Chưa cần làm gì khi bấm.</p>
+
+  <p><strong>Bước 2: bọc <code>ModalNavigationDrawer</code></strong> quanh <code>AppPage</code>. Khai báo
+  <code>drawerState</code> và <code>scope</code> ở đầu hàm. Cho nút ☰ mở menu như mục 2. Tạm thời để
+  <code>drawerContent = { ModalDrawerSheet { Text("Menu") } }</code>. Build, chạy, bấm ☰ và thử vuốt từ mép trái.</p>
+
+  <p><strong>Bước 3: danh sách mục.</strong> Code mẫu cho phần <code>drawerContent</code> (đã build thử, chạy được):</p>
+  <pre><code>drawerContent = {
+    ModalDrawerSheet(
+        drawerContainerColor = colors.backgroundCard,
+        modifier = Modifier.width(280.dp)
+    ) {
+        // phần đầu menu: tự làm ở Bước 4
+
+        menuItems.forEach { item -&gt;
+            NavigationDrawerItem(
+                label = { Text(item.label) },
+                icon = { Icon(item.icon, contentDescription = null) },
+                selected = item.route == "menu", // trang hiện tại
+                onClick = {
+                    scope.launch { drawerState.close() } // đóng menu
+                    navController.navigate(item.route)   // chuyển trang
+                },
+                colors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = colors.primary.copy(alpha = 0.15f),
+                    selectedTextColor = colors.primary,
+                    selectedIconColor = colors.primary,
+                    unselectedTextColor = colors.text,
+                    unselectedIconColor = colors.text,
+                ),
+                modifier = Modifier.padding(horizontal = 12.dp)
+            )
+        }
+    }
+}</code></pre>
+  <p>Tạo <code>data class MenuItem</code> (ở cuối file <code>MenuPage.kt</code> là được) và danh sách 5 mục: Menu,
+  Profile, Card, Setting (route <code>"checkbox"</code>), Template. Icon gợi ý: <code>Icons.Default.Menu</code>,
+  <code>Person</code>, <code>Star</code>, <code>Settings</code>, <code>Home</code>. Import <code>launch</code> từ
+  <code>kotlinx.coroutines.launch</code>.</p>
+
+  <p><strong>Bước 4: phần đầu menu và nền tối.</strong> Tự làm phần đầu theo hình kết quả: một <code>Row</code> có
+  <code>AppAvatar</code> nhỏ (40dp), tên và chức danh, padding 24dp, bên dưới là một đường kẻ mảnh. Đường kẻ dùng
+  <code>HorizontalDivider(color = colors.light)</code>, giống <code>&lt;hr&gt;</code> (học kỹ ở Bài 18). Thêm
+  <code>scrimColor = colors.backgroundDialog</code> vào <code>ModalNavigationDrawer</code> để nền tối đồng bộ với Dialog.</p>
+
+  <p><strong>Bước 5: kiểm tra.</strong> Mở bằng nút ☰ và bằng cách vuốt. Đóng bằng nền tối, nút Back điện thoại và vuốt
+  sang trái. Chọn một mục thì menu đóng và chuyển trang. Kiểm tra Light/Dark.</p>
+
+  <div class="callout ask">
+  <p><strong>Thử thách:</strong> tách thành component <code>AppDrawer</code> trong <code>ui/components/layout/</code> để
+  trang nào cũng có menu. Component cần nhận <code>navController</code>, <code>drawerState</code>,
+  <code>currentRoute</code> (để tô đúng mục) và slot <code>content</code> cho phần trang. Danh sách
+  <code>menuItems</code> đặt bên trong component, vì cả app dùng chung một menu. Hãy hỏi agent khi bạn muốn làm.
+  Lưu ý: mỗi lần <code>navigate</code> là chồng thêm một trang vào lịch sử, nên bấm Back nhiều lần sẽ đi qua lại các trang
+  đã mở. Cách xử lý sẽ học cùng thanh menu dưới. Báo "xong bài 15" khi xong.</p>
+  </div>
+
+  <h2>6. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Vì sao <code>drawerState.open()</code> phải nằm trong <code>scope.launch { }</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: open() chạy animation cần thời gian, giống phải await menuCtrl.open() trong Ionic.">Vì mở menu là animation tốn thời gian, giống phải await trong JS</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: launch không làm menu nhanh hơn, nó cho phép chạy việc tốn thời gian.">Để menu mở nhanh hơn</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: không liên quan Dark Mode.">Để menu đổi theo Dark Mode</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Vì sao menu che được cả header khi mở?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: menu là lớp ngoài cùng, AppPage (gồm header) nằm bên trong.">Vì ModalNavigationDrawer bọc ngoài AppPage</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: header không bị ẩn, nó chỉ bị menu che lên.">Vì header tự ẩn khi mở menu</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: drawer nằm ngoài AppPage, không nằm trong topBar.">Vì menu nằm trong topBar</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. <code>selected = item.route == "menu"</code> làm gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: phép so sánh như radio ở Bài 13, mục khớp route trang hiện tại thì được tô.">Tô nền cho mục có route trùng trang hiện tại</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: == là so sánh, không phải gán, nên không đổi route.">Đổi route của mục thành "menu"</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: chuyển trang nằm trong onClick.">Chuyển sang trang "menu"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. <code>NavigationDrawerItem</code> giống thẻ nào của Ionic?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: ion-menu là cả cái menu, tức ModalNavigationDrawer.">ion-menu</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: mỗi mục trong danh sách menu.">ion-item trong menu</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: đó là nút ☰ (IconButton + Icons.Default.Menu).">ion-menu-button</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. (Ôn bài 14) Nút ☰ đặt vào slot nào của <code>AppTopBar</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: slot bên trái, nơi bạn vẫn đặt nút Back.">navigationIcon</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: actions là các nút bên phải.">actions</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: title là chuỗi chữ tiêu đề.">title</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/components/drawer">Navigation drawer</a>: ví dụ đầy đủ với
+  <code>ModalNavigationDrawer</code>, <code>drawerState</code> và nút mở menu.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0014-header-top-app-bar.html">← Bài 14</a>
+    <a href="../reference/lo-trinh-ui.html">Lộ trình →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+<script>
+  // Mockup bấm được: ☰ mở menu; bấm nền tối hoặc chọn mục thì đóng; mục được chọn đổi màu
+  document.querySelectorAll('.phone.demo').forEach(function (phone) {
+    var drawer = phone.querySelector('.m-drawer');
+    var scrim = phone.querySelector('.m-drawer-scrim');
+    function setOpen(on) { drawer.classList.toggle('open', on); scrim.classList.toggle('open', on); }
+    phone.querySelector('.js-burger').addEventListener('click', function () { setOpen(true); });
+    scrim.addEventListener('click', function () { setOpen(false); });
+    phone.querySelectorAll('.m-ditem').forEach(function (item) {
+      item.addEventListener('click', function () {
+        phone.querySelectorAll('.m-ditem').forEach(function (i) { i.classList.toggle('on', i === item); });
+        setOpen(false);
+      });
+    });
+    setOpen(phone.dataset.open === '1');
+  });
+</script>
+</body>
+</html>

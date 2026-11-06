@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.compose.ui.Modifier
 import com.example.hello.ui.components.layout.AppPage
-import com.example.hello.ui.theme.titleXLarge
 import androidx.compose.ui.Alignment
 import com.example.hello.ui.theme.colors
 import androidx.compose.foundation.layout.Box
@@ -37,37 +36,31 @@ import com.example.hello.ui.theme.boxShadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.material3.Icon
+import com.example.hello.ui.components.layout.AppTopBar
 
 
 @Composable
 fun CardPage(modifier: Modifier = Modifier, navController: NavController) {
-    AppPage(modifier = modifier, scrollable = true) {
+    AppPage(
+        modifier = modifier,
+        scrollable = true,
+        topBar = {
+            AppTopBar(
+                title = "Card",
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
 
-        Box(
-            modifier = Modifier.fillMaxWidth()
-
-        ) {
-            IconButton(
-                onClick = {
-                    navController.popBackStack()//về trước đó
-                },
-                modifier = Modifier.align(Alignment.CenterStart)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = colors.primary
-                )
-            }
-            Text(
-                text = "Card Page",
-                color = colors.primary,
-                style = titleXLarge,
-                modifier = Modifier.align(Alignment.Center),
+                }
             )
         }
 
-        Spacer(modifier = Modifier.height(15.dp))
+    ) {
+
         Column(
             modifier = Modifier
                 //.weight(1f)
@@ -246,7 +239,7 @@ private fun ImageWithTextCard() {
 
 @Composable
 private fun AlphaModifyText() {
-    Column{
+    Column {
         Text(
             text = "Modifier.alpha (mờ cả chữ)",
             fontWeight = FontWeight.Bold
@@ -289,7 +282,7 @@ private fun AlphaBox(
 
 @Composable
 private fun AlphaCopyText() {
-    Column{
+    Column {
         Text(
             text = "color.copy (alpha) (chữ vẫn rõ)",
             fontWeight = FontWeight.Bold

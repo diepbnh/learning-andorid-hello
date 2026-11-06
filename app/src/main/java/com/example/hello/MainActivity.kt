@@ -65,6 +65,9 @@ class MainActivity : ComponentActivity() {
                     composable(route = "radio") {
                         RadioPage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
+                    composable(route = "menu") {
+                       MenuPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
 
 
                 }

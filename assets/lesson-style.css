@@ -412,3 +412,21 @@ pre code { background: none; padding: 0; }
 /* Header kiểu "pinned": chưa cuộn hoà vào nền trang, cuộn thì đổi sang màu card + bóng nhẹ */
 .m-topbar.soft { background: var(--app-bg); color: var(--app-primary); transition: background 0.25s, box-shadow 0.25s; }
 .m-topbar.soft.scrolled { background: var(--app-surface); box-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+
+/* Mockup blocks cho side menu / drawer (Bài 15+) */
+.m-drawer { position: absolute; top: 0; bottom: 0; left: 0; width: 78%; z-index: 4; background: var(--app-surface);
+  color: var(--app-text); border-radius: 0 16px 16px 0; padding: 18px 10px; transform: translateX(-100%);
+  transition: transform 0.3s ease-out; }
+.m-drawer.open { transform: none; }
+.m-drawer-scrim { position: absolute; inset: 0; z-index: 3; background: rgba(0,0,0,0.5); opacity: 0; pointer-events: none;
+  transition: opacity 0.3s; }
+.m-drawer-scrim.open { opacity: 1; pointer-events: auto; }
+.m-drawer-head { display: flex; align-items: center; gap: 10px; padding: 0 8px 14px; margin-bottom: 8px;
+  border-bottom: 1px solid var(--app-light); }
+.m-drawer-head .av { width: 40px; height: 40px; border-radius: 50%; background: var(--app-secondary); flex: none; }
+.m-drawer-head b { display: block; font-size: 13px; }
+.m-drawer-head small { opacity: 0.7; font-size: 10px; }
+.m-ditem { display: flex; align-items: center; gap: 12px; height: 40px; padding: 0 14px; border-radius: 20px;
+  cursor: pointer; font-weight: 500; }
+.m-ditem svg { width: 18px; height: 18px; fill: currentColor; }
+.m-ditem.on { background: color-mix(in srgb, var(--app-primary) 15%, transparent); color: var(--app-primary); }

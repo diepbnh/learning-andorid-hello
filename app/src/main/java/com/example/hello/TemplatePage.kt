@@ -236,6 +236,25 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
             Spacer(
                 modifier = Modifier.height(25.dp)
             )
+            // Light/Dark mode toggle buttons
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(20.dp)
+            ) {
+                AppButton(
+                    text = "Light Mode",
+                    onClick = { ThemeManager.setDarkMode(false) },
+                    modifier = Modifier.weight(1f),
+                    backgroundColor = colors.danger
+                )
+                AppButton(
+                    text = "Dark Mode",
+                    onClick = { ThemeManager.setDarkMode(true) },
+                    modifier = Modifier.weight(1f),
+                    backgroundColor = colors.primary,
+
+                    )
+            }
 
         }
     }

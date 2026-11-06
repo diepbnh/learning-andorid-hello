@@ -2,9 +2,7 @@ package com.example.hello
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,7 +14,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.hello.ui.components.button.AppButton
@@ -29,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.window.DialogWindowProvider
@@ -36,6 +34,7 @@ import androidx.compose.ui.window.Dialog
 import com.example.hello.ui.components.dialog.AppDialog
 import com.example.hello.ui.theme.titleMedium
 import com.example.hello.ui.components.dialog.AppDialogBottom
+import com.example.hello.ui.components.layout.AppTopBar
 
 @Composable
 fun DialogDimAmount(amount: Float) { //set giảm màu nền co dialog
@@ -57,30 +56,25 @@ fun DialogPage(modifier: Modifier = Modifier, navController: NavController) {
     var showDialogBottom by remember { mutableStateOf(false) }
     val dialogShape = RoundedCornerShape(15.dp) //border-radius
 
-    AppPage(modifier = modifier) {
-        Box(
-            modifier = Modifier.fillMaxWidth()
-            //.background(colors.danger)
-        ) {
-            Text(
-                text = "Template",
-                color = colors.primary,
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .clickable( // dòng dưới là xóa bỏ hiệu ứng click
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null
-                    )
-                    { navController.navigate("template") }
-            )
-            Text(
-                text = "Dialog",
-                color = colors.primary,
-                style = titleXLarge,
-                modifier = Modifier.align(Alignment.Center)
+    AppPage(
+        modifier = modifier,
+        topBar = {
+            AppTopBar(
+                title = "Dialog",
+                navigationIcon = {
+                    TextButton(
+                        onClick = { navController.navigate("template") },
+                    ) {
+                        Text(
+                            text = "Template",
+                            color = colors.white,
+                        )
+                    }
+                }
             )
         }
+    ) {
+
         Spacer(modifier = Modifier.height(25.dp))
 
         AppButton(
@@ -233,9 +227,8 @@ fun DialogPage(modifier: Modifier = Modifier, navController: NavController) {
 
         }
     }
-    if (showDialogBottom){
-        AppDialogBottom(onDismissRequest = { showDialogBottom = false }){
-            close->
+    if (showDialogBottom) {
+        AppDialogBottom(onDismissRequest = { showDialogBottom = false }) { close ->
             Text(
                 text = "Dialog Bottom",
                 style = titleXLarge,

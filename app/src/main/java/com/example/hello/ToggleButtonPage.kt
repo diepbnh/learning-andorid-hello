@@ -1,9 +1,6 @@
 package com.example.hello
 
-
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,9 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.hello.ui.components.animation.AppFadeBox
@@ -33,34 +28,32 @@ import com.example.hello.ui.components.button.AppButton
 import com.example.hello.ui.components.layout.AppPage
 import com.example.hello.ui.theme.colors
 import com.example.hello.ui.theme.titleMedium
-import com.example.hello.ui.theme.titleXLarge
+import com.example.hello.ui.components.layout.AppTopBar
+import androidx.compose.material3.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+
 
 
 @Composable
 fun ToggleButtonPage(modifier: Modifier = Modifier, navController: NavController) {
-    AppPage(modifier = modifier) {
-
-        Box(
-            modifier = Modifier.fillMaxWidth()
-            //.background(colors.danger)
-        ) {
-            Text(
-                text = "Login",
-                color = colors.primary,
-                textDecoration = TextDecoration.Underline,
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .clickable { navController.navigate("login") }
-            )
-            Text(
-                text = "Toggle Button",
-                color = colors.primary,
-                style = titleXLarge,
-                modifier = Modifier.align(Alignment.Center)
+    AppPage(
+        modifier = modifier,
+        topBar = {
+            AppTopBar(
+                title = "Toggle Button",
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                }
             )
         }
-
-        Spacer(modifier = Modifier.height(25.dp))
+    ) {
         Text(
             text = "Button toggle ",
             style = titleMedium
@@ -163,29 +156,29 @@ fun ToggleButtonPage(modifier: Modifier = Modifier, navController: NavController
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min=70.dp), // min height
+                .heightIn(min = 70.dp), // min height
         ) {
 
 
-        AppSlideUp(
-            playKey = playCount.value,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        ) {
-            Text(
-                text = "Xin chào, Hong Diep!",
-                style = titleMedium,
-            )
-        }
-        Spacer(modifier = Modifier.height(10.dp))
-        AppSlideUp(
-            durationMillis = 700,
-            delayMillis = 150,
-            playKey = playCount.value,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
+            AppSlideUp(
+                playKey = playCount.value,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                Text(
+                    text = "Xin chào, Hong Diep!",
+                    style = titleMedium,
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+            AppSlideUp(
+                durationMillis = 700,
+                delayMillis = 150,
+                playKey = playCount.value,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
 
             ) {
-            Text(text = "Chúc bạn một ngày học vui vẻ.")
-        }
+                Text(text = "Chúc bạn một ngày học vui vẻ.")
+            }
         }
         //end colunm
 
@@ -194,7 +187,7 @@ fun ToggleButtonPage(modifier: Modifier = Modifier, navController: NavController
         AppButton(
             text = "Click animation text",
             onClick = {
-                playCount.value=playCount.value + 1
+                playCount.value = playCount.value + 1
             },
         )
 
