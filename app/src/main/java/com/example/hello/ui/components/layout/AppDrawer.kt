@@ -1,6 +1,7 @@
 package com.example.hello.ui.components.layout
 
 
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,10 +13,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -29,11 +34,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.hello.R
 import com.example.hello.ui.theme.colors
 import kotlinx.coroutines.launch
 
@@ -42,6 +49,7 @@ data class MenuItem(
     val label: String,
     val route: String,
     val icon: ImageVector,
+    val isDanger: Boolean = false,//mặc định là false
 )
 
 private val menuItems = listOf(
@@ -50,10 +58,11 @@ private val menuItems = listOf(
     MenuItem("Card", "card", Icons.Default.Settings),
     MenuItem("Card 2", "card2", Icons.Default.Settings),
     MenuItem("Template", "template", Icons.Default.Settings),
-    MenuItem("Table", "table", Icons.Default.Settings),
-    MenuItem("Radio", "radio", Icons.Default.Settings),
-    MenuItem("Checkbox", "checkbox", Icons.Default.Settings),
-    MenuItem("Dialog", "dialog", Icons.Default.Settings),
+    MenuItem("Table", "table", Icons.Default.DateRange),
+    MenuItem("Radio", "radio", Icons.Default.Check),
+    MenuItem("Checkbox", "checkbox", Icons.Default.CheckCircle),
+    MenuItem("Dialog", "dialog", Icons.Default.Warning),
+    MenuItem("Logout", "login", Icons.Default.Lock, isDanger = true),
 
     )
 
@@ -70,7 +79,7 @@ fun AppDrawer(
         scrimColor = colors.backgroundDialog,
         drawerContent = {
             ModalDrawerSheet(
-                drawerContainerColor = colors.backgroundCard,
+                drawerContainerColor = colors.danger,
                 modifier = Modifier.width(300.dp)
             ) {
                 //header
@@ -82,8 +91,13 @@ fun AppDrawer(
                         .verticalScroll(rememberScrollState())//scroll y
                 ) {
                     menuItems.forEach { item ->
+                        val itemColor =if (item.isDanger) colors.danger else colors.text
                         //drawer item
-                        NavigationDrawerItem(
+                        NavigationDrawerItem( // mặc định của drawer là full 100% nên khi nhấn thì vùng ngoài text vẫn bấm được
+                           //Nếu bạn vẫn muốn chỉ bấm vào icon và chữ thì cũng làm
+                            //  được, nhưng phải bỏ NavigationDrawerItem và tự viết
+                            //  một Row riêng. Mình không khuyên làm vậy, vì sẽ khó
+                            //  dùng hơn
                             label = {
                                 Text(
                                     text = item.label,
@@ -114,9 +128,9 @@ fun AppDrawer(
                                 selectedTextColor = colors.white,
                                 selectedIconColor = colors.white,
 
-                                unselectedContainerColor = colors.white,
-                                unselectedTextColor = colors.text,
-                                unselectedIconColor = colors.text,
+                               unselectedContainerColor = Color.Transparent,
+                                unselectedTextColor = itemColor,
+                                unselectedIconColor = itemColor,
                             ),
                             shape = RoundedCornerShape(1.dp),
                             //vậy thi modifier = Modifier.padding(horizontal = 24.dp)
@@ -142,14 +156,15 @@ private fun DrawerHeader() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(12.dp),
+            .padding(24.dp),
         verticalAlignment = Alignment.CenterVertically
 
     ) {
         Image(
-            imageVector = Icons.Default.Home,
+            painter = painterResource(R.drawable.logo), //logo
             contentDescription = "Logo",
-            modifier = Modifier.size(40.dp)
+           // colorFilter = ColorFilter.tint(colors.danger),
+            modifier = Modifier.size(106.dp,30.dp)
 
         )
 

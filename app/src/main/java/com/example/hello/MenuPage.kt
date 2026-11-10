@@ -1,7 +1,6 @@
 package com.example.hello
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.Icon
@@ -36,7 +35,7 @@ fun MenuPage(modifier: Modifier, navController: NavController) {
                         IconButton(onClick = { scope.launch { drawerState.open() } }) {
                             Icon(
                                 imageVector = Icons.Default.Menu,
-                                contentDescription = "BOpen Menu"
+                                contentDescription = "Open Menu"
                             )
                         }
                     }

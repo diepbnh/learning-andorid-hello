@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.hello.R
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.ui.unit.IntOffset
 
 @Composable
 fun AppGrassButterfly(
@@ -88,7 +89,7 @@ fun AppGrassButterfly(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .requiredHeight(height)
+            .requiredHeight(height) //min height
             .clipToBounds()// Cắt bỏ các phần hình ảnh thừa tràn ra ngoài khung
 
     ) {
@@ -110,7 +111,7 @@ fun AppGrassButterfly(
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .align(Alignment.Center)
-                .offset(x = offsetX.dp)
+                .offset{IntOffset(x = offsetX.dp.roundToPx(), y = 0)}
                 .height(butterflySize)
                 .graphicsLayer(
                     scaleX = scaleX,

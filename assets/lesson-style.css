@@ -430,3 +430,24 @@ pre code { background: none; padding: 0; }
   cursor: pointer; font-weight: 500; }
 .m-ditem svg { width: 18px; height: 18px; fill: currentColor; }
 .m-ditem.on { background: color-mix(in srgb, var(--app-primary) 15%, transparent); color: var(--app-primary); }
+
+/* Mockup blocks cho footer (Bài 16+): thanh tab dưới (AppNavBar) và footer cố định chứa nút (AppBottomBar) */
+.phone.has-header .m-scroll.with-footer { padding-bottom: 96px; }
+.m-navbar, .m-bottombar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; background: var(--app-surface);
+  border-radius: 20px 20px 0 0; box-shadow: 0 -4px 12px rgba(0,0,0,0.12); padding-bottom: 14px; }
+.m-navbar { display: flex; justify-content: space-around; align-items: flex-start; padding-top: 10px; }
+.m-tab { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; cursor: pointer;
+  color: var(--app-secondary); min-width: 46px; }
+.m-tab .pill { width: 52px; height: 30px; border-radius: 15px; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s; }
+.m-tab svg { width: 20px; height: 20px; fill: currentColor; }
+.m-tab.on { color: var(--app-primary); font-weight: 600; }
+.m-tab.on .pill { background: color-mix(in srgb, var(--app-primary) 12%, transparent); }
+.m-tab .circle { width: 40px; height: 40px; margin: -5px 0 -5px; border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; color: var(--app-on-primary); }
+.m-bottombar { padding: 14px 18px 22px; }
+.m-bottombar .m-btn { margin-top: 0; border-radius: 22px; }
+.m-home-indicator { position: absolute; left: 50%; bottom: 5px; width: 90px; height: 4px; margin-left: -45px;
+  border-radius: 2px; background: var(--app-text); opacity: 0.6; z-index: 3; }
+.m-info-icon { width: 54px; height: 54px; border-radius: 50%; background: var(--app-primary); color: var(--app-on-primary);
+  margin: 10px auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; }

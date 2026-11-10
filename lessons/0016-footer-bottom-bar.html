@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 16 · Footer: thanh tab và footer cố định</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 16 / Khung app (học sớm theo yêu cầu) · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Footer: thanh tab dưới (<code>ion-tab-bar</code>) và footer cố định chứa nút (<code>ion-footer</code>)</h1>
+
+  <div class="callout">
+  <p><strong>Bài 15: xong.</strong> <code>AppDrawer</code> có logo, phần giữa cuộn được nhờ <code>weight(1f)</code>,
+  phần cuối "Version 1.0", và mục Logout màu đỏ nhờ cờ <code>isDanger</code>. Còn vài điểm nhỏ, xem phần nhận xét trong
+  tin nhắn của agent.</p>
+  <p><strong>Bài này làm 2 component theo đúng 2 thiết kế của bạn:</strong></p>
+  <ul>
+    <li><strong>Loại 1, <code>AppNavBar</code>:</strong> thanh tab dưới có 4–5 nút icon + chữ để chuyển giữa các trang
+    chính, có nút tròn màu đặc biệt (như SOS).</li>
+    <li><strong>Loại 2, <code>AppBottomBar</code>:</strong> footer đứng yên ở đáy, chứa bất kỳ thứ gì bạn muốn: một nút,
+    hai nút, chữ, hoặc component khác.</li>
+  </ul>
+  <p>Ở cả hai loại, nội dung trang tự cuộn bên dưới footer, và phần cuối nội dung không bị footer che.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Cả hai hình đều <strong>cuộn được</strong>. Ở hình trái, bấm các tab để đổi tab đang chọn.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone has-header demo-tabs">
+        <div class="m-topbar"><span class="m-ib"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3zm0-5h18v-2H3zm0-7v2h18V6z"/></svg></span><span class="t">Home</span><span class="m-ib"></span></div>
+        <div class="m-scroll with-footer">
+          <div class="m-acard elevated"><b>Smith Family</b><small>Dad · 12 min ago · Near Irvine, CA</small></div>
+          <div class="m-acard elevated"><b>Mom</b><small>3 min ago · Near Buena Park, CA</small></div>
+          <div class="m-acard elevated"><b>Me</b><small>Now</small></div>
+          <div class="m-acard elevated"><b>Grandpa</b><small>1 hour ago · Near Anaheim, CA</small></div>
+          <div class="m-acard elevated"><b>Cuối danh sách</b><small>Mục này vẫn nhìn thấy trọn vẹn, không bị footer che.</small></div>
+        </div>
+        <div class="m-navbar">
+          <div class="m-tab"><span class="circle" style="background:var(--app-danger)"><svg viewBox="0 0 24 24"><path d="M1 21h22L12 2zm12-3h-2v-2h2zm0-4h-2v-4h2z"/></svg></span>SOS</div>
+          <div class="m-tab on"><span class="pill"><svg viewBox="0 0 24 24"><path d="M4 21V9l8-6 8 6v12h-6v-7h-4v7z"/></svg></span>Home</div>
+          <div class="m-tab"><span class="pill"><svg viewBox="0 0 24 24"><path d="M12 17.3 18.2 21l-1.6-7L22 9.2l-7.2-.6L12 2 9.2 8.6 2 9.2 7.4 14l-1.6 7z"/></svg></span>Card</div>
+          <div class="m-tab"><span class="pill"><svg viewBox="0 0 24 24"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0 2c-4 0-8 2-8 5v2h16v-2c0-3-4-5-8-5z"/></svg></span>Profile</div>
+          <div class="m-tab"><span class="pill"><svg viewBox="0 0 24 24"><path d="M19.4 13a7.6 7.6 0 0 0 0-2l2.1-1.6-2-3.4-2.5 1a7 7 0 0 0-1.7-1L15 3h-4l-.4 2.6a7 7 0 0 0-1.7 1l-2.5-1-2 3.4L6.6 11a7.6 7.6 0 0 0 0 2l-2.1 1.6 2 3.4 2.5-1a7 7 0 0 0 1.7 1L11 21h4l.4-2.6a7 7 0 0 0 1.7-1l2.5 1 2-3.4zM13 15.5a3.5 3.5 0 1 1 0-7 3.5 3.5 0 0 1 0 7z"/></svg></span>Setting</div>
+        </div>
+        <div class="m-home-indicator"></div>
+      </div>
+      <figcaption>Loại 1: AppNavBar (Light Mode)</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone has-header">
+        <div class="m-topbar"><span class="m-ib"><svg viewBox="0 0 24 24"><path d="M20 11H7.8l5.6-5.6L12 4l-8 8 8 8 1.4-1.4L7.8 13H20z"/></svg></span><span class="t">Verify Email</span><span class="m-ib"></span></div>
+        <div class="m-scroll with-footer" style="text-align:center">
+          <div class="m-info-icon">!</div>
+          <p><b>The verification link has expired.</b></p>
+          <p>Please send a new verification link.</p>
+          <p style="opacity:.7;margin-top:30px">Nội dung dài thì cuộn bên dưới footer. Footer luôn đứng yên ở đáy màn hình.</p>
+          <p style="opacity:.7">Dòng cuối của nội dung vẫn nằm trên footer, không bị che.</p>
+        </div>
+        <div class="m-bottombar"><button class="m-btn">Resend Link</button></div>
+        <div class="m-home-indicator"></div>
+      </div>
+      <figcaption>Loại 2: AppBottomBar (Dark Mode)</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: cả hai footer có nền <code>colors.backgroundCard</code>, bo 2 góc trên 24dp và
+  bóng đổ <strong>hướng lên trên</strong>. Footer nằm <strong>trên</strong> thanh điều hướng của điện thoại (vạch ngang ở
+  đáy), không bị nó che. Loại 1: tab đang chọn có nền viên thuốc <code>colors.primary</code> mờ 12%, icon và chữ
+  <code>colors.primary</code>. Tab chưa chọn màu <code>colors.secondary</code>. Nút SOS là vòng tròn
+  <code>colors.danger</code>. Loại 2: nút rộng hết chiều ngang, cách mép 24dp.</p>
+
+  <h2>1. <code>AppPage</code> đã có sẵn chỗ cho footer</h2>
+  <div class="compare">
+    <div>
+      <span class="label">Ionic</span>
+      <pre><code>&lt;ion-header&gt;...&lt;/ion-header&gt;
+&lt;ion-content&gt;
+  nội dung cuộn
+&lt;/ion-content&gt;
+&lt;ion-footer&gt;
+  footer cố định
+&lt;/ion-footer&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>AppPage(
+    topBar = { AppTopBar(...) },
+    bottomBar = { ... }   // footer cố định
+) {
+    // nội dung cuộn
+}</code></pre>
+    </div>
+  </div>
+  <p>Giống <code>topBar</code> ở Bài 14: <code>bottomBar</code> nằm <strong>ngoài</strong> vùng cuộn nên đứng yên.
+  <code>Scaffold</code> đo chiều cao footer rồi đưa vào <code>innerPadding</code>, nên phần cuối nội dung luôn nằm trên
+  footer. Bạn đã sửa <code>AppPage</code> để <code>verticalScroll</code> đứng trước padding, nên nội dung còn cuộn
+  <strong>xuống dưới</strong> footer được, đúng như bạn muốn.</p>
+
+  <h2>2. Loại 1: thanh tab, <code>NavigationBar</code></h2>
+  <table>
+    <tr><th>Ionic</th><th>Compose</th></tr>
+    <tr><td><code>&lt;ion-tab-bar&gt;</code></td><td><code>NavigationBar { ... }</code></td></tr>
+    <tr><td><code>&lt;ion-tab-button tab="home"&gt;</code></td><td><code>NavigationBarItem(...)</code></td></tr>
+    <tr><td><code>&lt;ion-icon&gt;</code> + <code>&lt;ion-label&gt;</code></td><td><code>icon = { Icon(...) }</code>, <code>label = { Text(...) }</code></td></tr>
+    <tr><td>tab đang mở (<code>.tab-selected</code>)</td><td><code>selected = item.route == currentRoute</code></td></tr>
+    <tr><td>màu tab chọn / chưa chọn</td><td><code>NavigationBarItemDefaults.colors(...)</code>, trong đó <code>indicatorColor</code> là màu viên thuốc</td></tr>
+  </table>
+  <p>Cách làm y hệt <code>AppDrawer</code> của bạn: một <code>data class</code> cho mỗi nút, một danh sách, một
+  <code>forEach</code>. <code>NavigationBar</code> tự chia đều chiều ngang cho các nút và tự chừa chỗ cho thanh điều
+  hướng của điện thoại. Material khuyên dùng <strong>3 đến 5</strong> nút.</p>
+
+  <h3>Chuyển tab mà không chồng trang</h3>
+  <p>Ở Bài 14 và 15, mỗi lần <code>navigate</code> là chồng thêm một trang vào lịch sử. Với thanh tab, chuyển qua lại
+  giữa các tab nhiều lần sẽ làm nút Back phải đi lùi qua cả chục trang. Cách chuẩn cho thanh tab:</p>
+  <pre><code>navController.navigate(item.route) {
+    popUpTo("menu") { saveState = true } // dọn lịch sử về tới tab Home, nhớ lại trạng thái trang
+    launchSingleTop = true               // đang ở trang đó rồi thì không mở thêm
+    restoreState = true                  // quay lại tab cũ thì trả lại trạng thái (vị trí cuộn...)
+}</code></pre>
+  <p>Kết quả giống tab của Ionic: lịch sử chỉ có tab Home và tab đang mở. Bấm Back từ một tab bất kỳ thì về Home. Bạn
+  chỉ cần nhớ công thức 3 dòng này cho thanh tab. Lưu ý: <code>popUpTo("menu")</code> chỉ dọn được khi trang Home
+  (<code>"menu"</code>) đã có trong lịch sử. Vì vậy khi thử, hãy vào Home trước rồi mới chuyển tab. Trong app thật, Home
+  thường là trang mở đầu tiên sau khi đăng nhập.</p>
+
+  <h3>Nút tròn đặc biệt (SOS)</h3>
+  <pre><code>data class AppNavItem(
+    val label: String,
+    val route: String,
+    val icon: ImageVector,
+    val circleColor: Color? = null, // có màu = vẽ thành nút tròn; null = nút thường
+)</code></pre>
+  <p>Giống cờ <code>isDanger</code> trong <code>AppDrawer</code> của bạn, nhưng thay vì <code>true/false</code> thì là
+  một màu "có thể không có" (<code>Color?</code>, như <code>onBack</code> ở Bài 14). Khi vẽ icon:</p>
+  <pre><code>val circle = item.circleColor
+if (circle != null) {
+    // Box tròn màu circle, icon trắng ở giữa
+} else {
+    Icon(item.icon, contentDescription = null) // nút thường
+}</code></pre>
+
+  <h2>3. Loại 2: footer cố định chứa gì cũng được, <code>AppBottomBar</code></h2>
+  <p>Không cần component Material nào. Chỉ là một <code>Column</code> có nền, bo góc, bóng hướng lên, và một slot
+  <code>content</code> giống <code>AppCard</code>. Bạn truyền gì vào thì footer hiện cái đó:</p>
+  <div class="compare">
+    <div>
+      <span class="label">CSS</span>
+      <pre><code>.footer {
+  position: fixed; bottom: 0;
+  left: 0; right: 0;
+  padding: 16px 24px;
+  padding-bottom: calc(16px +
+    env(safe-area-inset-bottom));
+  border-radius: 24px 24px 0 0;
+  box-shadow: 0 -4px 12px
+    rgba(0,0,0,.1);
+}</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Column(
+  modifier = Modifier
+    .fillMaxWidth()
+    .boxShadow(..., y = (-4).dp, ...)
+    .background(colors.backgroundCard,
+                shape)
+    .navigationBarsPadding() // safe-area
+    .padding(horizontal = 24.dp,
+             vertical = 16.dp),
+  content = content
+)</code></pre>
+    </div>
+  </div>
+  <p><code>y = (-4).dp</code>: số âm đẩy bóng lên trên, giống <code>box-shadow: 0 -4px</code>.
+  <code>navigationBarsPadding()</code> giống <code>env(safe-area-inset-bottom)</code>: chừa chỗ cho thanh điều hướng
+  của điện thoại để nút không bị vạch ngang che.</p>
+
+  <h2>4. Nhiệm vụ</h2>
+  <p><strong>Bước 1: tạo <code>ui/components/layout/AppNavBar.kt</code>.</strong> Code mẫu (đã build thử, chạy được).
+  Bạn có thể đổi route theo các trang chính bạn muốn:</p>
+  <pre><code>data class AppNavItem(
+    val label: String,
+    val route: String,
+    val icon: ImageVector,
+    val circleColor: Color? = null, // có màu = nút tròn đặc biệt
+)
+
+@Composable
+fun AppNavBar(
+    navController: NavController,
+    currentRoute: String, // route của trang đang mở
+) {
+    // danh sách đặt trong hàm vì cần đọc colors (chỉ đọc được trong @Composable)
+    val navItems = listOf(
+        AppNavItem("SOS", "dialog", Icons.Default.Warning, circleColor = colors.danger),
+        AppNavItem("Home", "menu", Icons.Default.Home),
+        AppNavItem("Card", "card2", Icons.Default.Star),
+        AppNavItem("Profile", "profile", Icons.Default.Person),
+        AppNavItem("Setting", "checkbox", Icons.Default.Settings),
+    )
+    val shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+
+    NavigationBar(
+        containerColor = colors.backgroundCard,
+        modifier = Modifier
+            .boxShadow(color = colors.black.copy(alpha = 0.1f), y = (-4).dp, blur = 12.dp, shape = shape)
+            .clip(shape) // bo 2 góc trên
+    ) {
+        navItems.forEach { item -&gt;
+            NavigationBarItem(
+                selected = item.route == currentRoute,
+                onClick = {
+                    if (item.route != currentRoute) {
+                        navController.navigate(item.route) {
+                            popUpTo("menu") { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                },
+                icon = {
+                    val circle = item.circleColor
+                    if (circle != null) {
+                        Box(
+                            modifier = Modifier
+                                .size(44.dp)
+                                .background(circle, CircleShape),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(item.icon, contentDescription = null, tint = colors.white)
+                        }
+                    } else {
+                        Icon(item.icon, contentDescription = null)
+                    }
+                },
+                label = { Text(item.label) },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = colors.primary,
+                    selectedTextColor = colors.primary,
+                    indicatorColor = colors.primary.copy(alpha = 0.12f), // viên thuốc
+                    unselectedIconColor = colors.secondary,
+                    unselectedTextColor = colors.secondary,
+                )
+            )
+        }
+    }
+}</code></pre>
+
+  <p><strong>Bước 2: gắn vào 4 trang chính</strong> (<code>MenuPage</code>, <code>Card2Page</code>,
+  <code>ProfilePage</code>, <code>CheckboxPage</code>). Mỗi trang chỉ thêm 1 dòng vào <code>AppPage</code>, với
+  <code>currentRoute</code> là route của chính trang đó:</p>
+  <pre><code>AppPage(
+    topBar = { ... },
+    bottomBar = { AppNavBar(navController = navController, currentRoute = "menu") }
+) { ... }</code></pre>
+  <p>Thử chuyển tab nhiều lần rồi bấm Back của điện thoại: phải về Home, không lùi qua từng tab đã mở.</p>
+
+  <p><strong>Bước 3: tự viết <code>ui/components/layout/AppBottomBar.kt</code></strong> theo mục 3. Tham số:
+  <code>modifier</code> và <code>content: @Composable ColumnScope.() -&gt; Unit</code>. Code mẫu đã build thử nằm ở cột
+  Compose của mục 3, bạn chỉ cần thêm phần khai báo hàm và <code>val shape</code>.</p>
+
+  <p><strong>Bước 4: trang <code>VerifyPage</code></strong>, route <code>"verify"</code>, theo hình bên phải:
+  <code>AppTopBar("Verify Email")</code> có nút Back, nội dung là vòng tròn có dấu "!", 2 dòng chữ căn giữa, và
+  footer:</p>
+  <pre><code>bottomBar = {
+    AppBottomBar {
+        AppButton(text = "Resend Link", onClick = { }, modifier = Modifier.fillMaxWidth())
+    }
+}</code></pre>
+  <p>Thêm nhiều <code>Text</code> vào nội dung để trang đủ dài, rồi cuộn để thấy nút đứng yên. Thử thay nội dung footer
+  bằng 2 nút nằm ngang (<code>Row</code> + <code>weight(1f)</code>) hoặc một dòng chữ để thấy slot nhận gì cũng được.</p>
+
+  <p><strong>Bước 5: kiểm tra.</strong> Light/Dark. Footer không bị thanh điều hướng của điện thoại che. Cuộn tới cuối
+  trang thì mục cuối cùng nằm trọn phía trên footer.</p>
+
+  <div class="callout ask">
+  <p>Muốn có chấm đỏ hoặc số thông báo trên icon tab (ví dụ "3" trên Profile)? Đó là <code>Badge</code>, học ở Bài 19.
+  Muốn thanh tab tự ẩn khi bàn phím mở, hoặc nút SOS mở Dialog thay vì chuyển trang? Hãy hỏi agent. Báo "xong bài 16" khi
+  xong.</p>
+  </div>
+
+  <h2>5. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Vì sao footer đứng yên còn nội dung thì cuộn?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: giống topBar, bottomBar do Scaffold giữ bên ngoài Column có verticalScroll.">Vì bottomBar nằm ngoài vùng cuộn của AppPage</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: không cần thêm gì, đặt vào bottomBar là đủ.">Vì phải thêm scrollBehavior cho footer</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: NavigationBar đặt trong nội dung cuộn thì vẫn trôi theo.">Vì NavigationBar luôn tự đứng yên ở bất cứ đâu</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. <code>launchSingleTop = true</code> làm gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: tránh mở cùng một trang 2 lần liên tiếp.">Đang ở trang đó rồi thì không mở thêm một bản nữa</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: không liên quan vị trí của thanh tab.">Đưa thanh tab lên đầu trang</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: đó là việc của popUpTo.">Xoá toàn bộ lịch sử trang</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. Muốn bóng của footer hướng lên trên, viết <code>boxShadow(y = ...)</code> thế nào?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: y dương đẩy bóng xuống dưới.">y = 4.dp</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: y âm đẩy bóng lên, giống box-shadow: 0 -4px.">y = (-4).dp</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: x là lệch ngang.">x = 4.dp</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. <code>navigationBarsPadding()</code> giống gì trong CSS?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: chừa chỗ cho vạch điều hướng ở đáy điện thoại.">padding-bottom: env(safe-area-inset-bottom)</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: không liên quan đến nav trong HTML.">nav { padding: 0 }</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: margin auto dùng để căn giữa.">margin: auto</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. (Ôn bài 15) Vì sao mở menu phải viết <code>scope.launch { drawerState.open() }</code>?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: mở menu là animation cần thời gian, giống await.">Vì mở menu là animation cần thời gian, giống await trong JS</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: launch không đổi màu gì cả.">Để menu đổi màu</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/components/navigation-bar">Navigation bar</a>: ví dụ
+  <code>NavigationBar</code> + <code>NavigationBarItem</code>.
+  <a href="https://developer.android.com/develop/ui/compose/components/app-bars#bottom">Bottom app bar</a>: thanh dưới
+  chứa nút hành động.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0015-side-menu-drawer.html">← Bài 15</a>
+    <a href="../reference/lo-trinh-ui.html">Lộ trình →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+<script>
+  // Mockup bấm được: bấm tab thường để đổi tab đang chọn (tab tròn SOS là nút hành động, không đổi tab)
+  document.querySelectorAll('.phone.demo-tabs').forEach(function (phone) {
+    var tabs = phone.querySelectorAll('.m-tab');
+    var title = phone.querySelector('.m-topbar .t');
+    tabs.forEach(function (tab) {
+      if (tab.querySelector('.circle')) return;
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) { t.classList.toggle('on', t === tab); });
+        title.textContent = tab.textContent.trim();
+      });
+    });
+  });
+</script>
+</body>
+</html>
