@@ -24,15 +24,15 @@ import androidx.compose.ui.draw.scale
 
 @Composable
 fun AppRadioGroup(
-    options: List<String>, //danh sách các lựa chọn
-    selected: String,//lựa chọn hiện tại
+    options: List<String>, //list of options
+    selected: String,//current selection
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     selectedColor: Color = colors.primary,
     unselectedColor: Color = colors.secondary,
     textColor: Color = colors.text,
     gap: Dp = 8.dp,
-    radioScale: Float = 1f,//do lon cua radio
+    radioScale: Float = 1f,//radio size
     onSelectedChange: (String) -> Unit,
 ) {
     Column(modifier = modifier.selectableGroup()) {
@@ -41,7 +41,7 @@ fun AppRadioGroup(
             Row(
                 modifier = Modifier
 
-                   // .fillMaxWidth() // bỏ này ra thì wwidth của radio + text ngắn vừa đủ nên không nhan ngoài vùng trắng dc
+                   // .fillMaxWidth() // without this, width fits radio + text, so taps on empty space are ignored
                     .selectable(
                         selected = option == selected,
                         enabled = enabled,
@@ -50,11 +50,11 @@ fun AppRadioGroup(
                         interactionSource = remember {
                             MutableInteractionSource()
                         },
-                       indication = null // tắt nền xám khi nhấn
+                       indication = null // disable gray ripple on press
                     )
                     .padding(vertical = 5.dp),
                 horizontalArrangement = Arrangement.spacedBy(gap),
-                verticalAlignment = Alignment.Top // chữ nằm giữa theo chiều dọc với nút
+                verticalAlignment = Alignment.Top // text vertically aligned with the button
 
             )
             {

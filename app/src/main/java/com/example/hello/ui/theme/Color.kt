@@ -14,12 +14,12 @@ private object LightMode {
     val secondary = Color(0xFF4b9cdf)
     val light = Color(0xFFdfe4e8)
     val danger = Color(0xFFec5b5b)
-    val text = Color(0xFF2f3134)//màu text
-    val backgroundBody = Color(0xFFeff5ff) // màu nền body
+    val text = Color(0xFF2f3134)//text color
+    val backgroundBody = Color(0xFFeff5ff) // body background color
     val white = Color(0xFFFFFFFF)
-    val backgroundTextField = Color(0xFFFFFFFF)//// màu nền TextField
-    val backgroundCard = Color(0xFFFFFFFF) // nền card trắng
-    val backgroundDialog = Color(0xFF000000).copy(alpha = 0.6f) //lớp nền dialog
+    val backgroundTextField = Color(0xFFFFFFFF)//// TextField background color
+    val backgroundCard = Color(0xFFFFFFFF) // white card background
+    val backgroundDialog = Color(0xFF000000).copy(alpha = 0.6f) //dialog overlay
     val black = Color(0xFF000000)
 
 
@@ -31,12 +31,12 @@ private object DarkMode {
     val secondary = Color(0xFF79b8ea)
     val light = Color(0xFF22262c)
     val danger = Color(0xFFf28b8b)
-    val text = Color(0xFFffffff)//màu text
-    val backgroundBody = Color(0xFF12141A) // màu nền body
+    val text = Color(0xFFffffff)//text color
+    val backgroundBody = Color(0xFF12141A) // body background color
     val white = Color(0xFF000000)
     val backgroundTextField = Color(0xFF000000)
-    val backgroundCard = Color(0xFF1E2228) // nền card xám tô
-    val backgroundDialog = Color(0xFF000000).copy(alpha = 0.3f) //lớp nền dialog
+    val backgroundCard = Color(0xFF1E2228) // dark gray card background
+    val backgroundDialog = Color(0xFF000000).copy(alpha = 0.3f) //dialog overlay
     val black = Color(0xFF000000)
 }
 
@@ -88,14 +88,14 @@ val DarkAppColors = AppColors(
 )
 
 // ============================================================
-// 4. cầu nối giữa Theme.kt và các màn hình UI
+// 4. bridge between Theme.kt and UI screens
 // ============================================================
 val LocalAppColors = staticCompositionLocalOf {
     LightAppColors
 }
 
 // ============================================================
-// 5. EXTENSION — chỉ cần 1 dòng duy nhất, thay vì viết riêng từng màu
-// qua trang UI chỉ cần gọi nó ra sử dụng: color=colors.primary
+// 5. EXTENSION — just one line instead of one per color
+// in UI pages just use it: color=colors.primary
 // ============================================================
 val colors: AppColors @Composable get() = LocalAppColors.current

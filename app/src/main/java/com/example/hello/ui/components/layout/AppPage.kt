@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-//layout dùng chung padding cho all page
+//layout shared padding for all pages
 fun AppPage(
     modifier: Modifier = Modifier,
     scrollable: Boolean=true,
@@ -41,7 +41,7 @@ fun AppPage(
         containerColor = Color.Transparent,
         topBar = topBar,
         bottomBar = bottomBar,
-        contentWindowInsets = WindowInsets.safeDrawing, //tránh tai thỏ + bàn phím
+        contentWindowInsets = WindowInsets.safeDrawing, //avoid notch + keyboard
     ) {  innerPadding ->
         Column(
             modifier = Modifier

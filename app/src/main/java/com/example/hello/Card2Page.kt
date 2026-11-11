@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun Card2Page(modifier: Modifier = Modifier, navController: NavController) {
-    val drawerState = rememberDrawerState(DrawerValue.Closed)//menu đóng hay mở
+    val drawerState = rememberDrawerState(DrawerValue.Closed)//menu open or closed
     val scope = rememberCoroutineScope() // open
     AppDrawer(
         navController = navController,
@@ -70,19 +70,19 @@ fun Card2Page(modifier: Modifier = Modifier, navController: NavController) {
             Spacer(modifier = Modifier.height(15.dp))
             AppCard(hasShadow = true) {
                 Text(
-                    text = "Card có shadow ",
+                    text = "Card with shadow ",
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))
             AppCard(hasBorder = true) {
                 Text(
-                    text = "Card có border ",
+                    text = "Card with border ",
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))
             AppCard(hasShadow = true, hasBorder = true) {
                 Text(
-                    text = "Card có shadow và border ",
+                    text = "Card with shadow and border ",
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))
@@ -91,10 +91,10 @@ fun Card2Page(modifier: Modifier = Modifier, navController: NavController) {
                 shadowColor = colors.danger.copy(alpha = 0.3f)
             ) {
                 Text(
-                    text = "Card có shadow  ",
+                    text = "Card with shadow  ",
                 )
                 Text(
-                    text = "Card có shadow  ",
+                    text = "Card with shadow  ",
                 )
             }
             Spacer(modifier = Modifier.height(15.dp))

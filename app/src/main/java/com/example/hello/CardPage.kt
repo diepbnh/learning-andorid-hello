@@ -128,14 +128,14 @@ private fun ShadowCard() {
             ),
         shape = cardShape,
         colors = CardDefaults.cardColors(
-            containerColor = colors.backgroundCard,//màu nền
-            contentColor = colors.text // màu chữ
+            containerColor = colors.backgroundCard,//background color
+            contentColor = colors.text // text color
         ),
     )
     {
         Text(
-            text = "Card sử dụng shadow mặc định.\n" +
-                    "Card không có padding chính nó, nếu thêm nó sẽ đẩy ra khoảng cách xa giống margin",
+            text = "Card using the default shadow.\n" +
+                    "Card has no padding of its own; adding it pushes spacing out like margin",
             modifier = Modifier.padding(24.dp),
             lineHeight = 28.sp
         )
@@ -153,19 +153,19 @@ private fun ShadowCard2() {
             .shadow(
                 elevation = 6.dp,
                 shape = cardShape,
-                ambientColor = colors.primary,//viền mờ đều xung quanh
-                spotColor = colors.primary//bóng đậm phía dưới
+                ambientColor = colors.primary,//soft glow all around
+                spotColor = colors.primary//darker shadow below
             ),
         shape = cardShape,
         colors = CardDefaults.cardColors(
-            containerColor = colors.backgroundCard,//màu nền
-            contentColor = colors.text // màu chữ
+            containerColor = colors.backgroundCard,//background color
+            contentColor = colors.text // text color
         ),
     )
     {
         Text(
             text = "Card 2  \n" +
-                    "Card sử dụng shadow đỗ màu xanh",
+                    "Card using a blue shadow",
             modifier = Modifier.padding(24.dp)
         )
 
@@ -187,14 +187,14 @@ private fun ShadowCard3() {
             ),
         shape = cardShape,
         colors = CardDefaults.cardColors(
-            containerColor = colors.backgroundCard,//màu nền
-            contentColor = colors.text // màu chữ
+            containerColor = colors.backgroundCard,//background color
+            contentColor = colors.text // text color
         ),
     )
     {
         Text(
             text = "Card 3 \n" +
-                    "Card sử dụng shadow custom riêng và được truyền tham số tùy thích",
+                    "Card using a custom shadow with any parameters you like",
             modifier = Modifier.padding(24.dp)
         )
 
@@ -209,7 +209,7 @@ private fun ImageWithTextCard() {
             .fillMaxWidth()
             .height(100.dp)
             .border(1.dp, colors.secondary, cardShape)
-            .clip(cardShape)//bo góc gọi lại
+            .clip(cardShape)//reuse rounded corners
         //.background(colors.primary)
     )
     {
@@ -221,7 +221,7 @@ private fun ImageWithTextCard() {
         )
         Box(
             modifier = Modifier
-                .matchParentSize() //độ lớn bằng cha
+                .matchParentSize() //same size as parent
                 .background(colors.white.copy(alpha = 0.5f)) //rgba(255,255,255,0.5)
         )
         Text(
@@ -241,15 +241,15 @@ private fun ImageWithTextCard() {
 private fun AlphaModifyText() {
     Column {
         Text(
-            text = "Modifier.alpha (mờ cả chữ)",
+            text = "Modifier.alpha (text faded too)",
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(5.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp), //khoảng cách giữa các box
+            horizontalArrangement = Arrangement.spacedBy(10.dp), //gap between boxes
         ) {
-            //gọi lại AlphaBox, tự truyền text + alpha
+            //reuse AlphaBox, pass text + alpha
             AlphaBox(text = "100%", alpha = 1f, modifier = Modifier.weight(1f))
             AlphaBox(text = "60%", alpha = 0.6f, modifier = Modifier.weight(1f))
             AlphaBox(text = "30%", alpha = 0.3f, modifier = Modifier.weight(1f))
@@ -257,12 +257,12 @@ private fun AlphaModifyText() {
     }
 }
 
-//box dùng chung cho AlphaDemoRow
+//shared box for AlphaDemoRow
 @Composable
 private fun AlphaBox(
-    modifier: Modifier = Modifier, //weight truyền từ Row vào
-    text: String, //chữ hiển thị
-    alpha: Float = 1f, //độ mờ, mặc định không mờ
+    modifier: Modifier = Modifier, //weight passed in from Row
+    text: String, //display text
+    alpha: Float = 1f, //opacity, default fully opaque
 ) {
     Box(
         modifier = modifier
@@ -270,7 +270,7 @@ private fun AlphaBox(
             .clip(RoundedCornerShape(10.dp))
             .alpha(alpha)
             .background(colors.primary),
-        contentAlignment = Alignment.Center //giữa ngang + giữa dọc
+        contentAlignment = Alignment.Center //center horizontally + vertically
     ) {
         Text(
             text = text,
@@ -284,15 +284,15 @@ private fun AlphaBox(
 private fun AlphaCopyText() {
     Column {
         Text(
-            text = "color.copy (alpha) (chữ vẫn rõ)",
+            text = "color.copy (alpha) (text stays clear)",
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(5.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp), //khoảng cách giữa các box
+            horizontalArrangement = Arrangement.spacedBy(10.dp), //gap between boxes
         ) {
-            //gọi lại AlphaBox, tự truyền text + alpha
+            //reuse AlphaBox, pass text + alpha
             ColorAlPhaBox(text = "100%", backgroundAlpha = 1f, modifier = Modifier.weight(1f))
             ColorAlPhaBox(text = "60%", backgroundAlpha = 0.6f, modifier = Modifier.weight(1f))
             ColorAlPhaBox(text = "30%", backgroundAlpha = 0.2f, modifier = Modifier.weight(1f))
@@ -300,13 +300,13 @@ private fun AlphaCopyText() {
     }
 }
 
-//Box chữ mờ nhưng nền rõ dung copy(alpha)
+//Box with faded text but clear background using copy(alpha)
 @Composable
 private fun ColorAlPhaBox(
     modifier: Modifier = Modifier,
-    text: String, // chữ truyền vào
-    textAlPha: Float = 1f, // độ mờ của chữ
-    backgroundAlpha: Float = 1f, // độ mờ của nền
+    text: String, // text passed in
+    textAlPha: Float = 1f, // text opacity
+    backgroundAlpha: Float = 1f, // background opacity
 
 ) {
     Box(

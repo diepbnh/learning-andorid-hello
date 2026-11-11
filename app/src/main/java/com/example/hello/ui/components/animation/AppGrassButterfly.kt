@@ -36,23 +36,23 @@ fun AppGrassButterfly(
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "butterfly_flight")
 
-    // Quỹ đạo bay ngang: từ phải (130f) sang trái (-130f) trong 3s, rồi quay lại từ trái sang phải trong 3s
+    // Horizontal path: right (130f) to left (-130f) in 3s, then back left to right in 3s
     val offsetX by infiniteTransition.animateFloat(
         initialValue = 130f,
         targetValue = 130f,
         animationSpec = infiniteRepeatable(
             animation = keyframes {
-                durationMillis = 6000 // Tổng thời gian 1 vòng lặp là 6 giây
-                130f at 0 // Giây 0: Bắt đầu ở bên phải (+130dp)
-                (-130f) at 3000  // Giây thứ 3: Bay sang bên trái (-130dp)
-                130f at 6000  // Giây thứ 6: Quay về bên phải (+130dp)
+                durationMillis = 6000 // One loop takes 6 seconds
+                130f at 0 // Second 0: start on the right (+130dp)
+                (-130f) at 3000  // Second 3: fly to the left (-130dp)
+                130f at 6000  // Second 6: back to the right (+130dp)
             },
             repeatMode = RepeatMode.Restart
         ),
         label = "butterfly_offset_x"
     )
 
-    // Hiệu ứng quay đầu (lật hướng bướm khi đổi chiều bay)
+    // Turn-around effect (flip butterfly when direction changes)
     val scaleX by infiniteTransition.animateFloat(
         initialValue = 1f,
         targetValue = 1f,
@@ -61,22 +61,22 @@ fun AppGrassButterfly(
                 durationMillis = 6000
                 1f at 0
                 1f at 2999
-                (-1f) at 3000  // Đúng giây thứ 3 (khi đổi chiều bay), lật ngang ảnh
+                (-1f) at 3000  // At second 3 (direction change), flip image horizontally
                 (-1f) at 5999
-                1f at 6000  // Quay về hướng ban đầu
+                1f at 6000  // Back to original direction
             },
             repeatMode = RepeatMode.Restart
         ),
         label = "butterfly_scale_x"
     )
 
-    // Hiệu ứng vỗ cánh (co giãn theo chiều dọc scaleY với tốc độ nhanh)
+    // Wing-flap effect (fast vertical scaleY stretch)
     val scaleY by infiniteTransition.animateFloat(
         initialValue = 0.75f,
         targetValue = 1.05f,
         animationSpec = infiniteRepeatable(
             animation = keyframes {
-                durationMillis = 200 // Vòng đời vỗ cánh rất nhanh: chỉ 0.2 giây
+                durationMillis = 200 // Very fast flap cycle: only 0.2 seconds
                 0.75f at 0
                 1.05f at 100
                 0.75f at 200
@@ -90,12 +90,12 @@ fun AppGrassButterfly(
         modifier = modifier
             .fillMaxWidth()
             .requiredHeight(height) //min height
-            .clipToBounds()// Cắt bỏ các phần hình ảnh thừa tràn ra ngoài khung
+            .clipToBounds()// Clip image parts overflowing the frame
 
     ) {
         Image(
             painter = painterResource(grassRes),
-            contentDescription = "Hinh bãi cỏ",
+            contentDescription = "Grass field image",
             contentScale = ContentScale.Fit,
             alignment = Alignment.BottomCenter,
             modifier = Modifier
@@ -104,10 +104,10 @@ fun AppGrassButterfly(
                 .height(grassHeight)
         )
 
-        // Con bướm bay qua lại, tự động quay đầu và vỗ cánh
+        // Butterfly flies back and forth, turning and flapping
         Image(
             painter = painterResource(butterflyRes),
-            contentDescription = "Con bướm",
+            contentDescription = "Butterfly",
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .align(Alignment.Center)

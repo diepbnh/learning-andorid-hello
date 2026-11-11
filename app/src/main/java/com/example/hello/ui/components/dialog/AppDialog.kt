@@ -37,31 +37,31 @@ import  androidx.compose.foundation.layout.systemBarsPadding
 @Composable
 fun AppDialog(
     onDismissRequest: () -> Unit,
-    backgroundDialog: Color = colors.backgroundDialog, // màu nền
+    backgroundDialog: Color = colors.backgroundDialog, // background color
     cornerRadius: Dp = 24.dp,
     durationMillis: Int = 400,
     content: @Composable ColumnScope.(close: () -> Unit) -> Unit
 ) {
     val visibleState = remember { MutableTransitionState(false).apply { targetState = true } }
-    val close = { visibleState.targetState = false } //gọi để bắt đầu fade out
+    val close = { visibleState.targetState = false } //call to start fade out
     LaunchedEffect(visibleState.isIdle , visibleState.currentState) {
         if (visibleState.isIdle && !visibleState.currentState) onDismissRequest()
 
     }
     Dialog(
-        onDismissRequest = close, //close dialog khi click ra ngoài
+        onDismissRequest = close, //close dialog on outside click
         properties = DialogProperties(
-            usePlatformDefaultWidth = false, //dialog không có chiều rộng
-            decorFitsSystemWindows = false // cửa sổ vẽ tràn thanh trạng thái và điều hướng
+            usePlatformDefaultWidth = false, //no default dialog width
+            decorFitsSystemWindows = false // window draws under status and nav bars
         )
     ) {
-        val  view = LocalView.current //View đang chứa Compose
+        val  view = LocalView.current //View hosting Compose
         SideEffect {
             val window=(view.parent as? DialogWindowProvider)?.window
-            window?.setDimAmount(0f) //tắt nền đèn dialog của android do set theo figma
-            window?.setWindowAnimations(0) // tắt hiệu ứng trượt cua android
+            window?.setDimAmount(0f) //disable Android dialog dim, styled per Figma
+            window?.setWindowAnimations(0) // disable Android slide animation
         }
-        //hiệu ứng fade in fade out dialog
+        //dialog fade in/out animation
         AnimatedVisibility(
             visibleState=visibleState,
             enter = fadeIn(tween(durationMillis)),
@@ -70,24 +70,24 @@ fun AppDialog(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .fillMaxSize() // chiều cao và rộng dialog
-                   .background(backgroundDialog) // nền mờ của dialog
+                    .fillMaxSize() // dialog width and height
+                   .background(backgroundDialog) // dialog dim overlay
                     .clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
                     ){close()}
-                    .systemBarsPadding() // padding giảm chiều cao dialog không đụng thanh trạng thái
+                    .systemBarsPadding() // padding keeps dialog off the status bar
             ) {
-                Column( //container bao text bên trong
+                Column( //container wrapping inner text
                     modifier = Modifier
-                        .padding(32.dp) // margin tu bên ngoài làm thu nhỏ width của Column
+                        .padding(32.dp) // outer margin narrows the Column width
                         .fillMaxWidth()
                         .background(colors.backgroundCard, RoundedCornerShape( cornerRadius))
-                        .clickable(interactionSource = null,indication = null) {}//chặn click bên trong
-                        .verticalScroll(rememberScrollState())// scroll nội dung khi dài
-                        .padding(24.dp) // padding bên trong text
+                        .clickable(interactionSource = null,indication = null) {}//block clicks inside
+                        .verticalScroll(rememberScrollState())// scroll when content is long
+                        .padding(24.dp) // inner text padding
                 ) {
-                    content(close) // hiện thị nội dung truyền vào
+                    content(close) // show passed-in content
                 }
             }
         }

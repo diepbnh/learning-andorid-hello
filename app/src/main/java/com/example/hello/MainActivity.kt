@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
             HelloTheme {
                 val navController = rememberNavController()
                 NavHost(navController = navController, startDestination = "login") {
-                    //dieu hương route
+                    //route navigation
                     composable("login") {
                         LoginPage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
@@ -67,6 +67,9 @@ class MainActivity : ComponentActivity() {
                     }
                     composable(route = "menu") {
                        MenuPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
+                    composable(route = "home") {
+                        HomePage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
 
 

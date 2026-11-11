@@ -16,6 +16,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
@@ -49,11 +50,11 @@ data class MenuItem(
     val label: String,
     val route: String,
     val icon: ImageVector,
-    val isDanger: Boolean = false,//mặc định là false
+    val isDanger: Boolean = false,//false by default
 )
 
 private val menuItems = listOf(
-    MenuItem("Menu", "menu", Icons.Default.Menu),
+    MenuItem("Home", "home", Icons.Default.Home),
     MenuItem("Profile", "profile", Icons.Default.Person),
     MenuItem("Card", "card", Icons.Default.Settings),
     MenuItem("Card 2", "card2", Icons.Default.Settings),
@@ -69,9 +70,9 @@ private val menuItems = listOf(
 @Composable
 fun AppDrawer(
     navController: NavController,
-    drawerState: DrawerState, //menu đóng hay mở
-    currentRoute: String, //đường dẫn hiện tại
-    content: @Composable () -> Unit, //content chính
+    drawerState: DrawerState, //menu open or closed
+    currentRoute: String, //current route
+    content: @Composable () -> Unit, //main content
 ) {
     val scope = rememberCoroutineScope()
     ModalNavigationDrawer(
@@ -79,7 +80,7 @@ fun AppDrawer(
         scrimColor = colors.backgroundDialog,
         drawerContent = {
             ModalDrawerSheet(
-                drawerContainerColor = colors.danger,
+                drawerContainerColor = colors.backgroundCard,
                 modifier = Modifier.width(300.dp)
             ) {
                 //header
@@ -93,11 +94,11 @@ fun AppDrawer(
                     menuItems.forEach { item ->
                         val itemColor =if (item.isDanger) colors.danger else colors.text
                         //drawer item
-                        NavigationDrawerItem( // mặc định của drawer là full 100% nên khi nhấn thì vùng ngoài text vẫn bấm được
-                           //Nếu bạn vẫn muốn chỉ bấm vào icon và chữ thì cũng làm
-                            //  được, nhưng phải bỏ NavigationDrawerItem và tự viết
-                            //  một Row riêng. Mình không khuyên làm vậy, vì sẽ khó
-                            //  dùng hơn
+                        NavigationDrawerItem( // drawer item is full width by default, so area outside the text is clickable too
+                           //If you want only the icon and text clickable, you can
+                            //  do it, but must drop NavigationDrawerItem and write
+                            //  a custom Row. Not recommended, since it is harder
+                            //  to use
                             label = {
                                 Text(
                                     text = item.label,
@@ -111,11 +112,11 @@ fun AppDrawer(
                                     item.icon,
                                     contentDescription = null,
                                     modifier = Modifier
-                                        .padding(start = 8.dp)
-                                        .size(26.dp) // mặc định là 24dp
+                                        .padding(start = 20.dp)
+                                        .size(26.dp) // default is 24dp
                                 )
                             },
-                            selected = item.route == currentRoute,//đường dẫn hiện tại
+                            selected = item.route == currentRoute,//current route
                             onClick = {
                                 scope.launch { drawerState.close() }
                                 if (currentRoute != item.route) {
@@ -123,17 +124,17 @@ fun AppDrawer(
                                 }
                             },
                             colors = NavigationDrawerItemDefaults.colors(
-//set mau item
+//set item colors
                                 selectedContainerColor = colors.primary,
                                 selectedTextColor = colors.white,
                                 selectedIconColor = colors.white,
 
-                               unselectedContainerColor = Color.Transparent,
+                                unselectedContainerColor = Color.Transparent,
                                 unselectedTextColor = itemColor,
                                 unselectedIconColor = itemColor,
                             ),
                             shape = RoundedCornerShape(1.dp),
-                            //vậy thi modifier = Modifier.padding(horizontal = 24.dp)
+                            //then use modifier = Modifier.padding(horizontal = 24.dp)
                         )
 
                     }
@@ -156,8 +157,9 @@ private fun DrawerHeader() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(24.dp),
-        verticalAlignment = Alignment.CenterVertically
+            .padding(38.dp, 30.dp,24.dp,24.dp),
+        verticalAlignment = Alignment.CenterVertically,
+       // horizontalArrangement = Arrangement.Center // center logo
 
     ) {
         Image(

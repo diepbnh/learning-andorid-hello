@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun AppToggleButton(
-    hideText: String, //chữ chưa nhấn
-    showText: String,//chữ đã nhan
+    hideText: String, //text before press
+    showText: String,//text after press
     modifier: Modifier = Modifier,
-    inactiveColor: Color = colors.primary, //màu nút chưa nhấn
-    activeColor: Color = colors.danger, //màu nút nhấn
-    durationMillis: Int = 200, //thời gian đổi màu
+    inactiveColor: Color = colors.primary, //button color before press
+    activeColor: Color = colors.danger, //button color when pressed
+    durationMillis: Int = 200, //color change duration
     inactiveRadius: Dp =25.dp,
     activeRadius: Dp=25.dp,
 ) {
@@ -43,7 +43,7 @@ fun AppToggleButton(
         animationSpec = tween(durationMillis = durationMillis),
         label = "toggleButtonColor"
     )
-    //bo góc
+    //corner radius
     val cornerRadius = animateDpAsState(
         targetValue = if (isActive.value) activeRadius else inactiveRadius,
         animationSpec = tween(durationMillis = durationMillis),
@@ -52,11 +52,11 @@ fun AppToggleButton(
 
     Button(
         onClick = { isActive.value = !isActive.value },
-        modifier = modifier.height(AppButtonSize.Medium.height), // giống chiều cao AppButton
-        shape = RoundedCornerShape(cornerRadius.value),// truyền radius vào
+        modifier = modifier.height(AppButtonSize.Medium.height), // same height as AppButton
+        shape = RoundedCornerShape(cornerRadius.value),// pass in the radius
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor.value,
-            contentColor = colors.white //màu chữ
+            contentColor = colors.white //text color
         )
 
     ) {
@@ -66,7 +66,7 @@ fun AppToggleButton(
            transitionSpec = {
                fadeIn(animationSpec = tween(durationMillis / 2, delayMillis
                = durationMillis / 2)) togetherWith
-                       // chữ cũ: mờ hết trong nửa đầu
+                       // old text: fully fades out in the first half
                        fadeOut(animationSpec = tween(durationMillis / 2)) using
                        SizeTransform(clip = false) { _, _ ->
                            tween(durationMillis)
@@ -78,7 +78,7 @@ fun AppToggleButton(
         ) { active ->
             Text(
                 text = if(active) showText else hideText,
-                fontSize = AppButtonSize.Medium.fontSize // cỡ chữ giống AppButton
+                fontSize = AppButtonSize.Medium.fontSize // same font size as AppButton
             )
 
         }

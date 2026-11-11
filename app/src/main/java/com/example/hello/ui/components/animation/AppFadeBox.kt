@@ -21,8 +21,8 @@ fun AppFadeBox(
     showText: String,
     hideText: String,
     modifier: Modifier = Modifier,
-    initialVisible: Boolean = true,//lúc mới mở true= hiên,
-    durationMillis: Int = 400,//thời gian hiện
+    initialVisible: Boolean = true,//initially true = shown,
+    durationMillis: Int = 400,//fade duration
     content: @Composable () -> Unit
 
 ) {
@@ -45,8 +45,8 @@ fun AppFadeBox(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .extendHorizontally(8.dp) //nới khung rộng ra 2 bên
-                .alpha(contentAlpha.value)//giống CSS opacity
+                .extendHorizontally(8.dp) //widen frame on both sides
+                .alpha(contentAlpha.value)//like CSS opacity
                 .padding(start = 8.dp, end = 8.dp, bottom = 12.dp)
 
         ) {

@@ -42,46 +42,46 @@ import com.example.hello.ui.theme.colors
 @Composable
 fun AppDialogBottom(
     onDismissRequest: () -> Unit,
-    backgroundDialog: Color = colors.backgroundDialog, // màu nền mờ, lấy từ theme
-    cornerRadius: Dp = 24.dp, // bo 2 góc trên
-    durationMillis: Int = 300, // thời gian trượt + fade
+    backgroundDialog: Color = colors.backgroundDialog, // dim overlay color, from theme
+    cornerRadius: Dp = 24.dp, // round the 2 top corners
+    durationMillis: Int = 300, // slide + fade duration
     content: @Composable ColumnScope.(close: () -> Unit) -> Unit
 ) {
     val visibleState = remember { MutableTransitionState(false).apply { targetState = true } }
-    val close = { visibleState.targetState = false } // gọi để bắt đầu trượt xuống
+    val close = { visibleState.targetState = false } // call to start sliding down
     LaunchedEffect(visibleState.isIdle, visibleState.currentState) {
-        // trượt xuống xong mới tắt hẳn
+        // fully dismiss after sliding down
         if (visibleState.isIdle && !visibleState.currentState) onDismissRequest()
     }
     Dialog(
-        onDismissRequest = close, // bấm Back: bắt đầu trượt xuống
+        onDismissRequest = close, // Back pressed: start sliding down
         properties = DialogProperties(
-            usePlatformDefaultWidth = false, // bỏ giới hạn chiều rộng, cho nền phủ hết màn hình
-            decorFitsSystemWindows = false // cửa sổ vẽ tràn thanh trạng thái và điều hướng
+            usePlatformDefaultWidth = false, // remove width limit, overlay covers full screen
+            decorFitsSystemWindows = false // window draws under status and nav bars
         )
     ) {
         val view = LocalView.current
         SideEffect {
             val window = (view.parent as? DialogWindowProvider)?.window
-            window?.setDimAmount(0f) // tắt nền đen của android
-            window?.setWindowAnimations(0) // tắt hiệu ứng trượt của android
+            window?.setDimAmount(0f) // disable Android dim background
+            window?.setWindowAnimations(0) // disable Android slide animation
         }
         AnimatedVisibility(
             visibleState = visibleState,
-            enter = fadeIn(tween(durationMillis)), // nền mờ: fade
+            enter = fadeIn(tween(durationMillis)), // overlay: fade
             exit = fadeOut(tween(durationMillis))
         ) {
             Box(
-                contentAlignment = Alignment.BottomCenter, // đặt hộp ở đáy
+                contentAlignment = Alignment.BottomCenter, // place box at bottom
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(backgroundDialog) // nền mờ của dialog
+                    .background(backgroundDialog) // dialog dim overlay
                     .clickable(interactionSource = null, indication = null) { close() }
-                    .statusBarsPadding() // hộp dài không chui dưới thanh trạng thái
+                    .statusBarsPadding() // tall box stays below status bar
             ) {
                 Column(
                     modifier = Modifier
-                        .animateEnterExit( // hộp: trượt từ đáy lên, trượt xuống khi đóng
+                        .animateEnterExit( // box: slide up from bottom, slide down on close
                             enter = slideInVertically(tween(durationMillis)) { it },
                             exit = slideOutVertically(tween(durationMillis)) { it }
                         )
@@ -90,12 +90,12 @@ fun AppDialogBottom(
                             colors.backgroundCard,
                             RoundedCornerShape(topStart = cornerRadius, topEnd = cornerRadius)
                         )
-                        .clickable(interactionSource = null, indication = null) {} // chặn click bên trong
-                        .navigationBarsPadding() // chừa chỗ cho thanh điều hướng ở đáy
-                        .verticalScroll(rememberScrollState()) // scroll nội dung khi dài
-                        .padding(24.dp) // padding bên trong
+                        .clickable(interactionSource = null, indication = null) {} // block clicks inside
+                        .navigationBarsPadding() // leave room for bottom nav bar
+                        .verticalScroll(rememberScrollState()) // scroll when content is long
+                        .padding(24.dp) // inner padding
                 ) {
-                    // thanh kéo nhỏ ở đầu hộp
+                    // small drag handle at top of box
                     Box(
                         modifier = Modifier
                             .align(Alignment.CenterHorizontally)
@@ -104,7 +104,7 @@ fun AppDialogBottom(
                             .background(colors.light, RoundedCornerShape(2.dp))
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    content(close) // hiện thị nội dung truyền vào
+                    content(close) // show passed-in content
                 }
             }
         }

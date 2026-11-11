@@ -14,16 +14,16 @@ import androidx.compose.ui.Modifier
 @Composable
 fun AppSlideUp(
     modifier: Modifier = Modifier,
-    durationMillis: Int = 200,//thời gian chạy
-    delayMillis: Int = 0,//thời gian đợi
-    playKey: Int = 0,// số lần chạy
+    durationMillis: Int = 200,//run duration
+    delayMillis: Int = 0,//delay before start
+    playKey: Int = 0,// replay counter
     content: @Composable () -> Unit
 
 ) {
     key(playKey) {
         val isVisible = remember { mutableStateOf(false) }
 
-        //chay 1 lần khi mở trang
+        //run once when the page opens
         LaunchedEffect(Unit) {
             isVisible.value = true
         }
@@ -34,7 +34,7 @@ fun AppSlideUp(
             enter = fadeIn(tween(durationMillis, delayMillis)) +
                     slideInVertically(tween(durationMillis, delayMillis))
                     {
-                        fullHeight -> fullHeight// bắt chuyển từ trên xuống dưới tranlateY 100%
+                        fullHeight -> fullHeight// slide from below, translateY 100%
                     }
 
         ) {

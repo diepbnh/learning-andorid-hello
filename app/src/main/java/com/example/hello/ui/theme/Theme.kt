@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
         content: @Composable () -> Unit
     )
     {
-        val darkTheme = ThemeManager.isDarkMode.value //đọc trạng thái đang có
+        val darkTheme = ThemeManager.isDarkMode.value //read current state
         val appColors = if (darkTheme) DarkAppColors else LightAppColors
 
         CompositionLocalProvider(LocalAppColors provides appColors) {
@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
             ) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = colors.backgroundBody,//màu nền body
-                    contentColor=colors.text// màu chữ mặc đinh app
+                    color = colors.backgroundBody,//body background color
+                    contentColor=colors.text// default app text color
                 ) {
                     content()
                 }

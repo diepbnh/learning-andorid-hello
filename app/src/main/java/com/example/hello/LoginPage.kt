@@ -20,23 +20,23 @@ import com.example.hello.ui.theme.*
 
 @Composable
 fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
-    // 1. Khai báo trạng thái để lưu trữ dữ liệu nhập vào
+    // 1. Declare state to store input data
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val loginError= remember { mutableStateOf("") }
-    // 2. Cấu trúc khung màn hình
+    // 2. Screen layout structure
     Scaffold(modifier, containerColor = Color.Transparent) { innerPadding ->
 
         Column(
             modifier = Modifier
-                .fillMaxSize() // Chiếm toàn bộ diện tích còn lại
+                .fillMaxSize() // Fill all remaining space
                 .padding(innerPadding)
                 .padding(32.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         )
         {
-            //khoản cach
+            //spacing
             Spacer(modifier = Modifier.height(65.dp))
             Text(
                 text = "Login Page",
@@ -45,7 +45,7 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
                 //fontWeight = FontWeight.Bold,
                 style = titleXLarge,
             )
-            //khoản cach
+            //spacing
             Spacer(modifier = Modifier.height(25.dp))
             // Username input
             OutlinedTextField(
@@ -54,7 +54,7 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
                                 loginError.value=""
                                 },
 
-                isError = loginError.value == "Username is required", // chỉ ô Username đỏ viền khi lỗi
+                isError = loginError.value == "Username is required", // only Username field gets red border on error
                 label = { Text("Username") },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
@@ -64,12 +64,12 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
                 colors = OutlinedTextFieldDefaults.colors(
                     focusedContainerColor = colors.white,//bg textfield
                     unfocusedContainerColor = colors.white,//bg
-                    focusedBorderColor = colors.primary,//màu viền focus
-                    unfocusedBorderColor = colors.light,//màu viền không focus
-                    errorBorderColor = colors.danger,//màu viền khi lỗi
+                    focusedBorderColor = colors.primary,//focused border color
+                    unfocusedBorderColor = colors.light,//unfocused border color
+                    errorBorderColor = colors.danger,//error border color
                 )
             )
-            //khoản cách
+            //spacing
             Spacer(
                 modifier = Modifier.height(25.dp)
             )
@@ -79,7 +79,7 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
                 onValueChange = { password.value = it
                     loginError.value=""},
 
-                isError = loginError.value == "Password is required",  // chỉ ô Password đỏ viền khi lỗi
+                isError = loginError.value == "Password is required",  // only Password field gets red border on error
                 label = { Text("Password") },
                 modifier = Modifier.fillMaxWidth(),
                 placeholder = {
@@ -95,12 +95,12 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
                     errorBorderColor = colors.danger,
                 )
             )
-            //khoản cach
+            //spacing
             Spacer(
                 modifier = Modifier.height(25.dp)
             )
 
-            //label thông báo lỗi trươ button Login
+            //error message label before Login button
             if(loginError.value.isNotEmpty()){
                 Text(
                     text=loginError.value,
@@ -129,7 +129,7 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
                 modifier = Modifier.fillMaxWidth(),
                 backgroundColor = colors.primary,
             )
-            //khoản cach
+            //spacing
             Spacer(
                 modifier = Modifier.height(15.dp)
             )
@@ -144,7 +144,7 @@ fun LoginPage(modifier: Modifier = Modifier, navController: NavController) {
                     navController.navigate("reset_password")
                 }
             )
-            //khoản cach
+            //spacing
             Spacer(
                 modifier = Modifier.height(15.dp)
             )

@@ -79,13 +79,13 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, colors.primary)//viền ngoài table
+                .border(1.dp, colors.primary)//table outer border
         ) {
             //table
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(IntrinsicSize.Min)//hàng cao bằng ô cao nhất
+                    .height(IntrinsicSize.Min)//row height = tallest cell
                     .background(colors.primary)
             ) {
                 Text(
@@ -119,11 +119,11 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
 
                 )
             }
-            //dong 1 table cell
+            //row 1 table cell
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(IntrinsicSize.Min)//đường dọc cao bằng dòng
+                    .height(IntrinsicSize.Min)//vertical line matches row height
             ) {
                 Text(
                     text = "Car 01",
@@ -131,7 +131,7 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
                         .weight(1.5f)
                         .padding(15.dp)
                 )
-                VerticalDivider(thickness = 1.dp, color = colors.primary)//đường kẻ dọc
+                VerticalDivider(thickness = 1.dp, color = colors.primary)//vertical divider
                 Text(
                     "12",
                     textAlign = TextAlign.End,
@@ -149,8 +149,8 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
                         .padding(15.dp)
                 )
             }
-            //dong 2
-            HorizontalDivider(thickness = 1.dp, color = colors.primary) //đường kẻ ngang
+            //row 2
+            HorizontalDivider(thickness = 1.dp, color = colors.primary) //horizontal divider
             Row(
                 Modifier
                     .height(IntrinsicSize.Min)
@@ -183,13 +183,13 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
                         .padding(15.dp)
                 )
             }
-            //dòng 3
+            //row 3
 
             HorizontalDivider(thickness = 1.dp, color = colors.primary)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(IntrinsicSize.Min)//đường dọc cao bằng dòng
+                    .height(IntrinsicSize.Min)//vertical line matches row height
             ) {
                 Text(
                     "Car 01",
@@ -220,7 +220,7 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(IntrinsicSize.Min)//đường dọc cao bằng dòng
+                    .height(IntrinsicSize.Min)//vertical line matches row height
                     .background(colors.light)
             ) {
                 Text(
@@ -256,12 +256,12 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
         )
 
         Text(
-            text = "Table thứ 2: dùng tableCell",
+            text = "Table 2: using tableCell",
         )
         Spacer(modifier = Modifier.height(15.dp))
 
 
-        //table thứ 2
+        //table 2
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -356,9 +356,9 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
             }
         }
         Spacer(modifier = Modifier.height(15.dp))
-        //table thứ 3
+        //table 3
         Text(
-            text = "Table thứ 3: dùng tableCell",
+            text = "Table 3: using tableCell",
         )
         Spacer(modifier = Modifier.height(8.dp))
         Column(
@@ -395,8 +395,8 @@ fun TablePage(modifier: Modifier = Modifier, navController: NavController) {
                         .fillMaxWidth()
                         .height(IntrinsicSize.Min)
                         .background(
-                            if (index % 2 == 0) Color.Transparent   // chẵn
-                            else colors.light                       // lẻ
+                            if (index % 2 == 0) Color.Transparent   // even
+                            else colors.light                       // odd
                         )
 
                 ) {

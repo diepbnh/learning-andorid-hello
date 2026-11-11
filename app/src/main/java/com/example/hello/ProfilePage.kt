@@ -46,7 +46,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
-    val drawerState = rememberDrawerState(DrawerValue.Closed)//menu đóng hay mở
+    val drawerState = rememberDrawerState(DrawerValue.Closed)//menu open or closed
     val scope = rememberCoroutineScope() // open
     AppDrawer(
         navController = navController,
@@ -70,10 +70,10 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
                         }
                     },
                     actions = {
-                        IconButton(onClick = { navController.navigate("template") }) {
+                        IconButton(onClick = { navController.navigate("home") }) {
                             Icon(
                                 imageVector = Icons.Default.Home,
-                                contentDescription = "Back"
+                                contentDescription = "Home"
                             )
                         }
                     }
@@ -87,7 +87,7 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
         {
 
 
-            //banner <div> bao ảnh lại
+            //banner <div> wrapping the image
             Box(
                 modifier = Modifier
 //                .layout { measurable, constraints ->
@@ -113,7 +113,7 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
 
             Text(
                 text = "Hong Diep",
-                style = titleMedium,//style font weight đã định nghĩa sẵn
+                style = titleMedium,//predefined font weight style
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
@@ -131,19 +131,19 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
                 borderWidth = 3.dp,
                 borderColor = colors.white,
                 shadowElevation = 20.dp,
-                modifier = Modifier.align(Alignment.CenterHorizontally) //căn giữa
+                modifier = Modifier.align(Alignment.CenterHorizontally) //center
             )
             Spacer(modifier = Modifier.height(20.dp))
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                //cột home
+                //home column
                 Column(
                     modifier = Modifier
                         .weight(2f)
                         //.background(colors.secondary)
                         .padding(5.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally//căn giữa tất cả con bên trong
+                    horizontalAlignment = Alignment.CenterHorizontally//center all children
 
                 ) {
                     Icon(
@@ -160,12 +160,12 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
                         fontWeight = FontWeight.Medium
                     )
                 }
-                //cột home
+                //home column
                 Column(
                     modifier = Modifier
                         .weight(2f)
                         .padding(5.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally//căn giữa tất cả con bên trong
+                    horizontalAlignment = Alignment.CenterHorizontally//center all children
 
                 ) {
                     Icon(
@@ -182,12 +182,12 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
                         fontWeight = FontWeight.Medium
                     )
                 }
-                //cột home
+                //home column
                 Column(
                     modifier = Modifier
                         .weight(2f)
                         .padding(5.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally//căn giữa tất cả con bên trong
+                    horizontalAlignment = Alignment.CenterHorizontally//center all children
 
                 ) {
                     Icon(
@@ -209,21 +209,21 @@ fun ProfilePage(modifier: Modifier = Modifier, navController: NavController) {
             Spacer(modifier = Modifier.height(20.dp))
             Text(
                 text = buildAnnotatedString {
-                    append("Xin chào ! \nMình là ")
+                    append("Hello! \nI'm ")
                     withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                        append("Hồng Điệp")
+                        append("Hong Diep")
                     }
-                    append(" Mình đang học lập trình Android với Jetpack Compose")
+                    append(" I'm learning Android programming with Jetpack Compose")
 
                     append(
-                        ". Mục tiêu cuối là dựng được giao diện người dùng trên thiết bị di động. " +
-                                "Nhiêu đó thôi cũng đã đủ mệt roài.......ahihi..."
+                        ". The end goal is to build user interfaces on mobile devices. " +
+                                "That alone is tiring enough.......hehe..."
                     )
                 },
 
                 )
             Spacer(modifier = Modifier.height(20.dp))
-            Spacer(modifier = Modifier.weight(1f)) // khoản cách đẩy xuôống margin-top: auto
+            Spacer(modifier = Modifier.weight(1f)) // spacer pushes down, like margin-top: auto
             //component grass butterfly
             AppGrassButterfly()
 

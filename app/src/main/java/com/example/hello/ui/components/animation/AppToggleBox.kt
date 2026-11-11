@@ -22,10 +22,10 @@ import androidx.compose.ui.unit.offset
 
 @Composable
 fun AppToggleBox(
-    hideText: String, //chữ khi hiện / active
-    showText: String,//chữ khi ẩn / inactive
+    hideText: String, //text when shown / active
+    showText: String,//text when hidden / inactive
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit //nội dung bên trong
+    content: @Composable () -> Unit //inner content
 ) {
     val isVisible = remember { mutableStateOf(false) }
     Column(modifier = modifier) {
@@ -53,14 +53,14 @@ fun AppToggleBox(
         }
     }
 }
-//hàm này viết dùng chung cho trường hợp bị cắt box shadow
-//Nới rộng phần tử ra 2 bên thêm "extra" mà không đẩy các phần tử khác
+//shared helper for when box shadow gets clipped
+//Widen the element by "extra" on both sides without pushing other elements
  fun Modifier.extendHorizontally(extra: Dp): Modifier = this.layout { measurable, constraints ->
     val extraPx = extra.roundToPx()
-    // đo phần tử với chiều rộng lớn hơn 2 * extra
+    // measure the element 2 * extra wider
     val placeable = measurable.measure(constraints.offset(horizontal = extraPx * 2))
-    // nhưng báo với cha là vẫn chiếm chiều rộng cũ
+    // but report the original width to the parent
     layout((placeable.width - extraPx * 2).coerceAtLeast(0), placeable.height) {
-        placeable.place(-extraPx, 0) // dịch sang trái extra để chia đều 2 bên
+        placeable.place(-extraPx, 0) // shift left by extra to center it
     }
 }

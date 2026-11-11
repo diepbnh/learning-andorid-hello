@@ -29,7 +29,7 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
     val username = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val confirmPassword = remember { mutableStateOf("") }
-    //val confirmError= remember { mutableStateOf("") }//Biến truyền lỗi
+    //val confirmError= remember { mutableStateOf("") }//error variable
     val usernameError = remember { mutableStateOf("") }
     val passwordError = remember { mutableStateOf("") }
     val confirmPasswordError = remember { mutableStateOf("") }
@@ -51,7 +51,7 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
             )
 
             Spacer(modifier = Modifier.height(25.dp))
-            //sử dụng AppFormField để hiển thị textfield
+            //use AppFormField to show the textfield
             AppFormField(
                 label = "User Name:",
                 value = username.value,
@@ -91,7 +91,7 @@ fun SignUpPage(modifier: Modifier = Modifier, navController: NavController) {
             AppButton(
                 text = "Sign up",
                 onClick = {
-                    //check độ valid của input
+                    //check input validity
                     if(username.value.isEmpty()){
                         usernameError.value = "Username is required"
                     }

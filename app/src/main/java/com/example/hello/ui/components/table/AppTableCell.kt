@@ -24,7 +24,7 @@ fun AppTableCell(
     textAlign: TextAlign=TextAlign.Start,
 )
 {
-    //lấy màu ra trước, vì bên trong drawBehind không gọi được colors
+    //read colors first, since drawBehind can't access colors
     val verticalLineColor=if(isHeader) colors.white else colors.primary
     val bottomLineColor=colors.primary
     Text(
@@ -37,7 +37,7 @@ fun AppTableCell(
 
                 val stroke = 1.dp.roundToPx().toFloat()
 
-                // Cạnh phải
+                // Right edge
                 drawLine(
                     color = verticalLineColor,
                     start = Offset(
@@ -51,7 +51,7 @@ fun AppTableCell(
                     strokeWidth = stroke
                 )
 
-                // Cạnh dưới
+                // Bottom edge
                 drawLine(
                     color = bottomLineColor,
                     start = Offset(

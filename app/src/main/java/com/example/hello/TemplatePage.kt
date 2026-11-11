@@ -38,7 +38,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
-    val drawerState = rememberDrawerState(DrawerValue.Closed) //menu đóng mở
+    val drawerState = rememberDrawerState(DrawerValue.Closed) //menu open/close
     val scope = rememberCoroutineScope() // open
     AppDrawer(
         navController = navController,
@@ -54,7 +54,7 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                         )
                     }
                 }, actions = {
-                    IconButton(onClick = { navController.navigate("template") }) {
+                    IconButton(onClick = { navController.navigate("home") }) {
                         Icon(
                             imageVector = Icons.Default.Home, contentDescription = "Home"
                         )
@@ -71,9 +71,9 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                         .background(colors.primary)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
-                            indication = null // bỏ hiệu ứng ripple khi nhấn
+                            indication = null // remove ripple effect on press
                         ) {
-                            navController.popBackStack()//hàm back trở về màn hình trước đó
+                            navController.popBackStack()//go back to the previous screen
                         }
                         .padding(25.dp, 10.dp))
                 Spacer(
@@ -93,9 +93,9 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
 
                             .clickable(
                                 interactionSource = remember { MutableInteractionSource() },
-                                indication = null // bỏ hiệu ứng ripple khi nhấn
+                                indication = null // remove ripple effect on press
                             ) {
-                                navController.navigate("profile")//hàm back trở về màn hình trước đó
+                                navController.navigate("profile")//go back to the previous screen
                             }
 
                     )
@@ -203,7 +203,7 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                     placeholder = "Enter input.....",
                     isPassword = false,
                     isError = true,
-                    errorMessage = "Hiện thị error của input ở đây"
+                    errorMessage = "Show the input error here"
                 )
                 Spacer(
                     modifier = Modifier.height(25.dp)

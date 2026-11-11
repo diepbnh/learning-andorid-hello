@@ -37,7 +37,7 @@ import com.example.hello.ui.components.dialog.AppDialogBottom
 import com.example.hello.ui.components.layout.AppTopBar
 
 @Composable
-fun DialogDimAmount(amount: Float) { //set giảm màu nền co dialog
+fun DialogDimAmount(amount: Float) { //dim the background behind the dialog
     val view = LocalView.current
     SideEffect {
         val window = (view.parent as? DialogWindowProvider)?.window
@@ -112,8 +112,8 @@ fun DialogPage(modifier: Modifier = Modifier, navController: NavController) {
             },
             text = {
                 Text(
-                    text = "Trong lập trình Android, \n\n" +
-                            "AlertDialog là lớp hộp thoại dùng để hiển thị thông báo quan trọng, câu hỏi xác nhận hoặc danh sách lựa chọn cho người dùng"
+                    text = "In Android programming, \n\n" +
+                            "AlertDialog is a dialog class used to show important messages, confirmation questions, or a list of choices to the user"
                 )
             },
 
@@ -147,12 +147,12 @@ fun DialogPage(modifier: Modifier = Modifier, navController: NavController) {
     }
     if (showDialog) {
         Dialog(onDismissRequest = { showDialog = false }) {
-            DialogDimAmount(0.2f) //set giảm màu nền gọi thẳng, không cần mượn ô title
+            DialogDimAmount(0.2f) //dim background called directly, no need to borrow the title slot
 
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(colors.backgroundCard, dialogShape) // tự vẽ nền + bo góc
+                    .background(colors.backgroundCard, dialogShape) // draw background + rounded corners manually
                     .padding(20.dp)
             ) {
                 Text(
@@ -193,7 +193,7 @@ fun DialogPage(modifier: Modifier = Modifier, navController: NavController) {
                 text = "Dialog Custom",
                 style = titleXLarge,
                 color = colors.text,
-                modifier = Modifier.align(Alignment.CenterHorizontally)  // nhờ
+                modifier = Modifier.align(Alignment.CenterHorizontally)  // thanks to
 
             )
             Spacer(modifier = Modifier.height(15.dp))
@@ -203,7 +203,7 @@ fun DialogPage(modifier: Modifier = Modifier, navController: NavController) {
             )
             Spacer(modifier = Modifier.height(15.dp))
             Text(
-                text = "Bài này gom tất cả dialog vào một trang"
+                text = "This lesson gathers all dialogs on one page"
             )
             Spacer(modifier = Modifier.height(35.dp))
 

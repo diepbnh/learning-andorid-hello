@@ -20,21 +20,21 @@ import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 @Composable
 fun AppCard(
     modifier: Modifier = Modifier,
-    hasShadow: Boolean = false,//true có bóng
+    hasShadow: Boolean = false,//true = has shadow
     hasBorder: Boolean = false,
-    //mãu nền, màu viền, màu chữ
-    backgroundColor: Color = colors.backgroundCard,//nền card
-    textColor: Color = colors.text,//màu text trong card
-    borderColor: Color = colors.primary,//màu viền card
+    //background, border, text colors
+    backgroundColor: Color = colors.backgroundCard,//card background
+    textColor: Color = colors.text,//card text color
+    borderColor: Color = colors.primary,//card border color
     shadowX: Dp = 0.dp,
     shadowY: Dp =8.dp,
     shadowBlur: Dp = 8.dp,
     shadowSpread: Dp = (-2).dp,
-    shadowColor: Color = colors.black.copy(alpha = 0.1f),//màu bóng card
-    //kich thuoc card
+    shadowColor: Color = colors.black.copy(alpha = 0.1f),//card shadow color
+    //card size
     borderWidth: Dp = 1.dp,
     cornerRadius: Dp = 16.dp,
-    contentPadding: Dp = 16.dp,//padding trong card
+    contentPadding: Dp = 16.dp,//inner padding of card
     content: @Composable ColumnScope.() -> Unit
 
 ) {
@@ -46,7 +46,7 @@ fun AppCard(
             y = shadowY,
             blur = shadowBlur,
             spread = shadowSpread,
-            shape = shape //bóng bo góc
+            shape = shape //rounded shadow
         )
     } else {
         Modifier
@@ -58,7 +58,7 @@ fun AppCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .then(shadowModifier),//gắn bóng vào card
+            .then(shadowModifier),//attach shadow to card
         shape = shape,
         border = border,
         colors = CardDefaults.cardColors(

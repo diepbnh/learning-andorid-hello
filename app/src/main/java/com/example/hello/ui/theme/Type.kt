@@ -8,9 +8,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 // ============================================================
-// 1. Khai báo trực tiếp các kiểu chữ H1 -> H6 dạng TextStyle
-//    private, chỉ dùng để build Typography bên dưới
-//    Không được gọi trực tiếp từ bên ngoài file này.
+// 1. Declare text styles H1 -> H6 directly as TextStyle
+//    private, only used to build Typography below
+//    Do not call directly from outside this file.
 // ============================================================
 
 private val titleXLargeStyle = TextStyle(
@@ -38,7 +38,7 @@ private val titleSmallStyle = TextStyle(
     lineHeight=25.sp
 )
 
-//dùng cho font chữ text bình thường 16 sp
+//for normal body text 16 sp
 private val bodyTextStyle= TextStyle(
     fontFamily=MontserratFontFamily,
     fontWeight=FontWeight.Normal,
@@ -46,10 +46,10 @@ private val bodyTextStyle= TextStyle(
     lineHeight=24.sp
 )
 // ============================================================
-// 2. Tích hợp vào Typography chuẩn của Material3
-// (để Android dùng cho các UI mặc định)
+// 2. Plug into Material3 standard Typography
+// (so Android uses it for default UI)
 // ============================================================
-// Typography() mặc định của Material3, dùng làm nền để lấy size/line-height gốc
+// Material3 default Typography(), used as base for original size/line-height
 private val defaultTypography = Typography()
 
 val appTypography = Typography(
@@ -57,14 +57,14 @@ val appTypography = Typography(
     titleLarge = titleLargeStyle,// 22 sp
     titleMedium = titleMediumStyle,// 20 sp
     titleSmall = titleSmallStyle,//18 sp
-    bodyLarge = bodyTextStyle, //mặc định cho Text/TextField không khai báo style
+    bodyLarge = bodyTextStyle, //default for Text/TextField without a style
     bodyMedium = bodyTextStyle,
 
 )
 // ============================================================
-// 3. EXTENSION PROPERTIES — API CÔNG KHAI DUY NHẤT để gọi từ UI
-//    Gọn (h1, h2...) nhưng vẫn lấy từ MaterialTheme -> theo theme,
-//    tự đổi khi chuyển light/dark sau này.
+// 3. EXTENSION PROPERTIES — THE ONLY PUBLIC API to call from UI
+//    Short (h1, h2...) but still read from MaterialTheme -> follows theme,
+//    auto-updates when switching light/dark later.
 // ============================================================
 val titleXLarge:TextStyle @Composable get() = MaterialTheme.typography.headlineSmall
 val titleLarge:TextStyle @Composable get() = MaterialTheme.typography.titleLarge

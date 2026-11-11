@@ -23,9 +23,9 @@ import androidx.compose.ui.semantics.Role
 @Composable
 fun AppCheckbox(
     modifier: Modifier = Modifier,
-    label: String="",//text ben canh
+    label: String="",//text next to it
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,//báo cho trang biết giá trị mới
+    onCheckedChange: (Boolean) -> Unit,//tell the page the new value
     enabled: Boolean = true,
     checkMarkColor: Color = colors.white,
     checkedColor: Color = colors.primary,
@@ -37,17 +37,17 @@ fun AppCheckbox(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .toggleable( //tap vào text để checked
+            .toggleable( //tap the text to check
                 value = checked,
                 enabled = enabled,
                 role = Role.Checkbox,
                 onValueChange = onCheckedChange,
                 interactionSource = remember { MutableInteractionSource() },
-                indication = null//tắt nền xám khi nhấn text
+                indication = null//disable gray ripple when tapping text
 
             ),
         verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.spacedBy(gap)//khoản cách giữa các phần tử
+        horizontalArrangement = Arrangement.spacedBy(gap)//spacing between items
     ) {
         CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
             Checkbox(

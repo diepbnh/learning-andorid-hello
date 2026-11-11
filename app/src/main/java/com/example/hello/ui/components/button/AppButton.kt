@@ -9,7 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp//khích thước button, khoảng cách
+import androidx.compose.ui.unit.dp//button size, spacing
 
 import com.example.hello.ui.theme.colors
 
@@ -19,8 +19,8 @@ fun AppButton(
     text:String,
     onClick:()-> Unit,
     enabled:Boolean =true,
-    backgroundColor: Color = colors.primary,//màu mặc định
-    size: AppButtonSize = AppButtonSize.Medium// size mặc định
+    backgroundColor: Color = colors.primary,//default color
+    size: AppButtonSize = AppButtonSize.Medium// default size
 ){
     Button(
         onClick = onClick,

@@ -20,41 +20,41 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 // ============================================================
-// boxShadow — BÓNG DÙNG CHUNG, gọi được từ mọi trang / component
-//    Giống Figma "Drop shadow" / CSS box-shadow: x y blur spread color
+// boxShadow — SHARED SHADOW, callable from any page / component
+//    Like Figma "Drop shadow" / CSS box-shadow: x y blur spread color
 //
-//   color  : màu bóng (có thể kèm độ mờ: color.copy(alpha = 0.25f))
-//   x      : lệch ngang   (Figma X)
-//   y      : lệch dọc     (Figma Y)
-//   blur   : độ nhòe      (Figma Blur) — chép nguyên số từ Figma
-//   spread : nở rộng ra   (Figma Spread), số âm = thu nhỏ: (-4).dp
-//   shape  : hình của phần tử — truyền ĐÚNG shape của Card/Box/...
+//   color  : shadow color (can include opacity: color.copy(alpha = 0.25f))
+//   x      : horizontal offset (Figma X)
+//   y      : vertical offset   (Figma Y)
+//   blur   : blur amount (Figma Blur) — copy the number from Figma
+//   spread : expand      (Figma Spread), negative = shrink: (-4).dp
+//   shape  : element shape — pass the SAME shape as the Card/Box/...
 //
-// Figma không có thông số nào thì bỏ không truyền, sẽ lấy mặc định.
-// Nhiều lớp bóng thì nối nhiều .boxShadow(...) liên tiếp.
+// If Figma has no value for a param, omit it to use the default.
+// For multiple shadow layers, chain several .boxShadow(...) calls.
 //
-// Android 9+      -> vẽ đúng theo thông số
-// Dưới Android 9  -> tự lùi về shadow() có sẵn (bóng đen, gần đúng)
+// Android 9+      -> draws exactly per the params
+// Below Android 9  -> falls back to built-in shadow() (black, approximate)
 // ============================================================
 fun Modifier.boxShadow(
-    color: Color, // màu bóng, bắt buộc truyền (vd: colors.black.copy(alpha = 0.25f))
-    x: Dp = 0.dp, // lệch ngang
-    y: Dp = 0.dp, // lệch dọc
-    blur: Dp = 0.dp,// độ nhòe
-    spread: Dp = 0.dp, // nở rộng
-    shape: Shape = RectangleShape,// hình của component
+    color: Color, // shadow color, required (e.g. colors.black.copy(alpha = 0.25f))
+    x: Dp = 0.dp, // horizontal offset
+    y: Dp = 0.dp, // vertical offset
+    blur: Dp = 0.dp,// blur
+    spread: Dp = 0.dp, // spread
+    shape: Shape = RectangleShape,// component shape
 ): Modifier {
-    // Máy cũ: GPU không hỗ trợ làm nhòe -> dùng shadow() có sẵn
+    // Old devices: GPU cannot blur -> use built-in shadow()
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
         return this.shadow(elevation = y + blur / 2, shape = shape, clip = false)
     }
 
-    // Máy mới: tự vẽ bóng phía sau phần tử
-    // drawWithCache: chỉ tạo lại hình bóng khi kích thước phần tử thay đổi
+    // New devices: draw the shadow behind the element ourselves
+    // drawWithCache: only rebuild the shadow when the element size changes
     return this.drawWithCache {
         val spreadPx = spread.toPx()
 
-        // hình bóng = hình phần tử + spread
+        // shadow shape = element shape + spread
         val shadowSize = Size(
             (size.width + spreadPx * 2).coerceAtLeast(0f),
             (size.height + spreadPx * 2).coerceAtLeast(0f),
@@ -65,7 +65,7 @@ fun Modifier.boxShadow(
         val paint = shadowPaint(color, blur.toPx())
 
         onDrawBehind {
-            // dời theo x, y rồi vẽ
+            // offset by x, y then draw
             translate(left = x.toPx() - spreadPx, top = y.toPx() - spreadPx) {
                 drawIntoCanvas { canvas ->
                     canvas.nativeCanvas.drawPath(shadowPath, paint)
@@ -76,16 +76,16 @@ fun Modifier.boxShadow(
 }
 
 // ------------------------------------------------------------
-// Bút vẽ bóng: màu + độ nhòe
-// Figma/CSS và Android tính độ nhòe khác nhau, nên đổi số blur
-// của Figma sang số của Android để bóng nhòe giống thiết kế.
+// Shadow paint: color + blur
+// Figma/CSS and Android compute blur differently, so convert the Figma
+// blur value to Android so the shadow matches the design.
 // ------------------------------------------------------------
 private fun shadowPaint(color: Color, blurPx: Float): android.graphics.Paint {
     return android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
         this.color = color.toArgb()
 
-        // Figma/CSS: độ nhòe chuẩn = blur / 2
-        // Android:   độ nhòe chuẩn = radius * 0.57735 + 0.5
+        // Figma/CSS: standard blur = blur / 2
+        // Android:   standard blur = radius * 0.57735 + 0.5
         val androidRadius = (blurPx / 2f - 0.5f) / 0.57735f
         if (androidRadius > 0f) {
             maskFilter = BlurMaskFilter(androidRadius, BlurMaskFilter.Blur.NORMAL)

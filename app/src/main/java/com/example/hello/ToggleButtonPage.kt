@@ -96,7 +96,7 @@ fun ToggleButtonPage(modifier: Modifier = Modifier, navController: NavController
                 )
             ) {
                 Text(
-                    text = "Xin chào Compose! Đây là box text.",
+                    text = "Hello Compose! This is a text box.",
                     modifier = Modifier.padding(12.dp, 30.dp)
                 )
             }
@@ -117,11 +117,11 @@ fun ToggleButtonPage(modifier: Modifier = Modifier, navController: NavController
         ) {
             val cardShape = RoundedCornerShape(12.dp)
             Text(
-                text = "Xin chào Fade!",
+                text = "Hello Fade!",
                 textAlign = TextAlign.Center,
 
                 modifier = Modifier
-                    .shadow(elevation = 6.dp, shape = cardShape)// đỗ bóng cả hợp
+                    .shadow(elevation = 6.dp, shape = cardShape)// shadow on the whole box
                     .fillMaxWidth()
                     .background(
                         color = colors.backgroundCard,
@@ -165,7 +165,7 @@ fun ToggleButtonPage(modifier: Modifier = Modifier, navController: NavController
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
                 Text(
-                    text = "Xin chào, Hong Diep!",
+                    text = "Hello, Hong Diep!",
                     style = titleMedium,
                 )
             }
@@ -177,7 +177,7 @@ fun ToggleButtonPage(modifier: Modifier = Modifier, navController: NavController
                 modifier = Modifier.align(Alignment.CenterHorizontally)
 
             ) {
-                Text(text = "Chúc bạn một ngày học vui vẻ.")
+                Text(text = "Have a fun day of learning.")
             }
         }
         //end colunm

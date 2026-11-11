@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(
-    title: String,//tiêu đề trang
-    navigationIcon: @Composable () -> Unit = {},//trái mặc định trống
-    actions: @Composable RowScope.() -> Unit = {} // phải mặc định trống
+    title: String,//page title
+    navigationIcon: @Composable () -> Unit = {},//left, empty by default
+    actions: @Composable RowScope.() -> Unit = {} // right, empty by default
 ) {
     CenterAlignedTopAppBar(
         modifier = Modifier.boxShadow(
@@ -42,9 +42,9 @@ fun AppTopBar(
                 fontWeight = FontWeight.SemiBold
                 )
         },
-        navigationIcon = navigationIcon,//navi trái
-        actions = actions,//navi phải
-        //màu background header
+        navigationIcon = navigationIcon,//left nav
+        actions = actions,//right nav
+        //header background color
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colors.primary.copy(alpha = 0.95f),
             titleContentColor = colors.white,

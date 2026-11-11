@@ -22,20 +22,20 @@ import androidx.compose.ui.graphics.Color
 fun AppAvatar(
     @DrawableRes imageRes: Int,
     modifier: Modifier = Modifier,
-    size: Dp = 80.dp, //mặc định 80
-    shape: Shape = CircleShape,//mặc định bo tròn
-    borderWidth: Dp = 0.dp, //mặc định
+    size: Dp = 80.dp, //default 80
+    shape: Shape = CircleShape,//default circle
+    borderWidth: Dp = 0.dp, //default
     borderColor: Color = colors.white,
-    shadowElevation: Dp=0.dp,//mặc định không bóng
+    shadowElevation: Dp=0.dp,//default no shadow
     contentDescription: String? = "Avatar"
 ) {
     Image(
-        painter = painterResource(imageRes),//đường dẫn ảnh
-        contentDescription = contentDescription,//mô tả ảnh
+        painter = painterResource(imageRes),//image resource
+        contentDescription = contentDescription,//image description
         modifier = modifier
             .size(size)
-            .shadow(shadowElevation,shape) // bóng trước
-            .clip(shape)//cắt ảnh
+            .shadow(shadowElevation,shape) // shadow first
+            .clip(shape)//clip image
             .then(
                 if (borderWidth > 0.dp)
                     Modifier.border(borderWidth,borderColor,shape)

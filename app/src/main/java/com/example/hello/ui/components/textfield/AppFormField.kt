@@ -26,13 +26,13 @@ fun AppFormField(
     errorMessage:String="",
 ) {
     Column(modifier = modifier){
-        // 1. Text hiển thị label (copy style từ SignUpPage)
+        // 1. Label text (style copied from SignUpPage)
         Text(
             text = label,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.padding(bottom = 8.dp)
         )
-        // 2. AppTextField: truyền value, onValueChange, placeholder,
+        // 2. AppTextField: pass value, onValueChange, placeholder,
         //    visualTransformation = if (isPassword) ... else ...
         AppTextField(
             value = value,
@@ -42,7 +42,7 @@ fun AppFormField(
             isError = isError,
             visualTransformation =
                 if (isPassword)
-                    PasswordVisualTransformation() //hiển thị biểu tượng password
+                    PasswordVisualTransformation() //show password dots
                 else
                     VisualTransformation.None
         )

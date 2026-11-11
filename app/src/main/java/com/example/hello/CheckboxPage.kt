@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.example.hello.ui.components.layout.AppPage
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Checkbox
@@ -28,10 +29,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.dp
 import com.example.hello.ui.components.checkbox.AppCheckbox
 import androidx.compose.material3.Switch
+
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import com.example.hello.ui.components.button.AppButton
 import com.example.hello.ui.components.card.AppCard
+import com.example.hello.ui.components.layout.AppBottomBar
 import com.example.hello.ui.components.layout.AppTopBar
 import com.example.hello.ui.components.toggle.AppSwitch
 import com.example.hello.ui.theme.ThemeManager
@@ -53,7 +56,34 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
                     }
                 }
             )
+        },
+        bottomBar = {
+            AppBottomBar(
+                content = {
+                    AppButton(
+                        text = "Save",
+                        onClick = {},
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(top = 20.dp)
+                        ,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ){
+                        Text(
+                            text = "This is footer",
+                            fontWeight = FontWeight.Bold,
+                        )
+                        Text(
+                            text = "Using the AppBottomBar composable"
+                        )
+                    }
+                }
+            )
         }
+
     )
 
     {
@@ -71,7 +101,7 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
 
 
         Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp)//gap cac dong
+            verticalArrangement = Arrangement.spacedBy(10.dp)//gap between rows
         ) {
 
             Row(
@@ -83,7 +113,7 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
 
                     Checkbox(
                         checked = checked1,
-                        onCheckedChange = { checked1 = it },//bấm lưu giá trị
+                        onCheckedChange = { checked1 = it },//save value on tap
                         colors = CheckboxDefaults.colors(
                             checkedColor = colors.primary,
                             uncheckedColor = colors.primary,
@@ -102,7 +132,7 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
                     Checkbox(
                         checked = checked2,
-                        onCheckedChange = { checked2 = it },//bấm lưu giá trị
+                        onCheckedChange = { checked2 = it },//save value on tap
                         colors = CheckboxDefaults.colors(
                             checkedColor = colors.primary,
                             uncheckedColor = colors.primary,
@@ -152,8 +182,8 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
 
             AppSwitch(
                 label = "Dark Mode",
-                checked = ThemeManager.isDarkMode.value,//đọc theme hiên tại
-                onCheckedChange = { ThemeManager.setDarkMode(it) },//đổi theme cả app
+                checked = ThemeManager.isDarkMode.value,//read current theme
+                onCheckedChange = { ThemeManager.setDarkMode(it) },//change theme for whole app
             )
 
             AppSwitch(

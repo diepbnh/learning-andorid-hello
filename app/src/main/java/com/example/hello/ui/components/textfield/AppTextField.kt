@@ -76,11 +76,11 @@ fun AppTextField(
                     .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
-                if (value.isEmpty()) { //nếu giá trị input rỗng thì hiển thị text trong placeholder
+                if (value.isEmpty()) { //if input is empty, show placeholder text
                     Text(
                         text = placeholder,
-                        fontSize = 13.sp,//set cho text placeholder
-                        color = colors.text.copy(alpha = 0.5f)//màu text placeholder
+                        fontSize = 13.sp,//for placeholder text
+                        color = colors.text.copy(alpha = 0.5f)//placeholder text color
                     )
                 }
 

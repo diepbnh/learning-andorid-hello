@@ -22,14 +22,14 @@ import androidx.compose.material3.SwitchDefaults
 @Composable
 fun AppSwitch(
     modifier: Modifier = Modifier,
-    label: String = "",//chữ bên trái
+    label: String = "",//text on the left
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     enabled: Boolean = true,
-    checkedThumbColor: Color = colors.white,//màu thumb
-    checkedTrackColor: Color = colors.primary,//màu nền
-    uncheckedThumbColor: Color = colors.primary,//màu thumb
-    uncheckedTrackColor: Color = colors.white,//màu không check
+    checkedThumbColor: Color = colors.white,//thumb color
+    checkedTrackColor: Color = colors.primary,//track color
+    uncheckedThumbColor: Color = colors.primary,//thumb color
+    uncheckedTrackColor: Color = colors.white,//unchecked color
     gap: Dp = 6.dp,
     textColor: Color = colors.text,
 
@@ -45,13 +45,13 @@ fun AppSwitch(
                 indication = null
             )
             .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(gap),//khoản cách text và toggle
+        horizontalArrangement = Arrangement.spacedBy(gap),//spacing between text and toggle
         verticalAlignment = Alignment.CenterVertically // text middle
     ) {
         Text(
             text = label,
             color = textColor,
-            modifier = Modifier.weight(1f)//đẩy Switch sang phải
+            modifier = Modifier.weight(1f)//push Switch to the right
         )
         Switch(
             checked = checked,
