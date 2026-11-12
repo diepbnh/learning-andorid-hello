@@ -451,3 +451,22 @@ pre code { background: none; padding: 0; }
   border-radius: 2px; background: var(--app-text); opacity: 0.6; z-index: 3; }
 .m-info-icon { width: 54px; height: 54px; border-radius: 50%; background: var(--app-primary); color: var(--app-on-primary);
   margin: 10px auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; }
+
+/* Mockup blocks cho dropdown / select (Bài 17+) */
+.m-label { font-size: 11px; font-weight: 600; margin: 12px 0 5px; }
+.m-dd { position: relative; }
+.m-dd-field { height: 38px; border-radius: 19px; border: 1px solid var(--app-light); background: var(--app-white);
+  display: flex; align-items: center; padding: 0 12px; cursor: pointer; user-select: none; }
+.mockup.dark .m-dd-field { background: #000; }
+.m-dd.open .m-dd-field { border-color: var(--app-primary); }
+.m-dd-field .v { flex: 1; }
+.m-dd-field .v.ph { opacity: 0.5; }
+.m-dd-field svg { width: 18px; height: 18px; fill: var(--app-primary); transition: transform 0.2s; }
+.m-dd.open .m-dd-field svg { transform: rotate(180deg); }
+.m-dd-menu { position: absolute; left: 0; right: 0; top: 42px; z-index: 5; background: var(--app-surface);
+  border-radius: 16px; box-shadow: 0 6px 16px rgba(0,0,0,0.2); padding: 6px 0; display: none; }
+.m-dd.open .m-dd-menu { display: block; }
+.m-dd-item { display: flex; align-items: center; padding: 9px 14px; cursor: pointer; }
+.m-dd-item .v { flex: 1; }
+.m-dd-item.on { color: var(--app-primary); font-weight: 600; }
+.m-dd-item.on::after { content: "✓"; color: var(--app-primary); font-weight: 900; }

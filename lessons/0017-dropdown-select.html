@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 17 · Dropdown</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 17 / Nhóm 2: Form · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Dropdown: <code>&lt;select&gt;</code> và <code>ion-select</code>, chọn 1 giá trị từ danh sách</h1>
+
+  <div class="callout">
+  <p><strong>Bài 16: xong.</strong> <code>AppNavBar</code> do bạn tự thiết kế theo Figma, có công thức chuyển tab không
+  chồng trang. <code>AppBottomBar</code> nhận slot nên chứa gì cũng được. Bạn để layout hiện tại, khi cần thì thêm thanh
+  tab vào các trang còn lại sau.</p>
+  <p><strong>Bài này</strong> quay lại Nhóm 2: Form. Dropdown giống <code>AppRadioGroup</code> ở Bài 13 (chọn 1 trong
+  nhiều), chỉ khác là danh sách được <strong>gấp gọn</strong> trong một ô, bấm vào mới mở ra. Hợp khi có nhiều lựa chọn
+  (thành phố, hãng xe, năm sinh...).</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Trang <strong>Booking</strong> (đặt lịch bảo dưỡng xe) có 2 dropdown: <strong>City</strong> và <strong>Car
+  brand</strong>, cùng kiểu ô tròn như <code>AppTextField</code> của bạn. Ô nào được chọn thì hiện giá trị, chưa chọn thì
+  hiện chữ mờ. Nút "Save" nằm trong <code>AppBottomBar</code>. Hình <strong>bấm được</strong>.</p>
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone has-header demo-dd">
+        <div class="m-topbar"><span class="m-ib"><svg viewBox="0 0 24 24"><path d="M20 11H7.8l5.6-5.6L12 4l-8 8 8 8 1.4-1.4L7.8 13H20z"/></svg></span><span class="t">Booking</span><span class="m-ib"></span></div>
+        <div class="m-scroll with-footer">
+          <div class="m-label">City</div>
+          <div class="m-dd open">
+            <div class="m-dd-field"><span class="v">Da Nang</span><svg viewBox="0 0 24 24"><path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6z"/></svg></div>
+            <div class="m-dd-menu">
+              <div class="m-dd-item"><span class="v">Ho Chi Minh City</span></div>
+              <div class="m-dd-item"><span class="v">Ha Noi</span></div>
+              <div class="m-dd-item on"><span class="v">Da Nang</span></div>
+              <div class="m-dd-item"><span class="v">Da Lat</span></div>
+            </div>
+          </div>
+          <div class="m-label">Car brand</div>
+          <div class="m-dd" data-ph="Choose a brand">
+            <div class="m-dd-field"><span class="v ph">Choose a brand</span><svg viewBox="0 0 24 24"><path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6z"/></svg></div>
+            <div class="m-dd-menu">
+              <div class="m-dd-item"><span class="v">Toyota</span></div>
+              <div class="m-dd-item"><span class="v">Honda</span></div>
+              <div class="m-dd-item"><span class="v">VinFast</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="m-bottombar"><button class="m-btn">Save</button></div>
+        <div class="m-home-indicator"></div>
+      </div>
+      <figcaption>Light Mode (đang mở City)</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone has-header demo-dd">
+        <div class="m-topbar"><span class="m-ib"><svg viewBox="0 0 24 24"><path d="M20 11H7.8l5.6-5.6L12 4l-8 8 8 8 1.4-1.4L7.8 13H20z"/></svg></span><span class="t">Booking</span><span class="m-ib"></span></div>
+        <div class="m-scroll with-footer">
+          <div class="m-label">City</div>
+          <div class="m-dd">
+            <div class="m-dd-field"><span class="v">Da Nang</span><svg viewBox="0 0 24 24"><path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6z"/></svg></div>
+            <div class="m-dd-menu">
+              <div class="m-dd-item"><span class="v">Ho Chi Minh City</span></div>
+              <div class="m-dd-item"><span class="v">Ha Noi</span></div>
+              <div class="m-dd-item on"><span class="v">Da Nang</span></div>
+              <div class="m-dd-item"><span class="v">Da Lat</span></div>
+            </div>
+          </div>
+          <div class="m-label">Car brand</div>
+          <div class="m-dd">
+            <div class="m-dd-field"><span class="v">VinFast</span><svg viewBox="0 0 24 24"><path d="M7.4 8.6 12 13.2l4.6-4.6L18 10l-6 6-6-6z"/></svg></div>
+            <div class="m-dd-menu">
+              <div class="m-dd-item"><span class="v">Toyota</span></div>
+              <div class="m-dd-item"><span class="v">Honda</span></div>
+              <div class="m-dd-item on"><span class="v">VinFast</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="m-bottombar"><button class="m-btn">Save</button></div>
+        <div class="m-home-indicator"></div>
+      </div>
+      <figcaption>Dark Mode (đã chọn cả hai)</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: ô dropdown cao 48dp, bo tròn 30dp, nền và viền giống
+  <code>AppTextField</code>. Khi mở, viền đổi sang <code>colors.primary</code> và mũi tên <strong>xoay ngược lên</strong>
+  (animation). Danh sách hiện ngay dưới ô, <strong>rộng bằng ô</strong>, nền <code>colors.backgroundCard</code>, bo góc
+  16dp. Mục đang chọn có chữ <code>colors.primary</code> và dấu ✓. Bấm ra ngoài thì danh sách đóng.</p>
+
+  <h2>1. So với web và Ionic</h2>
+  <div class="compare">
+    <div>
+      <span class="label">HTML / Ionic</span>
+      <pre><code>&lt;select [(ngModel)]="city"&gt;
+  &lt;option&gt;Ho Chi Minh City&lt;/option&gt;
+  &lt;option&gt;Ha Noi&lt;/option&gt;
+&lt;/select&gt;
+
+&lt;ion-select [(ngModel)]="city"
+  interface="popover"&gt;
+  &lt;ion-select-option value="Ha Noi"&gt;
+    Ha Noi
+  &lt;/ion-select-option&gt;
+&lt;/ion-select&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>ExposedDropdownMenuBox(
+    expanded = expanded,           // đang mở?
+    onExpandedChange = { expanded = it }
+) {
+    // ô hiển thị giá trị (anchor)
+    Row(Modifier.menuAnchor(...)) { ... }
+
+    // danh sách xổ xuống
+    ExposedDropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { expanded = false }
+    ) {
+        DropdownMenuItem(...) // mỗi option
+    }
+}</code></pre>
+    </div>
+  </div>
+  <p><code>ExposedDropdownMenuBox</code> lo hết phần khó: đặt danh sách ngay dưới ô, cho danh sách
+  <strong>rộng bằng ô</strong>, mở khi bấm vào ô, và đóng khi bấm ra ngoài. Bạn chỉ cần vẽ 2 thứ: cái ô và các mục trong
+  danh sách. Đây là component "experimental", nên cần <code>@OptIn(ExperimentalMaterial3Api::class)</code> như
+  <code>AppTopBar</code>.</p>
+
+  <h2>2. Hai State: một ở trong, một ở ngoài</h2>
+  <table>
+    <tr><th>State</th><th>Nằm ở đâu</th><th>Vì sao</th><th>Giống bài nào</th></tr>
+    <tr><td><code>expanded</code> (đang mở hay đóng)</td><td><strong>bên trong</strong> <code>AppDropdown</code></td><td>trang không cần biết dropdown đang mở</td><td><code>AppToggleButton</code> (Bài 9)</td></tr>
+    <tr><td><code>selected</code> (giá trị đã chọn)</td><td><strong>bên ngoài</strong>, ở trang</td><td>trang cần đọc giá trị để lưu</td><td><code>AppRadioGroup</code> (Bài 13)</td></tr>
+  </table>
+  <p>Đây là quy tắc chung khi làm component form: trạng thái <strong>giao diện</strong> (mở/đóng, đang nhấn...) để bên
+  trong; <strong>dữ liệu</strong> người dùng nhập/chọn thì đưa ra ngoài (state hoisting).</p>
+
+  <h2>3. Ô hiển thị: tự vẽ theo kiểu <code>AppTextField</code></h2>
+  <p>Material thường dùng <code>OutlinedTextField</code> làm ô. Nhưng app của bạn đã có kiểu ô riêng (bo tròn 30dp), nên
+  ta tự vẽ ô bằng <code>Row</code> để đồng bộ. Điều quan trọng duy nhất: ô phải có
+  <code>Modifier.menuAnchor(...)</code> để Compose biết đây là "cái neo" của danh sách.</p>
+  <pre><code>Row(
+    modifier = Modifier
+        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable) // ô chỉ để bấm, không gõ chữ
+        .fillMaxWidth()
+        .height(48.dp)
+        ...
+)</code></pre>
+  <p><code>PrimaryNotEditable</code> nghĩa là ô này chỉ để bấm chọn, không gõ chữ được, giống <code>&lt;select&gt;</code>.
+  (Nếu muốn vừa gõ vừa gợi ý, giống <code>&lt;datalist&gt;</code>, thì dùng <code>PrimaryEditable</code>, phần nâng
+  cao.)</p>
+
+  <h3>Hai hàm nhỏ mới</h3>
+  <ul>
+    <li><code>selected.ifEmpty { placeholder }</code>: nếu <code>selected</code> là chuỗi rỗng thì dùng
+    <code>placeholder</code>, ngược lại dùng chính nó. Giống <code>selected || placeholder</code> trong JS.</li>
+    <li><code>Modifier.rotate(arrowRotation)</code>: xoay mũi tên, giống <code>transform: rotate()</code>. Góc lấy từ
+    <code>animateFloatAsState</code> (Bài 9) nên mũi tên xoay mượt.</li>
+  </ul>
+
+  <h2>4. Nhiệm vụ</h2>
+  <p><strong>Bước 1: tạo <code>ui/components/dropdown/AppDropdown.kt</code>.</strong> Code mẫu (đã build thử, chạy
+  được):</p>
+  <pre><code>@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppDropdown(
+    options: List&lt;String&gt;,              // list of choices
+    selected: String,                    // current value, "" = nothing chosen yet
+    onSelectedChange: (String) -&gt; Unit,  // tell the page the new value
+    modifier: Modifier = Modifier,
+    placeholder: String = "Select...",
+) {
+    var expanded by remember { mutableStateOf(false) } // open/closed, UI-only state
+    val arrowRotation by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        label = "arrowRotation"
+    )
+    val shape = RoundedCornerShape(30.dp)
+
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = modifier
+    ) {
+        // 1. The field (same look as AppTextField)
+        Row(
+            modifier = Modifier
+                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                .fillMaxWidth()
+                .height(48.dp)
+                .background(colors.backgroundTextField, shape)
+                .border(1.dp, if (expanded) colors.primary else colors.light, shape)
+                .padding(horizontal = 16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = selected.ifEmpty { placeholder },
+                color = if (selected.isEmpty()) colors.text.copy(alpha = 0.5f) else colors.text,
+                modifier = Modifier.weight(1f)
+            )
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = null,
+                tint = colors.primary,
+                modifier = Modifier.rotate(arrowRotation)
+            )
+        }
+
+        // 2. The list
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }, // tap outside to close
+            containerColor = colors.backgroundCard,
+            shape = RoundedCornerShape(16.dp)
+        ) {
+            options.forEach { option -&gt;
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            text = option,
+                            color = if (option == selected) colors.primary else colors.text
+                        )
+                    },
+                    trailingIcon = {
+                        if (option == selected) {
+                            Icon(Icons.Default.Check, contentDescription = null, tint = colors.primary)
+                        }
+                    },
+                    onClick = {
+                        onSelectedChange(option) // save the choice
+                        expanded = false          // close the list
+                    }
+                )
+            }
+        }
+    }
+}</code></pre>
+  <p>Import nhớ chọn các dòng <code>androidx.compose...</code>. <code>KeyboardArrowDown</code> và <code>Check</code> có
+  trong <code>icons.core</code> của project.</p>
+
+  <p><strong>Bước 2: trang <code>BookingPage</code></strong>, route <code>"booking"</code>, link từ
+  <code>TemplatePage</code>. Dùng <code>AppTopBar("Booking")</code> có nút Back, nội dung có 2 dropdown theo hình kết
+  quả, mỗi cái có một nhãn <code>Text</code> phía trên (giống <code>AppFormField</code>):</p>
+  <pre><code>var city by remember { mutableStateOf("") }   // "" = not chosen yet
+var brand by remember { mutableStateOf("") }
+
+AppDropdown(
+    options = listOf("Ho Chi Minh City", "Ha Noi", "Da Nang", "Da Lat"),
+    selected = city,
+    onSelectedChange = { city = it },
+    placeholder = "Choose a city"
+)</code></pre>
+  <p>Dropdown thứ hai "Car brand" bạn tự viết: Toyota, Honda, VinFast.</p>
+
+  <p><strong>Bước 3: nút Save trong footer.</strong> Dùng <code>AppBottomBar</code> của bạn ở Bài 16, bên trong là
+  <code>AppButton("Save")</code> rộng hết chiều ngang.</p>
+
+  <p><strong>Bước 4: kiểm tra.</strong> Bấm ô thì mở, bấm mục thì chọn và đóng, bấm ra ngoài thì đóng. Mũi tên xoay mượt.
+  Danh sách rộng bằng ô. Kiểm tra Light/Dark.</p>
+
+  <div class="callout ask">
+  <p><strong>Thử thách (tuỳ chọn):</strong> nút Save chỉ bấm được khi đã chọn cả hai:
+  <code>enabled = city.isNotEmpty() &amp;&amp; brand.isNotEmpty()</code>. <code>&amp;&amp;</code> nghĩa là "và", giống JS.
+  Muốn dropdown có ô tìm kiếm, hoặc chọn nhiều (giống <code>&lt;select multiple&gt;</code>)? Hãy hỏi agent. Báo
+  "xong bài 17" khi xong.</p>
+  </div>
+
+  <h2>5. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. <code>expanded</code> (đang mở hay đóng) nên nằm ở đâu?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: đây là trạng thái giao diện, trang không cần biết.">Bên trong AppDropdown</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: trang chỉ cần giá trị đã chọn, không cần biết dropdown đang mở.">Ở trang, truyền vào như selected</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: ThemeManager chỉ dùng cho theme của cả app.">Trong ThemeManager</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Ô hiển thị cần modifier nào để danh sách biết xổ ra dưới nó?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: clickable chỉ nhận bấm, không phải neo của danh sách.">Modifier.clickable</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: menuAnchor đánh dấu ô là cái neo, danh sách đặt ngay dưới và rộng bằng nó.">Modifier.menuAnchor(...)</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: align dùng để căn trong Box/Column.">Modifier.align(...)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. <code>"".ifEmpty { "Choose a city" }</code> trả về gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: chuỗi rỗng nên dùng giá trị trong { }.">"Choose a city"</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: ifEmpty thay chuỗi rỗng bằng giá trị trong { }.">"" (chuỗi rỗng)</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: ifEmpty luôn trả về một chuỗi.">null</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. Dropdown khác <code>AppRadioGroup</code> ở điểm nào?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: cả hai đều chọn 1, dropdown gọn hơn khi có nhiều lựa chọn.">Danh sách gấp gọn trong một ô, bấm mới mở ra</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: cả hai đều chọn 1 giá trị.">Dropdown chọn được nhiều giá trị</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: cả hai đều giữ selected ở trang.">Dropdown tự giữ giá trị đã chọn bên trong</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. (Ôn bài 16) Vì sao nút Save trong <code>AppBottomBar</code> đứng yên khi cuộn?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: bottomBar nằm ngoài vùng cuộn của AppPage.">Vì nó nằm trong bottomBar, ngoài vùng cuộn</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: AppButton đặt trong nội dung thì vẫn cuộn theo.">Vì AppButton luôn đứng yên</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/components/menu">Menus</a>: <code>DropdownMenu</code> và
+  <code>ExposedDropdownMenuBox</code>, có hình minh hoạ.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0016-footer-bottom-bar.html">← Bài 16</a>
+    <a href="../reference/lo-trinh-ui.html">Lộ trình →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+<script>
+  // Mockup bấm được: bấm ô để mở/đóng, chọn mục thì điền giá trị và đóng, bấm chỗ khác thì đóng
+  document.querySelectorAll('.phone.demo-dd').forEach(function (phone) {
+    var dds = phone.querySelectorAll('.m-dd');
+    dds.forEach(function (dd) {
+      var value = dd.querySelector('.m-dd-field .v');
+      dd.querySelector('.m-dd-field').addEventListener('click', function (e) {
+        e.stopPropagation();
+        var willOpen = !dd.classList.contains('open');
+        dds.forEach(function (d) { d.classList.remove('open'); });
+        dd.classList.toggle('open', willOpen);
+      });
+      dd.querySelectorAll('.m-dd-item').forEach(function (item) {
+        item.addEventListener('click', function (e) {
+          e.stopPropagation();
+          dd.querySelectorAll('.m-dd-item').forEach(function (i) { i.classList.toggle('on', i === item); });
+          value.textContent = item.textContent.trim();
+          value.classList.remove('ph');
+          dd.classList.remove('open');
+        });
+      });
+    });
+    phone.addEventListener('click', function () { dds.forEach(function (d) { d.classList.remove('open'); }); });
+  });
+</script>
+</body>
+</html>

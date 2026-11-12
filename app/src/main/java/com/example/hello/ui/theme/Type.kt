@@ -59,8 +59,15 @@ val appTypography = Typography(
     titleSmall = titleSmallStyle,//18 sp
     bodyLarge = bodyTextStyle, //default for Text/TextField without a style
     bodyMedium = bodyTextStyle,
+    // label styles: used by DropdownMenuItem, Material Button, dialog buttons...
+    labelLarge = defaultTypography.labelLarge.copy(fontFamily =
+        MontserratFontFamily),
+    labelMedium = defaultTypography.labelMedium.copy(fontFamily =
+        MontserratFontFamily),
+    labelSmall = defaultTypography.labelSmall.copy(fontFamily =
+        MontserratFontFamily),
 
-)
+    )
 // ============================================================
 // 3. EXTENSION PROPERTIES — THE ONLY PUBLIC API to call from UI
 //    Short (h1, h2...) but still read from MaterialTheme -> follows theme,

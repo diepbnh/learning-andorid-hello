@@ -71,6 +71,9 @@ class MainActivity : ComponentActivity() {
                     composable(route = "home") {
                         HomePage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
+                    composable(route = "dropdown") {
+                        DropdownPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
 
 
                 }
