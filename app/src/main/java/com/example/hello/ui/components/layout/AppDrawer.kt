@@ -63,7 +63,7 @@ private val menuItems = listOf(
     MenuItem("Radio", "radio", Icons.Default.Check),
     MenuItem("Checkbox", "checkbox", Icons.Default.CheckCircle),
     MenuItem("Dialog", "dialog", Icons.Default.Warning),
-    MenuItem("Dropdown", "dropdown", Icons.Default.Menu),
+    MenuItem("Dropdown", "dropdown", Icons.Default.DateRange),
     MenuItem("Logout", "login", Icons.Default.Lock, isDanger = true),
 
     )

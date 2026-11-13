@@ -2,11 +2,13 @@ package com.example.hello
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,8 +41,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layout
+import com.example.hello.ui.components.layout.AppNavBar
 import com.example.hello.ui.theme.colors
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,6 +72,12 @@ fun DropdownPage(modifier: Modifier = Modifier, navController: NavController) {
                         }
                     }
                 )
+            },
+            bottomBar = {
+                AppNavBar(
+                    navController = navController,
+                    currentRoute = "dropdown"
+                )
             }
         ) {
 
@@ -77,7 +87,8 @@ fun DropdownPage(modifier: Modifier = Modifier, navController: NavController) {
                 targetValue = if (cityExpanded) 180f else 0f,
                 label = "arrowRotation"
             )
-            val cities = listOf("Hà Nội", "Hồ Chí Minh", "Đà Nẵng", "Cần Thơ")
+            val cities =
+                listOf("Hà Nội", "Hồ Chí Minh", "Đà Nẵng", "Cần Thơ", "Trà Vinh", "Ben Tre")
             val shape = RoundedCornerShape(32.dp)
 
             ExposedDropdownMenuBox(
@@ -116,6 +127,7 @@ fun DropdownPage(modifier: Modifier = Modifier, navController: NavController) {
                     shape = RoundedCornerShape(16.dp),
                     // edit first item and last item same height 48px
                     modifier = Modifier
+                        .heightIn(max = 260.dp)//height of dropdown
                         .layout { measurable, constraints ->
                             val cut = 8.dp.roundToPx()
                             val placeable = measurable.measure(constraints)
@@ -161,6 +173,77 @@ fun DropdownPage(modifier: Modifier = Modifier, navController: NavController) {
             }
 
             Text("Teeeeeeeeeeeeeeeeeeeeext")
+            Text("")
+            StaticDropdown()
+        }
+    }
+}
+
+//status dropdown
+@Composable
+fun StaticDropdown() {
+    val fieldShape = RoundedCornerShape(32.dp)
+    val menuShape = RoundedCornerShape(16.dp)
+    Column {
+        //1. The filed
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 6.dp) //margin bottom)
+                .height(48.dp)
+                .clip(fieldShape)
+                .background(colors.backgroundTextField)
+                .padding(start = 16.dp, end = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+
+        ) {
+            Text(
+                text = "Select city",
+                modifier = Modifier
+                    .weight(1f)
+            )
+            Icon(
+                imageVector = Icons.Default.KeyboardArrowDown,
+                contentDescription = "Select city",
+                tint = colors.primary,
+                modifier = Modifier
+                    .size(34.dp)
+                    .rotate(180f)
+            )
+        }
+        //2. The menu box
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(3.dp,menuShape)
+                .background(colors.backgroundTextField)
+        ) {
+            // Item 1
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    //
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+
+            ) {
+                Text(text = "Item 1")
+
+            }
+            HorizontalDivider(thickness = 1.dp, color = colors.light)
+            //Item 2
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    //
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+
+            ) {
+                Text(text = "Item 2")
+
+            }
+            HorizontalDivider(thickness = 1.dp, color = colors.light)
         }
     }
 }

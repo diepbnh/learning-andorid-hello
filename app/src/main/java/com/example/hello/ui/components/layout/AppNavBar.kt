@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
@@ -45,11 +46,8 @@ data class AppNavItem(
 private val navItems = listOf(
     AppNavItem("Home", "home", Icons.Default.Home),
     AppNavItem("Card", "card", Icons.Default.AccountBox),
-    AppNavItem("Profile", "profile", Icons.Default.Person),
-    AppNavItem(
-        "Setting", "checkbox",
-        Icons.Default.Settings
-    ),
+    AppNavItem("Drop", "dropdown", Icons.Default.DateRange),
+    AppNavItem("Setting", "checkbox", Icons.Default.Settings),
 )
 
 //3. shared tab bar
