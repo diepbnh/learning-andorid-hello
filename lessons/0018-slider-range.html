@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 18 · Slider</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 18 / Nhóm 2: Form · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Slider: <code>&lt;input type="range"&gt;</code> và <code>ion-range</code>, kéo để chọn một giá trị</h1>
+
+  <div class="callout">
+  <p><strong>Bài 17: xong.</strong> Bạn làm đủ các kiểu dropdown: text, radio, checkbox chọn nhiều, ảnh + text, thêm
+  cả lớp nền mờ (scrim) có lỗ khoét đúng chỗ ô dropdown. <code>AppDropdown</code> và <code>AppCheckboxDropdown</code>
+  dùng được ở mọi trang.</p>
+  <p><strong>Bài này</strong> là thanh kéo <code>Slider</code>, thành phần form cuối của Nhóm 2. Phần carousel (vuốt qua
+  lại giữa các ảnh hoặc thẻ text) nằm ở <a href="0018b-carousel.html">Bài 18b</a>. Bài chia 2 phần giống bài 16, 17:
+  <strong>Phần A</strong> viết thẳng trong trang để hiểu từng dạng, <strong>Phần B</strong> gom lại thành
+  <code>AppSlider</code>.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Trang <strong>Slider</strong> (mở từ side menu) có 4 thanh kéo, đi từ dễ đến khó: kéo một giá trị, có nấc,
+  hai đầu kéo (khoảng giá), và có icon ở hai đầu. Mỗi thanh có tên bên trái và giá trị bên phải, giá trị đổi ngay khi kéo.
+  Hình <strong>kéo được</strong>.</p>
+
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone has-header">
+        <div class="m-topbar"><span class="m-ib"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="t">Slider</span><span class="m-ib"></span></div>
+        <div class="m-scroll">
+          <div class="m-sl-block">
+            <div class="m-sl-head">Brightness<span class="v">60%</span></div>
+            <div class="m-slider" data-max="100" data-values="60" data-fmt="{0}%"></div>
+          </div>
+          <div class="m-sl-block">
+            <div class="m-sl-head">Fuel level<span class="v">50%</span></div>
+            <div class="m-slider" data-max="100" data-steps="3" data-values="50" data-fmt="{0}%"></div>
+          </div>
+          <div class="m-sl-block">
+            <div class="m-sl-head">Price<span class="v">100k – 500k</span></div>
+            <div class="m-slider" data-max="1000" data-steps="9" data-values="100,500" data-fmt="{0}k – {1}k"></div>
+          </div>
+          <div class="m-sl-block">
+            <div class="m-sl-head">Ringtone<span class="v">30</span></div>
+            <div class="m-sl-row">
+              <svg width="12" height="12" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+              <div class="m-slider" data-max="100" data-values="30" data-fmt="{0}"></div>
+              <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="m-home-indicator"></div>
+      </div>
+      <figcaption>Light Mode</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone has-header">
+        <div class="m-topbar"><span class="m-ib"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="t">Slider</span><span class="m-ib"></span></div>
+        <div class="m-scroll">
+          <div class="m-sl-block">
+            <div class="m-sl-head">Brightness<span class="v">60%</span></div>
+            <div class="m-slider" data-max="100" data-values="60" data-fmt="{0}%"></div>
+          </div>
+          <div class="m-sl-block">
+            <div class="m-sl-head">Fuel level<span class="v">50%</span></div>
+            <div class="m-slider" data-max="100" data-steps="3" data-values="50" data-fmt="{0}%"></div>
+          </div>
+          <div class="m-sl-block">
+            <div class="m-sl-head">Price<span class="v">100k – 500k</span></div>
+            <div class="m-slider" data-max="1000" data-steps="9" data-values="100,500" data-fmt="{0}k – {1}k"></div>
+          </div>
+          <div class="m-sl-block">
+            <div class="m-sl-head">Ringtone<span class="v">30</span></div>
+            <div class="m-sl-row">
+              <svg width="12" height="12" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+              <div class="m-slider" data-max="100" data-values="30" data-fmt="{0}"></div>
+              <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="m-home-indicator"></div>
+      </div>
+      <figcaption>Dark Mode</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: đây là kiểu <code>Slider</code> mới của Material3 1.4 (bản project đang
+  dùng). Nút kéo là một <strong>vạch dọc</strong>, không phải hình tròn. Thanh dày, phần đã kéo màu
+  <code>colors.primary</code>, phần còn lại màu <code>colors.light</code>, hai bên nút kéo có khe hở nhỏ. Cuối thanh
+  có một chấm nhỏ ("stop"). Thanh <em>Fuel level</em> chỉ dừng ở 5 điểm và có chấm ở mỗi nấc. Thanh <em>Price</em>
+  có hai nút kéo, đoạn giữa hai nút mới tô màu. Ở Dark Mode, <code>colors.light</code> rất tối nên phần chưa kéo khó
+  thấy, điều đó là bình thường.</p>
+
+  <h2>1. So với web và Ionic</h2>
+  <div class="compare">
+    <div>
+      <span class="label">HTML / Ionic</span>
+      <pre><code>&lt;input type="range"
+  min="0" max="100" step="25"
+  value="50"&gt;
+
+&lt;ion-range [(ngModel)]="price"
+  [dualKnobs]="true"
+  [ticks]="true" [snaps]="true"&gt;
+  &lt;ion-icon slot="start" ...&gt;
+  &lt;ion-icon slot="end" ...&gt;
+&lt;/ion-range&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>Slider(
+    value = fuel,                // giá trị hiện tại
+    onValueChange = { fuel = it },
+    valueRange = 0f..100f,       // min..max
+    steps = 3                    // số nấc ở giữa
+)
+
+RangeSlider(                     // dualKnobs
+    value = price,               // 100f..500f
+    onValueChange = { price = it },
+    valueRange = 0f..1000f
+)
+// icon 2 đầu: tự đặt trong Row</code></pre>
+    </div>
+  </div>
+  <p>Giống <code>AppSwitch</code> ở Bài 12: <code>Slider</code> <strong>không tự nhớ</strong> giá trị. Trang giữ State,
+  truyền vào <code>value</code>, và cập nhật State trong <code>onValueChange</code>. Đây vẫn là state hoisting.</p>
+
+  <h2>2. Ba điều mới</h2>
+  <h3>a) Số thực <code>Float</code>: <code>60f</code></h3>
+  <p>Slider dùng số có phần thập phân (<code>Float</code>), vì khi kéo tay giá trị có thể là 60.37. Viết số Float thì
+  thêm chữ <code>f</code>: <code>60f</code>, <code>0f..100f</code>. Muốn hiện số tròn thì dùng
+  <code>brightness.roundToInt()</code> (60.37 → 60, 60.6 → 61), giống <code>Math.round()</code> trong JS. Cần
+  <code>import kotlin.math.roundToInt</code>.</p>
+  <p>Để giữ State kiểu Float, dùng <code>mutableFloatStateOf(60f)</code> thay cho <code>mutableStateOf(60f)</code>.
+  Cả hai đều chạy, nhưng Android Studio sẽ gạch vàng gợi ý dùng bản <code>Float</code> vì nó nhẹ hơn.</p>
+
+  <h3>b) <code>steps</code> = số nấc <strong>ở giữa</strong>, không tính hai đầu</h3>
+  <table>
+    <tr><th>Muốn dừng ở</th><th>Số điểm dừng</th><th><code>steps</code></th></tr>
+    <tr><td>0, 25, 50, 75, 100</td><td>5</td><td><strong>3</strong></td></tr>
+    <tr><td>0, 100, 200, ... 1000</td><td>11</td><td><strong>9</strong></td></tr>
+    <tr><td>1, 2, 3, 4, 5 (chấm sao)</td><td>5</td><td><strong>3</strong></td></tr>
+  </table>
+  <p>Công thức: <code>steps = số điểm dừng − 2</code>. Khác với web: <code>step="25"</code> trên web là
+  <em>khoảng cách</em> giữa các nấc, còn <code>steps</code> trong Compose là <em>số lượng</em> nấc ở giữa.</p>
+
+  <h3>c) <code>RangeSlider</code>: giá trị là một khoảng</h3>
+  <pre><code>var price by remember { mutableStateOf(100f..500f) } // a range: from 100 to 500
+price.start        // 100f, left handle
+price.endInclusive // 500f, right handle</code></pre>
+  <p><code>100f..500f</code> chính là kiểu bạn đã dùng cho <code>valueRange</code>. Ở đây nó là giá trị đang chọn.</p>
+
+  <h2>3. Phần A: viết thẳng trong trang</h2>
+  <p><strong>A1. Tạo trang <code>SliderPage.kt</code></strong>, route <code>"slider"</code>. Khung trang giống
+  <code>DropdownPage</code>: <code>AppDrawer</code> → <code>AppPage</code> → <code>AppTopBar("Slider")</code> có nút
+  menu. Không cần <code>bottomBar</code>. Sau đó thêm 2 chỗ:</p>
+  <ul>
+    <li><code>MainActivity.kt</code>: <code>composable(route = "slider") { SliderPage(...) }</code></li>
+    <li><code>AppDrawer.kt</code>: thêm <code>MenuItem("Slider", "slider", Icons.Default.Settings)</code> vào danh
+    sách menu</li>
+  </ul>
+
+  <p><strong>A2. Brightness: kéo một giá trị.</strong> Đặt trong <code>content</code> của <code>AppPage</code>:</p>
+  <pre><code>var brightness by remember { mutableFloatStateOf(60f) }
+
+val sliderColors = SliderDefaults.colors(
+    thumbColor = colors.primary,         // the vertical handle
+    activeTrackColor = colors.primary,   // dragged part
+    inactiveTrackColor = colors.light,   // remaining part
+    activeTickColor = colors.white,      // step dots on the dragged part
+    inactiveTickColor = colors.primary,  // step dots on the remaining part
+)
+
+Row(modifier = Modifier.fillMaxWidth()) {
+    Text(text = "Brightness", modifier = Modifier.weight(1f))
+    Text(text = "${brightness.roundToInt()}%", color = colors.primary)
+}
+Slider(
+    value = brightness,
+    onValueChange = { brightness = it }, // it = new value while dragging
+    valueRange = 0f..100f,
+    colors = sliderColors
+)</code></pre>
+  <p><code>Row</code> + <code>weight(1f)</code> đẩy giá trị sang phải, giống <code>justify-content:
+  space-between</code>. <code>sliderColors</code> khai báo một lần để 4 thanh dùng chung.</p>
+
+  <p><strong>A3. Fuel level: có nấc.</strong> Tự viết như A2, giá trị đầu <code>50f</code>, thêm
+  <code>steps = 3</code>. Kéo thử: thanh chỉ dừng ở 0, 25, 50, 75, 100.</p>
+
+  <p><strong>A4. Price: hai đầu kéo.</strong></p>
+  <pre><code>var price by remember { mutableStateOf(100f..500f) }
+
+Row(modifier = Modifier.fillMaxWidth()) {
+    Text(text = "Price", modifier = Modifier.weight(1f))
+    Text(
+        text = "${price.start.roundToInt()}k – ${price.endInclusive.roundToInt()}k",
+        color = colors.primary
+    )
+}
+RangeSlider(
+    value = price,
+    onValueChange = { price = it },
+    valueRange = 0f..1000f,
+    steps = 9,            // stops every 100: 0, 100, ... 1000
+    colors = sliderColors
+)</code></pre>
+
+  <p><strong>A5. Ringtone: icon ở hai đầu.</strong> Project không có icon loa trong <code>icons.core</code>, nên dùng
+  <code>Icons.Default.Notifications</code> (cái chuông): bên trái chuông nhỏ 16dp, bên phải chuông to 24dp.</p>
+  <pre><code>var ringtone by remember { mutableFloatStateOf(30f) }
+
+Row(verticalAlignment = Alignment.CenterVertically) {
+    Icon(Icons.Default.Notifications, contentDescription = null,
+        tint = colors.primary, modifier = Modifier.size(16.dp))
+    Slider(
+        value = ringtone,
+        onValueChange = { ringtone = it },
+        valueRange = 0f..100f,
+        colors = sliderColors,
+        modifier = Modifier.weight(1f).padding(horizontal = 8.dp) // take the space between the icons
+    )
+    Icon(Icons.Default.Notifications, contentDescription = null,
+        tint = colors.primary, modifier = Modifier.size(24.dp))
+}</code></pre>
+  <p>Lưu ý: nếu không ghi <code>valueRange</code> thì mặc định là <code>0f..1f</code> (giá trị từ 0 đến 1). Dòng
+  tên + giá trị "Ringtone 30" bạn tự viết.</p>
+
+  <div class="callout ask">
+  <p><strong>Quan sát trước khi sang Phần B:</strong> dòng "tên + giá trị" lặp lại 4 lần, mỗi trang mới lại phải
+  khai báo <code>sliderColors</code>. Phần B gom phần lặp vào một component.</p>
+  </div>
+
+  <h2>4. Phần B: component <code>AppSlider</code></h2>
+  <p><strong>Bước 1: tạo <code>ui/components/slider/AppSlider.kt</code>.</strong> Code mẫu (đã build thử trên project,
+  chạy được):</p>
+  <pre><code>@Composable
+fun AppSlider(
+    label: String,                                   // name on the left
+    value: Float,                                    // current value, kept by the page
+    onValueChange: (Float) -&gt; Unit,                  // tell the page the new value
+    modifier: Modifier = Modifier,
+    valueRange: ClosedFloatingPointRange&lt;Float&gt; = 0f..100f,
+    steps: Int = 0,                                  // 0 = no steps
+    valueText: (Float) -&gt; String = { "${it.roundToInt()}" }, // how to show the value
+    leadingIcon: @Composable (() -&gt; Unit)? = null,   // optional icon on the left
+    trailingIcon: @Composable (() -&gt; Unit)? = null,  // optional icon on the right
+) {
+    val hasIcon = leadingIcon != null || trailingIcon != null
+
+    Column(modifier = modifier.fillMaxWidth()) {
+        // 1. Label + value
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = label,
+                color = colors.text,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f)
+            )
+            Text(text = valueText(value), color = colors.primary, fontWeight = FontWeight.SemiBold)
+        }
+        // 2. Icon + slider + icon
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (leadingIcon != null) leadingIcon()
+            Slider(
+                value = value,
+                onValueChange = onValueChange,
+                valueRange = valueRange,
+                steps = steps,
+                colors = SliderDefaults.colors(
+                    thumbColor = colors.primary,
+                    activeTrackColor = colors.primary,
+                    inactiveTrackColor = colors.light,
+                    activeTickColor = colors.white,
+                    inactiveTickColor = colors.primary,
+                ),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(horizontal = if (hasIcon) 8.dp else 0.dp)
+            )
+            if (trailingIcon != null) trailingIcon()
+        }
+    }
+}</code></pre>
+
+  <h3>Hai kiểu tham số mới</h3>
+  <ul>
+    <li><code>valueText: (Float) -&gt; String</code>: tham số là <strong>một hàm</strong>, nhận số và trả về chữ. Giống
+    truyền <code>(v) =&gt; v + '%'</code> trong JS. Trang tự quyết định cách hiện: <code>"60%"</code>,
+    <code>"60 km"</code>... Mặc định chỉ hiện số tròn.</li>
+    <li><code>leadingIcon: @Composable (() -&gt; Unit)? = null</code>: slot có thể <strong>không có</strong> (dấu
+    <code>?</code>), giống <code>onClick</code> nullable của <code>AppRadio</code>. Có thì vẽ, không có thì bỏ qua:
+    <code>if (leadingIcon != null) leadingIcon()</code>.</li>
+  </ul>
+
+  <p><strong>Bước 2: thay Phần A trong <code>SliderPage</code> bằng <code>AppSlider</code>.</strong> Ví dụ:</p>
+  <pre><code>AppSlider(
+    label = "Fuel level",
+    value = fuel,
+    onValueChange = { fuel = it },
+    steps = 3,
+    valueText = { "${it.roundToInt()}%" }
+)
+
+AppSlider(
+    label = "Ringtone",
+    value = ringtone,
+    onValueChange = { ringtone = it },
+    leadingIcon = {
+        Icon(Icons.Default.Notifications, contentDescription = null,
+            tint = colors.primary, modifier = Modifier.size(16.dp))
+    },
+    trailingIcon = {
+        Icon(Icons.Default.Notifications, contentDescription = null,
+            tint = colors.primary, modifier = Modifier.size(24.dp))
+    }
+)</code></pre>
+  <p>Brightness bạn tự đổi. Giữa các <code>AppSlider</code> thêm khoảng cách bằng
+  <code>Arrangement.spacedBy</code> hoặc <code>Spacer</code>, vì component không tự có khoảng cách bên ngoài (quy tắc
+  của bạn từ các bài trước).</p>
+
+  <p><strong>Bước 3: tự làm <code>AppRangeSlider</code></strong> trong cùng thư mục <code>slider/</code>. Gợi ý: chép
+  <code>AppSlider</code>, đổi:</p>
+  <ul>
+    <li><code>value: ClosedFloatingPointRange&lt;Float&gt;</code> và
+    <code>onValueChange: (ClosedFloatingPointRange&lt;Float&gt;) -&gt; Unit</code></li>
+    <li><code>valueText</code> nhận <code>ClosedFloatingPointRange&lt;Float&gt;</code>, mặc định
+    <code>{ "${it.start.roundToInt()} – ${it.endInclusive.roundToInt()}" }</code></li>
+    <li><code>Slider</code> → <code>RangeSlider</code>; bỏ icon cho gọn</li>
+  </ul>
+  <p>Dùng cho Price: <code>valueText = { "${it.start.roundToInt()}k – ${it.endInclusive.roundToInt()}k" }</code>.</p>
+
+  <p><strong>Bước 4: kiểm tra.</strong> Kéo cả 4 thanh, giá trị bên phải đổi ngay. Fuel level chỉ dừng ở 5 điểm. Hai
+  nút của Price không vượt qua nhau. Kiểm tra Light/Dark.</p>
+
+  <div class="callout ask">
+  <p><strong>Thử thách (tuỳ chọn):</strong></p>
+  <ul>
+    <li>Thêm <code>enabled: Boolean = true</code> vào <code>AppSlider</code> và truyền xuống <code>Slider</code>. Gắn
+    một <code>AppSwitch</code> "Auto brightness": bật thì thanh Brightness bị khoá.</li>
+    <li><code>Slider</code> còn có <code>onValueChangeFinished = { ... }</code>: chỉ chạy <strong>một lần khi thả
+    tay</strong>, hợp để lưu hoặc gửi dữ liệu (giống sự kiện <code>change</code> so với <code>input</code> trên
+    web). Thử hiện một dòng <code>Text("Saved: 60")</code> chỉ cập nhật khi thả tay.</li>
+  </ul>
+  <p>Báo "xong bài 18" khi xong, rồi sang <a href="0018b-carousel.html">Bài 18b: Carousel</a>.</p>
+  </div>
+
+  <h2>5. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Muốn thanh chỉ dừng ở 0, 25, 50, 75, 100 thì <code>steps</code> bằng mấy?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: 5 là số điểm dừng, steps không tính hai đầu.">5</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: 5 điểm dừng − 2 đầu = 3 nấc ở giữa (25, 50, 75).">3</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: 25 là khoảng cách (giống step trên web), Compose cần số lượng nấc.">25</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. <code>value</code> của <code>Slider</code> có kiểu gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: số thực, viết có chữ f như 60f.">Float, ví dụ 60f</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Slider dùng Float vì kéo tay ra số lẻ.">Int, ví dụ 60</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: String chỉ dùng để hiện chữ.">String, ví dụ "60"</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. <code>price</code> là <code>100f..500f</code>. Lấy giá trị nút bên phải bằng cách nào?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: start là nút bên trái (100f).">price.start</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: endInclusive là đầu cuối của khoảng, 500f.">price.endInclusive</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: khoảng không đọc bằng [ ] như mảng.">price[1]</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. Trong <code>AppSlider</code>, State của giá trị đang chọn nằm ở đâu?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: trang giữ State, AppSlider chỉ nhận value và báo onValueChange (state hoisting).">Ở trang, truyền vào bằng value</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: trang cần đọc giá trị để lưu, nên State phải ở ngoài.">Bên trong AppSlider, bằng remember</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. <code>valueText = { "${it.roundToInt()}%" }</code> với giá trị <code>60.6f</code> hiện ra gì?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: roundToInt làm tròn, không cắt bỏ phần lẻ.">60%</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: 60.6 làm tròn thành 61, rồi ghép thêm %.">61%</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: roundToInt đổi sang số nguyên trước khi ghép chữ.">60.6%</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/components/slider">Slider</a>: <code>Slider</code>,
+  <code>steps</code>, <code>RangeSlider</code>, có hình minh hoạ.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0017-dropdown-select.html">← Bài 17</a>
+    <a href="0018b-carousel.html">Bài 18b →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+<script>
+  // Mockup kéo được: vẽ thanh kiểu Material3 1.4 từ data-*, kéo thì đổi giá trị và chữ bên phải
+  document.querySelectorAll('.m-slider').forEach(function (el) {
+    var min = +(el.dataset.min || 0), max = +el.dataset.max, steps = +(el.dataset.steps || 0);
+    var vals = el.dataset.values.split(',').map(Number);
+    var isRange = vals.length === 2;
+    var out = el.closest('.m-sl-block').querySelector('.m-sl-head .v');
+    var pct = function (v) { return (v - min) / (max - min) * 100; };
+    var dotLeft = function (p) { return 'calc(6px + (100% - 12px) * ' + (p / 100) + ')'; };
+
+    function render() {
+      var t = vals.map(pct), b = [0].concat(t, [100]), html = '';
+      for (var i = 0; i < b.length - 1; i++) {
+        var on = isRange ? i === 1 : i === 0, last = i === b.length - 2;
+        html += '<div class="m-sl-seg' + (on ? ' on' : '') + (i === 0 ? ' first' : '') + (last ? ' last' : '') +
+          '" style="left:' + (i === 0 ? '0' : 'calc(' + b[i] + '% + 5px)') +
+          ';right:' + (last ? '0' : 'calc(' + (100 - b[i + 1]) + '% + 5px)') + '"></div>';
+      }
+      var lo = isRange ? t[0] : 0, hi = isRange ? t[1] : t[0];
+      var marks = steps > 0 ? [] : (isRange ? [0, 100] : [100]); // stop dots at the inactive ends
+      for (var k = 0; steps > 0 && k <= steps + 1; k++) marks.push(k / (steps + 1) * 100);
+      marks.forEach(function (p) {
+        var nearThumb = t.some(function (x) { return Math.abs(x - p) < 4; });
+        if (nearThumb) return;
+        var on = p > lo && p < hi;
+        html += '<div class="m-sl-dot' + (on ? ' on' : '') + '" style="left:' + dotLeft(p) + '"></div>';
+      });
+      t.forEach(function (p) { html += '<div class="m-sl-thumb" style="left:' + p + '%"></div>'; });
+      el.innerHTML = html;
+      out.textContent = el.dataset.fmt.replace('{0}', Math.round(vals[0])).replace('{1}', Math.round(vals[1]));
+    }
+
+    var active = 0;
+    function valueAt(e) {
+      var r = el.getBoundingClientRect();
+      var v = min + Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * (max - min);
+      if (steps > 0) { var s = (max - min) / (steps + 1); v = min + Math.round((v - min) / s) * s; }
+      return v;
+    }
+    function move(e) {
+      var v = valueAt(e);
+      if (isRange) {
+        if (active === 0) vals[0] = Math.min(v, vals[1]); else vals[1] = Math.max(v, vals[0]);
+      } else vals[0] = v;
+      render();
+    }
+    el.addEventListener('pointerdown', function (e) {
+      var v = valueAt(e);
+      active = isRange && Math.abs(v - vals[1]) < Math.abs(v - vals[0]) ? 1 : 0;
+      el.setPointerCapture(e.pointerId);
+      move(e);
+      el.onpointermove = move;
+    });
+    el.addEventListener('pointerup', function () { el.onpointermove = null; });
+    render();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bài 18b · Carousel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../assets/lesson-style.css">
+</head>
+<body>
+<div class="page">
+  <div class="kicker">Bài 18b / Thêm theo yêu cầu · <a href="../reference/lo-trinh-ui.html">Lộ trình</a></div>
+  <h1>Carousel: vuốt qua lại giữa các slide, giống Swiper và <code>ion-slides</code></h1>
+
+  <div class="callout">
+  <p><strong>Bài 18</strong> là thanh kéo <code>Slider</code>. Bài này là loại "slider" thứ hai mà web hay gọi:
+  <strong>carousel</strong>, một dải ảnh hoặc thẻ nằm ngang, vuốt để xem cái tiếp theo. Compose gọi nó là
+  <strong>Pager</strong> (lật trang).</p>
+  <p>Bài chia 2 phần: <strong>Phần A</strong> viết thẳng trong trang 3 carousel (ảnh rộng hết, ảnh ló hai bên, thẻ
+  text), có chấm chỉ trang và tự chạy. <strong>Phần B</strong> gom lại thành <code>AppCarousel</code> dùng được cho cả
+  ảnh lẫn text.</p>
+  </div>
+
+  <h2>Kết quả mong đợi</h2>
+  <p>Trang <strong>Carousel</strong> (mở từ side menu) có 3 phần. <strong>Featured cars</strong>: mỗi lần một ảnh rộng
+  hết, tự chuyển sau 3 giây. <strong>Gallery</strong>: ảnh ở giữa, hai bên ló ra một phần ảnh trước và sau.
+  <strong>Car care tips</strong>: thẻ chữ cũng ló hai bên. Dưới mỗi carousel có hàng chấm, chấm của trang hiện tại dài
+  ra và đổi màu. Hình <strong>vuốt được</strong> (kéo chuột sang trái/phải) và bấm chấm được.</p>
+
+  <div class="mockup-row">
+    <figure class="mockup">
+      <div class="phone has-header">
+        <div class="m-topbar"><span class="m-ib"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="t">Carousel</span><span class="m-ib"></span></div>
+        <div class="m-scroll">
+          <div class="m-sec">Featured cars</div>
+          <div class="m-carousel" data-auto="3000"><div class="m-track">
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car01.jpeg" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car02.webp" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car03.png" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car04.jpg" alt=""></div>
+          </div></div>
+          <div class="m-dots"></div>
+          <div class="m-sec">Gallery</div>
+          <div class="m-carousel peek"><div class="m-track">
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car01.jpeg" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car02.webp" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car03.png" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car04.jpg" alt=""></div>
+          </div></div>
+          <div class="m-dots"></div>
+          <div class="m-sec">Car care tips</div>
+          <div class="m-carousel peek"><div class="m-track">
+            <div class="m-slide"><div class="m-tip"><b>Check tire pressure</b><span>Once a month, when the tires are cold.</span></div></div>
+            <div class="m-slide"><div class="m-tip"><b>Change engine oil</b><span>Every 5,000 km or 6 months.</span></div></div>
+            <div class="m-slide"><div class="m-tip"><b>Test the battery</b><span>Before long trips and every winter.</span></div></div>
+          </div></div>
+          <div class="m-dots"></div>
+        </div>
+        <div class="m-home-indicator"></div>
+      </div>
+      <figcaption>Light Mode</figcaption>
+    </figure>
+    <figure class="mockup dark">
+      <div class="phone has-header">
+        <div class="m-topbar"><span class="m-ib"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg></span><span class="t">Carousel</span><span class="m-ib"></span></div>
+        <div class="m-scroll">
+          <div class="m-sec">Featured cars</div>
+          <div class="m-carousel" data-auto="3000"><div class="m-track">
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car01.jpeg" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car02.webp" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car03.png" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car04.jpg" alt=""></div>
+          </div></div>
+          <div class="m-dots"></div>
+          <div class="m-sec">Gallery</div>
+          <div class="m-carousel peek"><div class="m-track">
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car01.jpeg" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car02.webp" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car03.png" alt=""></div>
+            <div class="m-slide"><img src="../app/src/main/res/drawable/car04.jpg" alt=""></div>
+          </div></div>
+          <div class="m-dots"></div>
+          <div class="m-sec">Car care tips</div>
+          <div class="m-carousel peek"><div class="m-track">
+            <div class="m-slide"><div class="m-tip"><b>Check tire pressure</b><span>Once a month, when the tires are cold.</span></div></div>
+            <div class="m-slide"><div class="m-tip"><b>Change engine oil</b><span>Every 5,000 km or 6 months.</span></div></div>
+            <div class="m-slide"><div class="m-tip"><b>Test the battery</b><span>Before long trips and every winter.</span></div></div>
+          </div></div>
+          <div class="m-dots"></div>
+        </div>
+        <div class="m-home-indicator"></div>
+      </div>
+      <figcaption>Dark Mode</figcaption>
+    </figure>
+  </div>
+  <p class="mockup-note">Chú ý khi so sánh: ảnh cao 180dp, bo góc 16dp, cắt vừa khung (<code>ContentScale.Crop</code>).
+  Ở <em>Gallery</em> và <em>Car care tips</em>, slide ở giữa, hai bên ló ra khoảng 32dp, giữa các slide cách 12dp.
+  Chấm cao 8dp: chấm thường rộng 8dp màu <code>colors.light</code>, chấm hiện tại rộng 20dp màu
+  <code>colors.primary</code>. Thẻ tip là <code>AppCard</code> mặc định (không bóng), các thẻ cao bằng nhau. Chỉ
+  <em>Featured cars</em> tự chạy; slide cuối tự quay về slide đầu.</p>
+
+  <h2>1. So với web và Ionic</h2>
+  <div class="compare">
+    <div>
+      <span class="label">Swiper / Ionic</span>
+      <pre><code>&lt;swiper-container
+  slides-per-view="1.2"
+  centered-slides="true"
+  space-between="12"
+  pagination="true"
+  autoplay-delay="3000"&gt;
+  &lt;swiper-slide&gt;
+    &lt;img src="car01.jpeg"&gt;
+  &lt;/swiper-slide&gt;
+  ...
+&lt;/swiper-container&gt;</code></pre>
+    </div>
+    <div>
+      <span class="label">Compose</span>
+      <pre><code>val pagerState = rememberPagerState(
+    pageCount = { cars.size }
+)
+HorizontalPager(
+    state = pagerState,
+    contentPadding = PaddingValues(
+        horizontal = 32.dp),  // ló 2 bên
+    pageSpacing = 12.dp       // space-between
+) { page -&gt;
+    Image(painterResource(cars[page]), ...)
+}
+// dots, autoplay: tự viết (vài dòng)</code></pre>
+    </div>
+  </div>
+  <p><code>HorizontalPager</code> lo phần khó: vuốt, dừng đúng giữa một slide, và chỉ vẽ những slide đang thấy. Bạn chỉ
+  cần nói có bao nhiêu trang và trang thứ <code>page</code> trông thế nào. Hàng chấm và tự chạy thì Compose không có sẵn,
+  nhưng tự viết chỉ vài dòng.</p>
+
+  <h2>2. Những điều mới</h2>
+  <table>
+    <tr><th>Code</th><th>Ý nghĩa</th><th>Giống web</th></tr>
+    <tr><td><code>listOf(R.drawable.car01, ...)</code></td><td>danh sách ảnh. Mỗi <code>R.drawable.xxx</code> là một
+    số <code>Int</code> (id của ảnh), nên đây là <code>List&lt;Int&gt;</code></td><td>mảng đường dẫn ảnh</td></tr>
+    <tr><td><code>rememberPagerState(pageCount = { 4 })</code></td><td>State của carousel: đang ở trang nào, đang vuốt
+    không. <code>pageCount</code> viết trong <code>{ }</code></td><td><code>swiper</code> instance</td></tr>
+    <tr><td><code>pagerState.currentPage</code></td><td>số thứ tự trang đang xem, bắt đầu từ 0</td><td><code>swiper.activeIndex</code></td></tr>
+    <tr><td><code>repeat(4) { index -&gt; ... }</code></td><td>lặp 4 lần, <code>index</code> = 0, 1, 2, 3</td><td><code>for (let i = 0; i &lt; 4; i++)</code></td></tr>
+    <tr><td><code>(page + 1) % 4</code></td><td>chia lấy dư: 0→1→2→3→<strong>0</strong>, nên slide cuối quay về đầu</td><td>giống hệt <code>%</code> trong JS</td></tr>
+    <tr><td><code>delay(3000)</code></td><td>chờ 3 giây (chỉ dùng được trong <code>LaunchedEffect</code>)</td><td><code>setTimeout</code></td></tr>
+  </table>
+
+  <h2>3. Phần A: viết thẳng trong trang</h2>
+  <p><strong>A1. Tạo trang <code>CarouselPage.kt</code></strong>, route <code>"carousel"</code>, khung giống
+  <code>SliderPage</code> ở Bài 18 (<code>AppDrawer</code> → <code>AppPage</code> → <code>AppTopBar("Carousel")</code>).
+  Thêm route vào <code>MainActivity.kt</code> và <code>MenuItem("Carousel", "carousel", Icons.Default.Settings)</code>
+  vào <code>AppDrawer.kt</code>.</p>
+
+  <p><strong>A2. Featured cars: mỗi lần một ảnh.</strong> Ảnh lấy từ <code>res/drawable</code> có sẵn trong project:</p>
+  <pre><code>val cars = listOf(R.drawable.car01, R.drawable.car02, R.drawable.car03, R.drawable.car04)
+val pagerState = rememberPagerState(pageCount = { cars.size })
+
+Text(text = "Featured cars", fontWeight = FontWeight.SemiBold)
+HorizontalPager(state = pagerState) { page -&gt;   // page = index of the slide being drawn
+    Image(
+        painter = painterResource(cars[page]),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,           // object-fit: cover
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(180.dp)
+            .clip(RoundedCornerShape(16.dp))
+    )
+}</code></pre>
+  <p>Chạy thử: vuốt ngang được, thả tay thì tự dừng đúng giữa một ảnh.</p>
+
+  <p><strong>A3. Hàng chấm (dots).</strong> Đặt ngay dưới <code>HorizontalPager</code>:</p>
+  <pre><code>Row(
+    modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+    horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally) // gap + center
+) {
+    repeat(pagerState.pageCount) { index -&gt;
+        val isCurrent = index == pagerState.currentPage
+        Box(
+            modifier = Modifier
+                .size(width = if (isCurrent) 20.dp else 8.dp, height = 8.dp) // current dot is longer
+                .background(if (isCurrent) colors.primary else colors.light, CircleShape)
+        )
+    }
+}</code></pre>
+  <p><code>CircleShape</code> trên một hình chữ nhật 20×8 sẽ thành viên thuốc (pill), giống
+  <code>border-radius: 999px</code>.</p>
+
+  <p><strong>A4. Tự chạy sau 3 giây.</strong> Thêm ngay sau dòng <code>rememberPagerState</code>:</p>
+  <pre><code>LaunchedEffect(pagerState.settledPage) {      // restart the timer every time the page changes
+    delay(3000)
+    val next = (pagerState.currentPage + 1) % pagerState.pageCount // last → back to 0
+    pagerState.animateScrollToPage(next)         // slide with animation
+}</code></pre>
+  <p><code>LaunchedEffect</code> bạn đã gặp ở Bài 9. Khi giá trị trong ngoặc đổi, nó <strong>huỷ lần chạy cũ và chạy
+  lại từ đầu</strong>. <code>settledPage</code> là trang đã dừng hẳn. Nhờ vậy, khi người dùng tự vuốt sang trang khác,
+  đồng hồ 3 giây đếm lại từ đầu, carousel không giật sang trang khác ngay sau khi vuốt. <code>delay</code> cần
+  <code>import kotlinx.coroutines.delay</code>.</p>
+
+  <p><strong>A5. Gallery: ảnh ló hai bên.</strong> Chép A2 + A3 thành carousel thứ hai, với
+  <code>pagerState</code> riêng (đặt tên <code>galleryState</code>), rồi thêm 2 tham số cho
+  <code>HorizontalPager</code>:</p>
+  <pre><code>HorizontalPager(
+    state = galleryState,
+    contentPadding = PaddingValues(horizontal = 32.dp), // show 32dp of the previous / next slide
+    pageSpacing = 12.dp                                 // gap between slides
+) { page -&gt; ... }</code></pre>
+
+  <p><strong>A6. Car care tips: thẻ text.</strong> Mỗi tip có 2 phần (tiêu đề + mô tả) nên gom bằng
+  <code>data class</code>, giống <code>MenuItem</code> ở Bài 15. Đặt <code>data class</code> bên ngoài hàm
+  <code>CarouselPage</code>:</p>
+  <pre><code>data class Tip(val title: String, val body: String)
+
+// inside CarouselPage:
+val tips = listOf(
+    Tip("Check tire pressure", "Once a month, when the tires are cold."),
+    Tip("Change engine oil", "Every 5,000 km or 6 months."),
+    Tip("Test the battery", "Before long trips and every winter."),
+)
+val tipState = rememberPagerState(pageCount = { tips.size })
+
+HorizontalPager(
+    state = tipState,
+    contentPadding = PaddingValues(horizontal = 32.dp),
+    pageSpacing = 12.dp
+) { page -&gt;
+    AppCard(modifier = Modifier.fillMaxWidth().height(100.dp)) { // same height for all cards
+        Text(text = tips[page].title, fontWeight = FontWeight.SemiBold)
+        Text(text = tips[page].body)
+    }
+}</code></pre>
+  <p>Vì sao <code>height(100.dp)</code>? Mô tả dài ngắn khác nhau, nếu để thẻ tự cao theo chữ thì khi vuốt, chiều cao
+  carousel nhảy lên xuống. Vì sao không dùng <code>hasShadow = true</code>? Pager cắt mọi thứ vẽ ra ngoài khung của nó,
+  nên bóng ở mép dưới bị cắt mất (giống lỗi bóng bị cắt bạn từng gặp ở bài animation). Hàng chấm bạn tự thêm.</p>
+
+  <div class="callout ask">
+  <p><strong>Quan sát trước khi sang Phần B:</strong> 3 carousel giống nhau đến 80%: <code>pagerState</code>, hàng
+  chấm, padding. Chỉ khác <strong>nội dung mỗi slide</strong> (ảnh hay thẻ) và có ló hai bên / tự chạy hay không.
+  Phần B gom phần giống nhau, phần khác thì để trang truyền vào.</p>
+  </div>
+
+  <h2>4. Phần B: component <code>AppCarousel</code></h2>
+  <p><strong>Bước 1: tạo <code>ui/components/carousel/AppCarousel.kt</code>.</strong> Code mẫu (đã build thử trên
+  project, chạy được):</p>
+  <pre><code>@Composable
+fun AppCarousel(
+    pageCount: Int,                         // how many slides
+    modifier: Modifier = Modifier,
+    peek: Dp = 0.dp,                        // how much of the previous / next slide to show
+    autoPlay: Boolean = false,              // move to the next slide by itself
+    intervalMillis: Long = 3000,            // time between slides when autoPlay is on
+    content: @Composable (page: Int) -&gt; Unit // how slide number "page" looks
+) {
+    val pagerState = rememberPagerState(pageCount = { pageCount })
+
+    if (autoPlay) {
+        LaunchedEffect(pagerState.settledPage) {
+            delay(intervalMillis)
+            pagerState.animateScrollToPage((pagerState.currentPage + 1) % pageCount)
+        }
+    }
+
+    Column(modifier = modifier.fillMaxWidth()) {
+        // 1. Slides
+        HorizontalPager(
+            state = pagerState,
+            contentPadding = PaddingValues(horizontal = peek),
+            pageSpacing = if (peek &gt; 0.dp) 12.dp else 0.dp
+        ) { page -&gt;
+            content(page)
+        }
+        // 2. Dots
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally)
+        ) {
+            repeat(pageCount) { index -&gt;
+                val isCurrent = index == pagerState.currentPage
+                Box(
+                    modifier = Modifier
+                        .size(width = if (isCurrent) 20.dp else 8.dp, height = 8.dp)
+                        .background(if (isCurrent) colors.primary else colors.light, CircleShape)
+                )
+            }
+        }
+    }
+}</code></pre>
+  <p>Điểm mới: <code>content: @Composable (page: Int) -&gt; Unit</code> là một <strong>slot có tham số</strong>.
+  Slot ở <code>AppCard</code> hay <code>AppBottomBar</code> không nhận gì; slot này nhận số thứ tự trang, để trang tự
+  vẽ slide đó. Giống hàm render trong JS: <code>renderSlide(page)</code>. <code>pagerState</code> nằm
+  <strong>bên trong</strong> component vì trang không cần biết đang ở slide nào (giống <code>expanded</code> của
+  <code>AppDropdown</code>).</p>
+
+  <p><strong>Bước 2: thay Phần A bằng <code>AppCarousel</code>.</strong></p>
+  <pre><code>// Featured cars: full width + auto play
+AppCarousel(pageCount = cars.size, autoPlay = true) { page -&gt;
+    Image(
+        painter = painterResource(cars[page]),
+        contentDescription = null,
+        contentScale = ContentScale.Crop,
+        modifier = Modifier.fillMaxWidth().height(180.dp).clip(RoundedCornerShape(16.dp))
+    )
+}
+
+// Car care tips: peek
+AppCarousel(pageCount = tips.size, peek = 32.dp) { page -&gt;
+    AppCard(modifier = Modifier.fillMaxWidth().height(100.dp)) {
+        Text(text = tips[page].title, fontWeight = FontWeight.SemiBold)
+        Text(text = tips[page].body)
+    }
+}</code></pre>
+  <p>Gallery bạn tự viết: giống Featured cars, thêm <code>peek = 32.dp</code>, bỏ <code>autoPlay</code>.
+  Các <code>pagerState</code>, <code>LaunchedEffect</code> và hàng chấm của Phần A giờ xoá được hết.</p>
+
+  <p><strong>Bước 3: kiểm tra.</strong> Vuốt cả 3 carousel, chấm đổi theo. Featured cars tự chạy, đến ảnh cuối thì
+  quay về ảnh đầu. Vuốt tay xong thì đợi đủ 3 giây mới tự chuyển. Kiểm tra Light/Dark.</p>
+
+  <div class="callout ask">
+  <p><strong>Thử thách (tuỳ chọn):</strong></p>
+  <ul>
+    <li><strong>Bấm chấm để nhảy trang.</strong> Thêm <code>.clickable { ... }</code> vào mỗi chấm. Vì
+    <code>animateScrollToPage</code> phải chạy trong coroutine, dùng <code>rememberCoroutineScope()</code> +
+    <code>scope.launch { pagerState.animateScrollToPage(index) }</code>, giống cách mở side menu ở Bài 15.</li>
+    <li><strong>Nút mũi tên ‹ ›</strong> hai bên ảnh: <code>Icons.Default.KeyboardArrowLeft</code> /
+    <code>KeyboardArrowRight</code> (có trong <code>icons.core</code>), đặt trong <code>Box</code> chồng lên pager,
+    cùng cách gọi <code>scope.launch</code> như trên.</li>
+    <li><strong>Chấm dài ra mượt</strong>: dùng <code>animateDpAsState</code> (Bài 9) cho chiều rộng chấm.</li>
+  </ul>
+  <p>Muốn vuốt vòng vô tận (từ ảnh đầu vuốt sang trái ra ảnh cuối)? Đó là phần nâng cao, hãy hỏi agent. Báo "xong bài
+  18b" khi xong.</p>
+  </div>
+
+  <h2>5. Kiểm tra nhanh</h2>
+  <div class="quiz">
+    <div class="q">1. Có 4 ảnh, đang ở trang cuối (<code>currentPage = 3</code>). <code>(3 + 1) % 4</code> bằng mấy?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: không có trang 4, trang cuối là 3 vì đếm từ 0.">4</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: 4 chia 4 dư 0, nên quay về ảnh đầu.">0</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: % là chia lấy dư, 4 chia 4 dư 0.">1</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">2. Tham số nào làm ảnh trước và sau ló ra hai bên?</div>
+    <div class="options">
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: pageSpacing chỉ là khoảng cách giữa các slide.">pageSpacing</button>
+      <button class="opt" data-correct="true" data-feedback="Đúng: chừa 32dp hai bên nên slide kế bên hiện ra trong khoảng đó.">contentPadding = PaddingValues(horizontal = 32.dp)</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: padding trên Modifier thu nhỏ cả pager, slide kế bên vẫn bị ẩn.">Modifier.padding(horizontal = 32.dp)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">3. Vì sao <code>LaunchedEffect</code> dùng <code>pagerState.settledPage</code> làm key?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: key đổi thì đồng hồ đếm lại, nên vuốt tay xong không bị giật trang ngay.">Để mỗi lần đổi trang thì đồng hồ 3 giây đếm lại từ đầu</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: key không làm chạy nhanh hơn, nó quyết định khi nào chạy lại.">Để chuyển trang nhanh hơn</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: hàng chấm đọc currentPage, không cần LaunchedEffect.">Để hàng chấm đổi màu</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">4. Trong <code>AppCarousel</code>, <code>content: @Composable (page: Int) -&gt; Unit</code> khác slot của <code>AppCard</code> ở đâu?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: trang nhận số page và tự vẽ slide tương ứng.">Nó nhận số thứ tự trang để trang tự vẽ slide đó</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: slot nào cũng chứa giao diện, khác biệt là tham số page.">Nó chỉ chứa được ảnh</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: Unit nghĩa là không trả về gì, giống slot của AppCard.">Nó trả về một số Int</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+  <div class="quiz">
+    <div class="q">5. (Ôn bài 18) <code>Slider</code> và carousel đều được gọi là "slider" trên web. Cái nào để <strong>chọn giá trị</strong>?</div>
+    <div class="options">
+      <button class="opt" data-correct="true" data-feedback="Đúng: Slider là input type=range, có value và onValueChange.">Slider (thanh kéo)</button>
+      <button class="opt" data-correct="false" data-feedback="Chưa đúng: carousel chỉ để xem nội dung, không phải ô nhập form.">HorizontalPager (carousel)</button>
+    </div>
+    <div class="feedback"></div>
+  </div>
+
+  <div class="callout source">
+  <p><strong>Đọc thêm (nguồn chính thức):</strong>
+  <a href="https://developer.android.com/develop/ui/compose/layouts/pager">Pager in Compose</a>:
+  <code>HorizontalPager</code>, <code>contentPadding</code>, hàng chấm, tự chạy.
+  <a href="https://developer.android.com/develop/ui/compose/components/carousel">Carousel</a>: component carousel của
+  Material3 (ảnh co giãn khi vuốt). Component này còn là "experimental" và có kiểu dáng riêng, nên bài này dùng
+  <code>HorizontalPager</code> để bạn tự quyết định giao diện.</p>
+  </div>
+
+  <div class="lesson-nav">
+    <a href="0018-slider-range.html">← Bài 18</a>
+    <a href="../reference/lo-trinh-ui.html">Lộ trình →</a>
+  </div>
+</div>
+<script src="../assets/quiz.js"></script>
+<script>
+  // Mockup vuốt được: kéo chuột trái/phải để đổi slide, bấm chấm để nhảy, data-auto = tự chạy (ms)
+  document.querySelectorAll('.m-carousel').forEach(function (box) {
+    var track = box.querySelector('.m-track'), slides = track.children, n = slides.length;
+    var dots = box.nextElementSibling, index = 0, timer = null, startX = null;
+    for (var i = 0; i < n; i++) {
+      var d = document.createElement('i');
+      d.addEventListener('click', go.bind(null, i));
+      dots.appendChild(d);
+    }
+    function go(i) {
+      index = (i + n) % n;
+      track.style.transform = 'translateX(' + (slides[0].offsetLeft - slides[index].offsetLeft) + 'px)';
+      Array.prototype.forEach.call(dots.children, function (d, k) { d.classList.toggle('on', k === index); });
+      if (box.dataset.auto) { clearTimeout(timer); timer = setTimeout(function () { go(index + 1); }, +box.dataset.auto); }
+    }
+    box.addEventListener('pointerdown', function (e) { startX = e.clientX; box.setPointerCapture(e.pointerId); });
+    box.addEventListener('pointerup', function (e) {
+      if (startX === null) return;
+      var dx = e.clientX - startX; startX = null;
+      if (dx < -30 && index < n - 1) go(index + 1);
+      else if (dx > 30 && index > 0) go(index - 1);
+    });
+    go(0);
+  });
+</script>
+</body>
+</html>

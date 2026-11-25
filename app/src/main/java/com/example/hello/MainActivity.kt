@@ -74,6 +74,9 @@ class MainActivity : ComponentActivity() {
                     composable(route = "dropdown") {
                         DropdownPage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
+                    composable(route = "slider") {
+                        SliderPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
 
 
                 }

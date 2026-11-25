@@ -470,3 +470,39 @@ pre code { background: none; padding: 0; }
 .m-dd-item .v { flex: 1; }
 .m-dd-item.on { color: var(--app-primary); font-weight: 600; }
 .m-dd-item.on::after { content: "✓"; color: var(--app-primary); font-weight: 900; }
+
+/* Mockup blocks cho Slider / RangeSlider (Bài 18+), kiểu Material3 1.4: thanh dày, nút kéo là vạch dọc, có khe hở
+   hai bên nút kéo và chấm "stop" ở cuối thanh. Vẽ bằng JS trong bài (data-min, data-max, data-step, data-values). */
+.m-sl-head { display: flex; align-items: baseline; font-size: 11px; font-weight: 600; margin: 14px 0 0; }
+.m-sl-head .v { margin-left: auto; color: var(--app-primary); }
+.m-sl-row { display: flex; align-items: center; gap: 6px; }
+.m-sl-row > svg { fill: var(--app-primary); flex: none; }
+.m-sl-row .m-slider { flex: 1; }
+.m-slider { position: relative; height: 34px; margin: 0 2px; touch-action: none; cursor: pointer; user-select: none; }
+.m-sl-seg { position: absolute; top: 11px; height: 12px; border-radius: 2px; background: var(--app-light); }
+.m-sl-seg.on { background: var(--app-primary); }
+.m-sl-seg.first { border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
+.m-sl-seg.last { border-top-right-radius: 6px; border-bottom-right-radius: 6px; }
+.m-sl-dot { position: absolute; top: 15px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%;
+  background: var(--app-primary); }
+.m-sl-dot.on { background: var(--app-white); }
+.mockup.dark .m-sl-dot.on { background: #000; }
+.m-sl-thumb { position: absolute; top: 0; width: 4px; height: 34px; margin-left: -2px; border-radius: 2px;
+  background: var(--app-primary); }
+
+/* Mockup blocks cho carousel / HorizontalPager (Bài 18b+) */
+.m-sec { font-size: 11px; font-weight: 600; margin: 14px 0 6px; }
+.m-carousel { overflow: hidden; touch-action: pan-y; user-select: none; cursor: grab; }
+.m-track { display: flex; transition: transform 0.35s ease; }
+.m-slide { flex: none; width: 100%; }
+.m-carousel.peek .m-slide { width: calc(100% - 48px); margin-right: 8px; }
+.m-carousel.peek .m-slide:first-child { margin-left: 24px; }
+.m-slide img { display: block; width: 100%; height: 118px; object-fit: cover; border-radius: 12px; pointer-events: none; }
+.m-tip { height: 74px; box-sizing: border-box; background: var(--app-surface); border-radius: 12px; padding: 10px 12px;
+  margin: 0; }
+.m-tip b { display: block; font-size: 12px; margin-bottom: 4px; }
+.m-tip span { opacity: 0.8; }
+.m-dots { display: flex; justify-content: center; gap: 5px; margin-top: 8px; }
+.m-dots i { width: 7px; height: 7px; border-radius: 4px; background: var(--app-light); transition: width 0.25s, background 0.25s;
+  cursor: pointer; }
+.m-dots i.on { width: 18px; background: var(--app-primary); }

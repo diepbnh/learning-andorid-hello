@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
@@ -64,6 +63,7 @@ private val menuItems = listOf(
     MenuItem("Checkbox", "checkbox", Icons.Default.CheckCircle),
     MenuItem("Dialog", "dialog", Icons.Default.Warning),
     MenuItem("Dropdown", "dropdown", Icons.Default.DateRange),
+    MenuItem("Slider", "slider", Icons.Default.DateRange),
     MenuItem("Logout", "login", Icons.Default.Lock, isDanger = true),
 
     )
