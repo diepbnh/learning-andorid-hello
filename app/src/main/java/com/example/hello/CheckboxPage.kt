@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.text.font.FontWeight
 import com.example.hello.ui.components.button.AppButton
 import com.example.hello.ui.components.card.AppCard
+import com.example.hello.ui.components.checkbox.AppCustomCheckbox
 import com.example.hello.ui.components.layout.AppBottomBar
 import com.example.hello.ui.components.layout.AppTopBar
 import com.example.hello.ui.components.toggle.AppSwitch
@@ -41,48 +42,39 @@ import com.example.hello.ui.theme.ThemeManager
 
 @Composable
 fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
-    AppPage(
-        modifier = modifier,
-        scrollable = true,
-        topBar = {
-            AppTopBar(
-                title = "Checkbox",
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                }
-            )
-        },
-        bottomBar = {
-            AppBottomBar(
-                content = {
-                    AppButton(
-                        text = "Save",
-                        onClick = {},
-                        modifier = Modifier.fillMaxWidth()
+    AppPage(modifier = modifier, scrollable = true, topBar = {
+        AppTopBar(
+            title = "Checkbox", navigationIcon = {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back"
                     )
-                    Column(
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(top = 20.dp)
-                        ,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(10.dp)
-                    ){
-                        Text(
-                            text = "This is footer",
-                            fontWeight = FontWeight.Bold,
-                        )
-                        Text(
-                            text = "Using the AppBottomBar composable"
-                        )
-                    }
                 }
-            )
-        }
+            })
+    }, bottomBar = {
+        AppBottomBar(
+            content = {
+                AppButton(
+                    text = "Save", onClick = {}, modifier = Modifier.fillMaxWidth()
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 20.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    Text(
+                        text = "This is footer",
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Text(
+                        text = "Using the AppBottomBar composable"
+                    )
+                }
+            })
+    }
 
     )
 
@@ -99,6 +91,9 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
         var autoPlay by remember { mutableStateOf(false) }
         var acceptTerms by remember { mutableStateOf(false) }
 
+        var custom1 by remember { mutableStateOf(false) }
+        var custom2 by remember { mutableStateOf(false) }
+
 
         Column(
             verticalArrangement = Arrangement.spacedBy(10.dp)//gap between rows
@@ -112,8 +107,7 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
 
                     Checkbox(
-                        checked = checked1,
-                        onCheckedChange = { checked1 = it },//save value on tap
+                        checked = checked1, onCheckedChange = { checked1 = it },//save value on tap
                         colors = CheckboxDefaults.colors(
                             checkedColor = colors.primary,
                             uncheckedColor = colors.primary,
@@ -131,8 +125,7 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
             ) {
                 CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
                     Checkbox(
-                        checked = checked2,
-                        onCheckedChange = { checked2 = it },//save value on tap
+                        checked = checked2, onCheckedChange = { checked2 = it },//save value on tap
                         colors = CheckboxDefaults.colors(
                             checkedColor = colors.primary,
                             uncheckedColor = colors.primary,
@@ -155,8 +148,7 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
             }
             Spacer(modifier = Modifier.height(35.dp))
             Text(
-                text = "Component Checkbox trong composable",
-                fontWeight = FontWeight.Bold
+                text = "Component Checkbox trong composable", fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(35.dp))
 
@@ -177,6 +169,11 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
             )
 
         }
+        Spacer(modifier = Modifier.height(25.dp))
+        Text(
+            text = "Component Custome Checkbox:", fontWeight = FontWeight.Bold
+        )
+
         Spacer(modifier = Modifier.height(25.dp))
         AppCard(hasShadow = true) {
 
@@ -207,9 +204,22 @@ fun CheckboxPage(modifier: Modifier = Modifier, navController: NavController) {
         )
         Spacer(modifier = Modifier.height(25.dp))
         AppButton(
-            text = "Save",
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {}
+            text = "Save", modifier = Modifier.fillMaxWidth(), onClick = {})
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        AppCustomCheckbox(
+            checked = custom1,
+            onCheckedChange = { custom1 = it },
+            label = "Custom Checkbox 1"
+            )
+        Spacer(modifier = Modifier.height(25.dp))
+
+        AppCustomCheckbox(
+            checked = custom2,
+            onCheckedChange = { custom2 = it },
+            label = "Custom Checkbox 2",
+            modifier = Modifier.padding(start = 40.dp)
         )
 
     }

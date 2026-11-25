@@ -1,20 +1,24 @@
 package com.example.hello
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.Menu
+
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -41,9 +45,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.res.painterResource
+import com.example.hello.ui.components.dropdown.AppCheckboxDropdown
+import com.example.hello.ui.components.dropdown.AppDropdown
 import com.example.hello.ui.components.layout.AppNavBar
 import com.example.hello.ui.theme.colors
 
@@ -107,7 +114,7 @@ fun DropdownPage(modifier: Modifier = Modifier, navController: NavController) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = if (city.isEmpty()) "Select city" else city,
+                        text = city.ifEmpty { "Select city" },
                         modifier = Modifier.weight(1f)
                     )
                     Icon(
@@ -172,78 +179,144 @@ fun DropdownPage(modifier: Modifier = Modifier, navController: NavController) {
                 }
             }
 
-            Text("Teeeeeeeeeeeeeeeeeeeeext")
             Text("")
-            StaticDropdown()
+            Text("Dropdown normal:")
+            Spacer(modifier = Modifier.height(10.dp))
+
+            ComponentDropdown1()
+            Spacer(modifier = Modifier.height(15.dp))
+            Text("Dropdown Radio:")
+
+            Spacer(modifier = Modifier.height(10.dp))
+            ComponentDropdown2()
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Text("Dropdown checkbox:")
+            Spacer(modifier = Modifier.height(10.dp))
+            ComponentDropdown3()
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Text("Dropdown checkbox and images:")
+            Spacer(modifier = Modifier.height(10.dp))
+            ComponentDropdownImages()
+            Spacer(modifier = Modifier.height(15.dp))
+
+            Text("Dropdown images:")
+            Spacer(modifier = Modifier.height(10.dp))
+            ComponentDropdown4()
+            Spacer(modifier = Modifier.height(15.dp))
         }
     }
 }
 
-//status dropdown
+
 @Composable
-fun StaticDropdown() {
-    val fieldShape = RoundedCornerShape(32.dp)
-    val menuShape = RoundedCornerShape(16.dp)
+fun ComponentDropdown1() {
+    var city by remember { mutableStateOf("") }
+
+    val cities = listOf(
+        "Hà Nội", "Hồ Chí Minh", "Đà Nẵng",
+        "Cần Thơ", "Trà Vinh", "Bến Tre"
+    )
+
     Column {
-        //1. The filed
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 6.dp) //margin bottom)
-                .height(48.dp)
-                .clip(fieldShape)
-                .background(colors.backgroundTextField)
-                .padding(start = 16.dp, end = 10.dp),
-            verticalAlignment = Alignment.CenterVertically
-
-        ) {
-            Text(
-                text = "Select city",
-                modifier = Modifier
-                    .weight(1f)
-            )
-            Icon(
-                imageVector = Icons.Default.KeyboardArrowDown,
-                contentDescription = "Select city",
-                tint = colors.primary,
-                modifier = Modifier
-                    .size(34.dp)
-                    .rotate(180f)
-            )
-        }
-        //2. The menu box
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .shadow(3.dp,menuShape)
-                .background(colors.backgroundTextField)
-        ) {
-            // Item 1
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    //
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-
-            ) {
-                Text(text = "Item 1")
-
-            }
-            HorizontalDivider(thickness = 1.dp, color = colors.light)
-            //Item 2
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    //
-                    .padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-
-            ) {
-                Text(text = "Item 2")
-
-            }
-            HorizontalDivider(thickness = 1.dp, color = colors.light)
-        }
+        AppDropdown(
+            options = cities,
+            selected = city,
+            onSelectedChange = { city = it },
+            placeholder = "Select city"
+        )
     }
+
+}
+
+@Composable
+fun ComponentDropdown2() {
+    var size by remember { mutableStateOf("") }
+    val sizes = listOf("Small", "Medium", "Large")
+
+    Column {
+        AppDropdown(
+            options = sizes,
+            selected = size,
+            onSelectedChange = { size = it },
+            placeholder = "Select size",
+            showRadio = true ,//show radio
+           showScrim = true
+        )
+    }
+
+}
+
+@Composable
+fun ComponentDropdown3() {
+    var amenities by remember {
+        mutableStateOf(setOf<String>())
+    }
+    val options = listOf("Wifi", "Parking", "Pool","Gym", "Breakfast")
+
+    AppCheckboxDropdown(
+        options = options,
+        selected = amenities,
+        onSelectedChange = { amenities = it },
+        placeholder = "Select amenities",
+        showScrim = true
+    )
+
+}
+
+
+@Composable
+fun ComponentDropdownImages() {
+    var cars by remember {
+        mutableStateOf(setOf<String>()) }
+    val carImages = mapOf(
+        "ToyotaToyotaToyotaToyotaToyotaToyotaToyota yuuuuuu yuuuuuu yuuuuuu yuuuuuu " to R.drawable.car01,
+        "Honda" to R.drawable.car02,
+        "BMW" to R.drawable.car03,
+    )
+    AppCheckboxDropdown(
+        options = carImages.keys.toList(),
+        selected = cars,
+        onSelectedChange = { cars = it },
+        placeholder = "Select cars",
+        leadingContent = {option ->
+            Image(
+                painter = painterResource(carImages.getValue(option)),
+                contentDescription = option,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(24.dp)
+                    .clip(CircleShape)
+            )
+        }
+
+    )
+}
+
+@Composable
+fun ComponentDropdown4() {
+    var car by remember { mutableStateOf("") }
+    val carImages = mapOf(
+        "Toyota" to R.drawable.car01,
+        "Honda" to R.drawable.car02,
+        "Ford" to R.drawable.car03,
+        "BMW" to R.drawable.car04)
+
+    AppDropdown(
+        options = carImages.keys.toList(),
+        selected = car,
+        onSelectedChange = { car = it },
+        placeholder = "Select car",
+        leadingContent = { option ->
+            Image(
+                painter = painterResource(carImages.getValue(option)),
+                contentDescription = option,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(32.dp)
+                    .clip(CircleShape)
+            )
+        }
+    )
 }

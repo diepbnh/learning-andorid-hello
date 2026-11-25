@@ -15,12 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
+
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.draw.scale
+
 
 @Composable
 fun AppRadioGroup(
@@ -58,15 +57,12 @@ fun AppRadioGroup(
 
             )
             {
-                RadioButton(
+                AppRadio(
                     selected = option == selected,
-                    onClick = null,
                     enabled = enabled,
-                    modifier = Modifier.scale(radioScale),
-                    colors = RadioButtonDefaults.colors(
-                        selectedColor = selectedColor,
-                        unselectedColor = unselectedColor
-                    )
+                    selectedColor = selectedColor,
+                    unselectedColor = unselectedColor,
+                    radioScale = radioScale
                 )
                 Text(text = option, color = textColor)
 
