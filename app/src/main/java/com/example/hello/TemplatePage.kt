@@ -61,7 +61,7 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                     }
                 })
             }) {
-            Column{
+            Column {
 
                 Text(
                     text = "Back",
@@ -106,8 +106,8 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                         style = titleMedium,
                         color = colors.primary,
                         modifier = Modifier.clickable {
-                                navController.navigate("table")
-                            }
+                            navController.navigate("table")
+                        }
 
                     )
                     Spacer(modifier = Modifier.width(15.dp))
@@ -117,8 +117,8 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                         style = titleMedium,
                         color = colors.primary,
                         modifier = Modifier.clickable {
-                                navController.navigate("card")
-                            })
+                            navController.navigate("card")
+                        })
                     Spacer(modifier = Modifier.width(15.dp))
                     Text(
                         text = "Login",
@@ -126,8 +126,8 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                         style = titleMedium,
                         color = colors.primary,
                         modifier = Modifier.clickable {
-                                navController.navigate("login")
-                            })
+                            navController.navigate("login")
+                        })
                 }
 
                 Spacer(modifier = Modifier.height(15.dp))
@@ -140,8 +140,8 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                         style = titleMedium,
                         color = colors.primary,
                         modifier = Modifier.clickable {
-                                navController.navigate("toggle_button")
-                            })
+                            navController.navigate("toggle_button")
+                        })
                     Spacer(modifier = Modifier.width(15.dp))
                     Text(
                         text = "Dialog",
@@ -149,8 +149,8 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                         style = titleMedium,
                         color = colors.primary,
                         modifier = Modifier.clickable {
-                                navController.navigate("dialog")
-                            })
+                            navController.navigate("dialog")
+                        })
                     Spacer(modifier = Modifier.width(15.dp))
                     Text(
                         text = "Card 2",
@@ -158,8 +158,8 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                         style = titleMedium,
                         color = colors.primary,
                         modifier = Modifier.clickable {
-                                navController.navigate("card2")
-                            })
+                            navController.navigate("card2")
+                        })
                 }
                 Spacer(
                     modifier = Modifier.height(25.dp)
@@ -173,8 +173,8 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                         style = titleMedium,
                         color = colors.primary,
                         modifier = Modifier.clickable {
-                                navController.navigate("checkbox")
-                            })
+                            navController.navigate("checkbox")
+                        })
                     Spacer(modifier = Modifier.width(15.dp))
                     Text(
                         text = "Radio",
@@ -182,12 +182,66 @@ fun TemplatePage(modifier: Modifier = Modifier, navController: NavController) {
                         style = titleMedium,
                         color = colors.primary,
                         modifier = Modifier.clickable {
-                                navController.navigate("radio")
-                            })
+                            navController.navigate("radio")
+                        })
                 }
-
-
-
+                Spacer(
+                    modifier = Modifier.height(25.dp)
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Checkbox",
+                        textDecoration = TextDecoration.Underline,
+                        style = titleMedium,
+                        color = colors.primary,
+                        modifier = Modifier.clickable {
+                            navController.navigate("checkbox")
+                        })
+                    Spacer(modifier = Modifier.width(15.dp))
+                    Text(
+                        text = "Dialog",
+                        textDecoration = TextDecoration.Underline,
+                        style = titleMedium,
+                        color = colors.primary,
+                        modifier = Modifier.clickable {
+                            navController.navigate("dialog")
+                        })
+                    Spacer(modifier = Modifier.width(15.dp))
+                    Text(
+                        text = "Dropdown list",
+                        textDecoration = TextDecoration.Underline,
+                        style = titleMedium,
+                        color = colors.primary,
+                        modifier = Modifier.clickable {
+                            navController.navigate("dropdown")
+                        })
+                }
+                Spacer(
+                    modifier = Modifier.height(25.dp)
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Slider",
+                        textDecoration = TextDecoration.Underline,
+                        style = titleMedium,
+                        color = colors.primary,
+                        modifier = Modifier.clickable {
+                            navController.navigate("slider")
+                        })
+                    Spacer(modifier = Modifier.width(15.dp))
+                    Text(
+                        text = "Carousel",
+                        textDecoration = TextDecoration.Underline,
+                        style = titleMedium,
+                        color = colors.primary,
+                        modifier = Modifier.clickable {
+                            navController.navigate("carousel")
+                        })
+                }
 
 
                 Spacer(

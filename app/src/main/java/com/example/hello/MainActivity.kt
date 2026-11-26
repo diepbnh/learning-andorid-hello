@@ -77,6 +77,9 @@ class MainActivity : ComponentActivity() {
                     composable(route = "slider") {
                         SliderPage(modifier = Modifier.fillMaxSize(), navController = navController)
                     }
+                    composable(route = "carousel") {
+                        CarouselPage(modifier = Modifier.fillMaxSize(), navController = navController)
+                    }
 
 
                 }

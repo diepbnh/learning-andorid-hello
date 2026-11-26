@@ -64,6 +64,7 @@ private val menuItems = listOf(
     MenuItem("Dialog", "dialog", Icons.Default.Warning),
     MenuItem("Dropdown", "dropdown", Icons.Default.DateRange),
     MenuItem("Slider", "slider", Icons.Default.DateRange),
+    MenuItem("Carousel", "carousel", Icons.Default.DateRange),
     MenuItem("Logout", "login", Icons.Default.Lock, isDanger = true),
 
     )
